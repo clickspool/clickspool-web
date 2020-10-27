@@ -16,7 +16,7 @@ export default function CoinWrap(props):any{
 	);
 	const coinData=[
 		{
-			name:'Hellow币',
+			name:'clickspool币',
 		},
 		{
 			name:'钻石',

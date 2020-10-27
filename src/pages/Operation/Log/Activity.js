@@ -283,7 +283,7 @@ class Log extends Component {
       <>
         <CommonBreadCrumb items={crumbs} />
         <Tabs defaultActiveKey="1">
-          <TabPane tab="钻石及hellow币流水" key="1">
+          <TabPane tab="钻石及clickspool币流水" key="1">
             <>
               <SearchBar />
               <TableList />

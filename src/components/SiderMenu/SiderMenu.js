@@ -88,7 +88,7 @@ export default class SiderMenu extends PureComponent {
         <div className={styles.logo} id="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
-            <h1 style={{ fontWeight: 'normal' }}>Hellow</h1>
+            <h1 style={{ fontWeight: 'normal' }}>clickspool</h1>
           </Link>
         </div>
         <BaseMenu
