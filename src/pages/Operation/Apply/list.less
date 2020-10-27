@@ -1,0 +1,298 @@
+.operate {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+}
+
+.icon {
+  width: 100px;
+}
+
+.handle {
+  cursor: pointer;
+  display: block;
+  &::after{
+      content: "";             /*内容设置为空！！！*/
+      display: block;        /*显示为块级元素！！！*/
+      height: 0;
+      visibility: hidden;  
+      clear: both;         /*清除浮动！！！*/
+  }
+}
+
+.operations-wraper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit {
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.edit {
+  width: 90px;
+}
+
+.danger {
+  color: #f5222d;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    color: #ff4d4f;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: #cf1322;
+  }
+}
+
+.delete {
+  composes: danger;
+}
+
+:global {
+  .ant-upload-list {
+    float: left;
+  }
+}
+
+.mrm {
+  margin-right: 20px;
+}
+
+.search {
+  width: 16em;
+}
+
+.list {
+  margin-top: 20px;
+}
+
+.avatar {
+  width: 80px;
+  border-radius: 100%;
+  background-color: #4fbcff;
+}
+
+.time {
+  font-size: 12px;
+}
+
+.edit,
+.delete {
+  white-space: nowrap;
+}
+
+.delete {
+  color: #f5222d;
+}
+
+.divide {
+  margin: 6px 0;
+}
+
+.date {
+  width: 100%;
+}
+
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  background: rgba(0, 0, 0, .1);
+}
+
+.hide {
+  display: none;
+}
+
+:global {
+  .ant-upload-list-item {
+    cursor: pointer;
+  }
+
+  .ant-upload-list {
+    float: left;
+  }
+}
+
+.media {
+  max-width: 100px;
+}
+
+.rule {
+  white-space: pre-line;
+}
+
+.tag {
+  color: #6656F5;
+  background: rgb(246, 245, 255);
+  border-color: rgb(219, 215, 255);
+}
+
+.select-item {
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.wraper {
+  position: relative;
+  width: 100px;
+  height:174px;
+  line-height:174px;
+}
+
+.cover {
+  max-width: 100%;
+
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(3);
+  color: #fff;
+  opacity: .6;
+  pointer-events: none;
+  transition: 700ms;
+}
+
+.plan {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  align-items: center;
+}
+
+.plan-label {
+  margin-right: 10px;
+  border: 1px solid #dedede;
+  padding: 1px 3px;
+  margin-right: 10px;
+}
+
+.add_yuyin {
+  width: 100%;
+  cursor: pointer;
+  ;
+  float: left;
+}
+
+.luzhiyy {
+  position: relative;
+  font-size: .3*73.4375px;
+  color: #666
+}
+
+.luzhiyy::after {
+  position: absolute;
+  right: .25*73.4375px;
+  top: .28*73.4375px;
+  width: 22px;
+  height: 22px;
+  content: "";
+  background: url("./images/icon.png") no-repeat -5.78*73.4375px -3.59*73.4375px;
+  background-size: 14.57*73.4375px 4.86*73.4375px;
+}
+
+.luzhiyy s {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background: url("./images/icon.png") no-repeat -5.59*73.4375px -2.86*73.4375px;
+  background-size: 14.57*73.4375px 4.86*73.4375px;
+  vertical-align: middle;
+  margin-right: .24*73.4375px;
+}
+
+.tijaobtn {
+  width: 90%;
+  height: .8*73.4375px;
+  background-color: #f16461;
+  text-align: center;
+  line-height: .8*73.4375px;
+  color: #fff;
+  margin: 0*73.4375px auto;
+  display: block;
+  border-radius: 6px;
+  font-size: .3*73.4375px;
+}
+
+.tijaobtn[disabled] {
+  background-color: #f4cac9;
+}
+
+.add_yuyin .r_yuyin {
+  margin: .1*73.4375px 0;
+  color: #999999;
+  height: 44px;
+  line-height: 44px;
+  padding: 0 .2*73.4375px;
+  background-color: #fff3ea;
+  border: 1px solid #ffe0c9;
+  border-radius: 6px;
+  position: relative;
+  float: left;
+}
+
+.add_yuyin .r_yuyin s {
+  width: 29px;
+  height: 29px;
+  position: absolute;
+  right: .2*73.4375px;
+  top: .09*73.4375px;
+  background: url("./images/icon.png") no-repeat -7.11*73.4375px -3.62*73.4375px;
+  background-size: 14.57*73.4375px 4.86*73.4375px;
+
+  &.bofang {
+    background: url(./images/yuyin.png) no-repeat -.14*73.4375px -.07*73.4375px;
+    -webkit-animation: bofang 1s steps(1) infinite;
+    background-size: 1.9*73.4375px .49*73.4375px
+  }
+}
+
+@keyframes bofang {
+  25% {
+    background-position: -.14*73.4375px -.07*73.4375px;
+  }
+
+  50% {
+    background-position: -.63*73.4375px -.07*73.4375px;
+  }
+
+  75% {
+    background-position: -1.08*73.4375px -.07*73.4375px;
+  }
+
+  100% {
+    background-position: -1.49*73.4375px -.07*73.4375px;
+  }
+}
+
+.handle-button {
+  width: 100%;
+  margin-top: 10px;
+}

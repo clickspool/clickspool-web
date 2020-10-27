@@ -1,0 +1,55 @@
+# 版本选择参考文档: http://km.qutoutiao.net/pages/viewpage.action?pageId=106838487
+image: registry.qtt6.cn/ee/node:v10-2
+
+variables:
+  LANG: 'nodejs'
+  # app id
+  cd_app_id: "qchat-xchat-xchat-web"
+
+stages:  
+   - build 
+
+build qa:
+  tags:
+      - ci-node
+  stage: build
+  cache:
+      paths:
+        - $NPM_CONFIG_CACHE
+  only:
+    refs:
+      - develop
+  script:
+    # 在这里定义自己的构建脚本
+    # 注意部署产物必须放在 outputs 目录中才能上传到制品库
+    # 安装依赖
+    # - npm ci
+    # - npm install
+    
+    #执行打包任务
+    # - npm run dev
+      # 复制所有文件到outputs目录中
+    - cp -r $(ls -A | grep -E -v '^.(git|npm-cache)$') $(mkdir -p outputs; echo outputs)
+      # 打包
+    - ci:execute artifacts qa
+ 
+build prd:
+  tags:
+      - ci-node
+  stage: build
+  cache:
+      paths:
+        - $NPM_CONFIG_CACHE
+  only:
+    refs:
+      - master
+  script:
+    # 在这里定义自己的构建脚本
+    # 注意部署产物必须放在 outputs 目录中才能上传到制品库
+    # 安装依赖
+    # - npm ci
+    # - npm install
+      # 复制所有文件到outputs目录中
+    - cp -r $(ls -A | grep -E -v '^.(git|npm-cache)$') $(mkdir -p outputs; echo outputs)
+      # 打包
+    - ci:execute artifacts prd

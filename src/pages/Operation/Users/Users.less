@@ -1,0 +1,136 @@
+@import '~antd/lib/style/themes/default.less';
+@import '~@/utils/utils.less';
+
+.rightPagination {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.breadcrumbBox {
+  margin-bottom: 10px;
+}
+.addBtn {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  // align-items: flex-end;
+  div {
+    flex: 2;
+  }
+  .btnBox {
+    margin-left: 10px;
+  }
+}
+.settingBox {
+  .clearfix();
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  border-radius: 4px;
+  margin-top: 4px;
+  span {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+  }
+}
+.fr {
+  float: right;
+}
+.bt10 {
+  margin-bottom: 10px;
+}
+.dengerColor {
+  color: #f5222d;
+}
+.imageWidth {
+  width: 150px;
+  height: auto;
+}
+.aUpload {
+  padding: 4px 10px;
+  height: 30px;
+  line-height: 22px;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  color: #888;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+.aUpload input {
+  position: absolute;
+  font-size: 30px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  cursor: pointer;
+}
+
+.aUpload:hover {
+  color: #444;
+  background: #eee;
+  border-color: #ccc;
+  text-decoration: none;
+}
+.aUploadImg {
+  height: 30px;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.status {
+  span {
+    .ant-badge-status-dot {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+.btnSmt {
+  margin-top: 29px;
+}
+
+.avatarPreview {
+  :global{
+    .ant-modal-confirm-content {
+      text-align: center;
+    }
+    img {
+      max-width: 100%!important;
+    }
+  }
+}
+
+.sub_wrap{
+  display: flex;
+  width:100%;
+  height:40px;
+  box-sizing: border-box;
+  .right_{
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .left_{
+    flex: 1;
+    display: flex;
+    justify-content: start;
+    button{
+      margin-left:8px;
+      &:first-child{
+        margin-left:0;
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+.addBtn {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  // align-items: flex-end;
+  div {
+    flex: 2;
+  }
+  .btnBox {
+    margin-left: 10px;
+  }
+}
+.breadcrumb_Box{
+  padding:0;
+  margin-bottom:0 !important
+}
+:global{
+  .message_push_up{
+    .ant-card-head{
+      padding:0 10px;
+    }
+  }
+}
+.detail_title{
+  position: relative;
+  &.right{
+    text-align: right
+  }
+  &:after{
+    content: ':';
+    position: relative;
+    top: -0.5px;
+    margin: 0 8px 0 2px;
+    box-sizing: border-box;
+  }
+  &.required{
+    &:before {
+      display: inline-block;
+      margin-right: 4px;
+      color: #f5222d;
+      font-size: 14px;
+      font-family: SimSun,sans-serif;
+      line-height: 1;
+      content: '*';
+  }
+}
+}
+.rightPagination {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

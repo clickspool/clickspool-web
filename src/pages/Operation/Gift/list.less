@@ -1,0 +1,85 @@
+.icon {
+  width: 100px;
+}
+
+.handle {
+  cursor: pointer;
+}
+
+.operations-wraper {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.edit {
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.edit {
+  width: 90px;
+}
+
+.danger {
+  color: #f5222d;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    color: #ff4d4f;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: #cf1322;
+  }
+}
+
+.delete {
+  composes: danger;
+}
+
+:global {
+  .ant-upload-list {
+    float: left;
+  }
+}
+
+.mrm {
+  margin-right: 20px;
+}
+
+.effect {
+  position: relative;
+}
+
+.canvas {
+  width: 100px;
+  height: 100px;
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(3);
+  color: #fff;
+  opacity: .95;
+  pointer-events: none;
+  transition: 700ms;
+}
+
+.hide {
+  display: none;
+}

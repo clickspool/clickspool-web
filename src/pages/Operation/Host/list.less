@@ -1,0 +1,77 @@
+.icon {
+  width: 100px;
+}
+
+.handle {
+  cursor: pointer;
+}
+
+.operations-wraper {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  padding-bottom: 0;
+}
+
+.edit {
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.edit {
+  width: 90px;
+}
+
+.danger {
+  color: #f5222d;
+
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    color: #ff4d4f;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: #cf1322;
+  }
+}
+
+.delete {
+  composes: danger;
+}
+
+:global {
+  .ant-upload-list {
+    float: left;
+  }
+}
+
+.mrm {
+  margin-right: 20px;
+}
+
+.pages {
+  :global {
+    .ant-tabs-content {
+      background-color: #fff;
+    }
+
+    .ant-tabs-tabpane {
+      padding: 10px;
+    }
+
+    .ant-tabs-tab-active {
+      border-bottom: 1px solid #e8e8e8 !important;
+    }
+  }
+}

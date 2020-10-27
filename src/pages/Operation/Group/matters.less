@@ -1,0 +1,40 @@
+.btn{
+    margin-right:8px;
+}
+.time_box{
+    width:300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:60px;
+    .box{
+        flex:1;
+        white-space: nowrap;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+.op_wrap{
+    width:250px;
+}
+.label_{
+    float: right;
+    color: rgba(0, 0, 0, 0.85);
+    margin-top: 5px;
+    margin-right: 11px;
+    white-space: nowrap;
+    &::before{
+        display: inline-block;
+        margin-right: 4px;
+        color: #f5222d;
+        font-size: 14px;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+    }
+    &.err{
+        color: #f5222d;
+    }
+}

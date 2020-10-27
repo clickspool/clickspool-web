@@ -1,0 +1,18 @@
+export default {
+  'app.friends.pleaseId': '请输入好友账号',
+  'app.friends.pleaseName': '请输入好友昵称',
+  'app.friends.pleasePhone': '请输入好友手机号',
+  'app.friends.allsex': '所有性别',
+  'app.friends.callDate': '通话日期',
+  'app.friends.registerStatus': '注册状态',
+  'app.friends.allStatus': '全部注册状态',
+  'app.friends.friendSource': '好友来源',
+  'app.friends.registerState': '注册国家',
+  'app.friends.callTimes': '通话次数',
+  'app.friends.videoTimes': '视频次数',
+  'app.friends.soundTimes': '语音次数',
+  'app.friends.date': '时间',
+  'app.friends.currentCall': '注册时间',
+  'app.friends.registerDate': '更新时间',
+  'app.friends.friendsManage': '好友管理',
+};

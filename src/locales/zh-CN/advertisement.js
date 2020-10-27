@@ -1,0 +1,18 @@
+export default {
+  'app.advertisement.id': '编号',
+  'app.advertisement.date': '投放时间',
+  'app.advertisement.agent': '代理',
+  'app.advertisement.platform': '投放平台',
+  'app.advertisement.country': '投放国家',
+  'app.advertisement.show_count': '展示',
+  'app.advertisement.click_count': '点击',
+  'app.advertisement.ctr': '点击/展示（%）CTR',
+  'app.advertisement.cvr': '转化/点击（%）CVR',
+  'app.advertisement.install_count': '安装量',
+  'app.advertisement.consume': '消耗（美元）',
+  'app.advertisement.cpi': 'CPI（美元）',
+  'app.advertisement.download': '下载模板',
+  'app.advertisement.import': '导入',
+  'app.advertisement.batch_delete': '批量删除',
+  'app.advertisement.batch_delete.warning': '已选中{selected}条数据，确定删除？',
+};
