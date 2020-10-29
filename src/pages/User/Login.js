@@ -50,7 +50,7 @@ class LoginPage extends Component {
                   break;
                 }
               }
-              router.push(goLinkRouter(key));
+              router.push('/welcome');
             });
           }
         });
@@ -59,11 +59,11 @@ class LoginPage extends Component {
   };
  
   changeLan=()=>{
-    let lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
-    lang = lang.substr(0, 2);
-    if(lang!='zh'){
+    // let lang = navigator.language||navigator.userLanguage;//常规浏览器语言和IE浏览器
+    // lang = lang.substr(0, 2);
+    // if(lang!='zh'){
       setLocale('en-US')
-    }
+    // }
   }
   componentDidMount(){
     this.changeLan()
