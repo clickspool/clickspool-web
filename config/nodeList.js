@@ -409,7 +409,61 @@ export const nodeList = {
     //     }
     //   ]
     // },
-     {
+     
+    {
+      "title": "Dashboard",
+      "key": "16",
+    },
+    {
+      "title": "Knowledge Base",
+      "key": "6",
+    },
+    {
+      "title": "Profile",
+      "key": "7",
+    },
+    {
+      "title": "PaymentSetting",
+      "key": "8",
+    },
+    {
+      "title": "Report and Analyfics",
+      "key": "9",
+      "children": [{
+        "title": "Earn Analytics",
+        "key": "9-1"
+      },
+      {
+        "title": "Payout Analytics",
+        "key": "9-2"
+      },
+    ]
+    },
+    {
+      "title": "Afiliate Marketplace",
+      "key": "10",
+    },
+    {
+      "title": "Support",
+      "key": "11",
+    },
+    {
+      "title": "User Management",
+      "key": "12",
+    },
+    {
+      "title": "Promotional Materical",
+      "key": "13",
+    },
+    {
+      "title": "Payroll Manage",
+      "key": "14",
+    },
+    {
+      "title": "Report and Analytic",
+      "key": "15",
+    },
+    {
       "title": "System Management",
       "key": "2",
       "children": [{
@@ -461,56 +515,6 @@ export const nodeList = {
       //   ]
       // }
       ]
-    },
-   
-    {
-      "title": "Knowledge Base",
-      "key": "6",
-    },
-    {
-      "title": "Profile",
-      "key": "7",
-    },
-    {
-      "title": "PaymentSetting",
-      "key": "8",
-    },
-    {
-      "title": "Report and Analyfics",
-      "key": "9",
-      "children": [{
-        "title": "Earn Analytics",
-        "key": "9-1"
-      },
-      {
-        "title": "Payout Analytics",
-        "key": "9-2"
-      },
-    ]
-    },
-    {
-      "title": "Afiliate Marketplace",
-      "key": "10",
-    },
-    {
-      "title": "Support",
-      "key": "11",
-    },
-    {
-      "title": "User Management",
-      "key": "12",
-    },
-    {
-      "title": "Promotional Materical",
-      "key": "13",
-    },
-    {
-      "title": "Payroll Manage",
-      "key": "14",
-    },
-    {
-      "title": "Report and Analytic",
-      "key": "15",
     },
     ],
     "url_map": [

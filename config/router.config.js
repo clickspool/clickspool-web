@@ -17,7 +17,7 @@ export default [
       {
         path: '/welcome',
         name: 'welcome',
-        icon: 'message',
+        icon: 'table',
         component: './Exception/404',
       },
       {

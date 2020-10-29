@@ -16,96 +16,87 @@ export default [
       {
         path: '/welcome',
         name: 'welcome',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'appstore',
+        key: '16',
       },
       {
         path: '/knowledge_base',
         name: 'knowledge',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'profile',
         key: '6',
       },
       {
         path: '/profile',
-        name: 'profile',
-        icon: 'message',
-        component: './Feedback/Customer',
+        name: 'user',
+        icon: 'solution',
         key: '7',
       },
       {
         path: '/payment_setting',
         name: 'paymentSetting',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: "file-search",
         key: '8',
       },
       {
         path: '/p_report',
         name: 'pReport',
-        icon: 'message',
+        icon: "stock",
         key: '9',
         routes: [
           {
             path: '/p_report/earn',
             name: 'earn',
-            component: './Feedback/Customer',
+  
             key: '9-1',
           },
           {
             path: '/p_report/payout',
             name: 'payout',
-            component: './Feedback/Customer',
+  
             key: '9-2',
           }]
       },
       {
         path: '/afiliate',
         name: 'afiliate',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'bank',
         key: '10',
       },
       {
         path: '/support',
         name: 'support',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'diff',
         key: '11',
       },
       {
         path: '/op_user',
         name: 'opUser',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'user',
         key: '12',
       },
       {
         path: '/promotional',
         name: 'promotional',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'monitor',
         key: '13',
       },
 
       {
         path: '/payroll',
         name: 'payroll',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'shop',
         key: '14',
       },
       {
         path: '/r_analytic',
         name: 'oReport',
-        icon: 'message',
-        component: './Feedback/Customer',
+        icon: 'fund',
         key: '15',
       },
       {
         path: '/feedback',
         name: 'feedback',
-        icon: 'message',
+        icon: "question-circle",
         key: '4',
         routes: [
           {
