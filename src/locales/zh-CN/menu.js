@@ -125,7 +125,7 @@ export default {
   "menu.afiliate": "Afiliate Marketplace",
   "menu.support": "Support",
   "menu.opUser": "User",
-  "menu.promotional": "Promotional Materical Management",
+  "menu.promotional": "Promotional Materical",
   "menu.payroll": "Payroll Manage",
   "menu.oReport": "Report and Analytic",
 };

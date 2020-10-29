@@ -501,7 +501,7 @@ export const nodeList = {
       "key": "12",
     },
     {
-      "title": "Promotional Materical Management",
+      "title": "Promotional Materical",
       "key": "13",
     },
     {

@@ -1,0 +1,22 @@
+export default {
+  'app.permission.table.menberid': 'ID',
+  'app.permission.table.name': 'name',
+  'app.permission.table.phone': 'phone',
+  'app.permission.table.role': 'role',
+  'app.permission.table.pleaserole': 'please choose role',
+  'app.permission.table.status': 'status',
+  'app.permission.table.time': 'time',
+  'app.permission.addaccount': 'add',
+  'app.permission.editpassword': 'update password',
+  'app.permission.comfirmpassword': 'confirm password',
+  'app.permission.password': 'password',
+  'app.permission.edit': 'edit',
+  'app.permission.del': 'delete',
+  'app.permission.pleaseName': 'name',
+  'app.permission.pleasePhone': 'phone',
+  'app.permission.pleasePassword': 'password',
+  'app.permission.lock': 'lock',
+  'app.permission.unlock': 'unlock',
+  "app.image.table.operation":"operation",
+  "app.config.country":"all country"
+};

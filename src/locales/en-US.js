@@ -10,7 +10,9 @@ import settingDrawer from './en-US/settingDrawer';
 import settings from './en-US/settings';
 import pwa from './en-US/pwa';
 import matters from './en-US/matters';
-import global from './zh-CN/global';
+import global from './en-US/global';
+import role from "./en-US/role";
+import permission from "./en-US/permission";
 
 export default {
   'navBar.lang': 'Language',
@@ -74,5 +76,7 @@ export default {
   ...settings,
   ...pwa,
   ...matters,
-  ...global
+  ...global,
+  ...role,
+  ...permission
 };

@@ -98,4 +98,7 @@ export default {
   "menu.promotional": "Promotional Materical Management",
   "menu.payroll": "Payroll Manage",
   "menu.oReport": "Report and Analytic",
+  "app.image.edit":"edit",
+  "app.image.del":"delete",
+  "app.versions.add":"add"
 };

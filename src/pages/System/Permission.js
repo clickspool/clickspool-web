@@ -244,17 +244,17 @@ class Permission extends PureComponent {
         width: '250px',
         render: (text, record) => (
           <span>
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
               <a href="#" onClick={() => this.userEdit(record)}>
                 {formatMessage({ id: 'app.image.edit' })}
               </a>
-            )}
+            {/* )} */}
             <Divider type="vertical" />
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
               <a href="#" onClick={() => this.userEdit(record, true)}>
                 {formatMessage({ id: 'app.permission.password' })}
               </a>
-            )}
+            {/* )} */}
             <Divider type="vertical" />
             {
               record.status==1&& (<a href="#" onClick={this.lockHandle.bind(this,record,record.status)}>
@@ -267,7 +267,7 @@ class Permission extends PureComponent {
             </a>)
             }
             <Divider type="vertical" />
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.del)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.del)) > -1 && ( */}
               <Popconfirm
                 title={formatMessage({ id: 'app.image.makesure' })}
                 onConfirm={() => this.delRole(record.id)}
@@ -276,7 +276,7 @@ class Permission extends PureComponent {
                   {formatMessage({ id: 'app.image.del' })}
                 </a>
               </Popconfirm>
-            )}
+            {/* )} */}
           </span>
         ),
       },
@@ -310,16 +310,16 @@ class Permission extends PureComponent {
             />
           </div>
           <div className={styles.btnBox}>
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && ( */}
               <Button type="primary" onClick={this.addVisbleHandle}>
                 {formatMessage({ id: 'app.versions.add' })}
               </Button>
-            )}
+            {/* )} */}
           </div>
           <div />
           <div />
         </div>
-        {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && (
+        {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && ( */}
           <Table
             columns={columns}
             dataSource={data.data}
@@ -328,8 +328,8 @@ class Permission extends PureComponent {
             scroll={{ x: 1300 }}
             rowKey={(record, index) => `${record.id}${index}`}
           />
-        )}
-        {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && (
+        {/* )} */}
+        {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && ( */}
           <div className={styles.rightPagination}>
             <Pagination
                showTotal={total => formatMessage({ id: 'app.glob.pagetotal' },{total:total})}
@@ -339,7 +339,7 @@ class Permission extends PureComponent {
               total={toParseInt(data.total_count)}
             />
           </div>
-        )}
+        {/* )} */}
         {addVisible && <PermissionAdd visible={addVisible} onCallback={this.addVisbleHandle} />}
         {editVisible && (
           <PermissionEdit
