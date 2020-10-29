@@ -115,4 +115,17 @@ export default {
   'menu.operation.material.activity': '活动素材',
   'menu.operation.suppliesdata': '素材数据',
   'menu.operation.group.matters': '群组素材管理',
+
+  "menu.knowledge": "Knowledge Base",
+  "menu.profile": "Profile",
+  "menu.paymentSetting": "PaymentSetting",
+  "menu.pReport": "Report and Analyfics",
+  "menu.pDeport.earn": "Earn Analytics",
+  "menu.pDeport.payout": "Payout Analytics",
+  "menu.afiliate": "Afiliate Marketplace",
+  "menu.support": "Support",
+  "menu.opUser": "User",
+  "menu.promotional": "Promotional Materical Management",
+  "menu.payroll": "Payroll Manage",
+  "menu.oReport": "Report and Analytic",
 };

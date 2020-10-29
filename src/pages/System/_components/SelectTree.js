@@ -64,8 +64,8 @@ class SelectTree extends React.Component {
 }
   getLie = (expandedObj) => {
     const treeNodeClass = {
-      width: '200px',
-      display:'inline-block'
+      // width: '200px',
+      // display:'inline-block'
       // float: 'left',
     };
     if(expandedObj&&expandedObj.expanded===false){

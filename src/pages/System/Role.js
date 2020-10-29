@@ -133,13 +133,13 @@ class Role extends PureComponent {
         width: '150px',
         render: (text, record) => (
           <span>
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
               <a href="#" onClick={() => this.roleEdit(record)}>
                 {formatMessage({ id: 'app.image.edit' })}
               </a>
-            )}
+            {/* )} */}
             <Divider type="vertical" />
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.del)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.del)) > -1 && ( */}
               <Popconfirm
                 title={formatMessage({ id: 'app.image.makesure' })}
                 onConfirm={() => this.delRole(record.id)}
@@ -148,7 +148,7 @@ class Role extends PureComponent {
                   {formatMessage({ id: 'app.image.del' })}
                 </a>
               </Popconfirm>
-            )}
+            {/* )} */}
           </span>
         ),
       },
@@ -174,11 +174,11 @@ class Role extends PureComponent {
             />
           </div>
           <div className={styles.btnBox}>
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && (
+            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && ( */}
               <Button type="primary" onClick={this.addGlob}>
                 {formatMessage({ id: 'app.versions.add' })}
               </Button>
-            )}
+            {/* )} */}
           </div>
           <div />
           <div />
