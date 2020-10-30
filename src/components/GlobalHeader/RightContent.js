@@ -101,14 +101,14 @@ export default class GlobalHeaderRight extends PureComponent {
 
     return (
       <div className={className}>
-        <Select value={this.state.sell} style={{ width: 120 }} onChange={handleChange}>
+        {/* <Select value={this.state.sell} style={{ width: 120 }} onChange={handleChange}>
             <Option value={0}>{formatMessage({ id: 'app.config.country' })}</Option>
             {
               get(this, 'state.country', []).map((item,index)=>{
                   return <Option value={item.id} key={index}>{item.name}</Option>
               })
             }
-          </Select>
+          </Select> */}
         <SelectLang className={styles.action} />
         {currentUser.nickname ? (
           <Dropdown overlay={menu}>
