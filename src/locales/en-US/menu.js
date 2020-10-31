@@ -100,5 +100,7 @@ export default {
   "menu.oReport": "Report and Analytic",
   "app.image.edit":"edit",
   "app.image.del":"delete",
-  "app.versions.add":"add"
+  "app.versions.add":"add",
+  'app.content.confirm': 'ok',
+  'app.content.cancel': 'cancel',
 };
