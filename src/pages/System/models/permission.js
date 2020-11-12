@@ -1,4 +1,4 @@
-import { getList, getRoleList, getMemberStatusList } from '@/services/permission';
+import { getList, getRoleList, getMemberStatusList, getPublisherList } from '@/services/permission';
 import { type } from '@/utils/utils';
 
 export default {
@@ -6,11 +6,19 @@ export default {
 
   state: {
     data: { data: [] },
+    pData:{ data: [] },
     roleList: [],
     statusList: [],
   },
 
   effects: {
+    *getPublisherList({ payload }, { call, put }) {
+      const response = yield call(getPublisherList, payload);
+      yield put({
+        type: 'pubFetch',
+        payload: response,
+      });
+    },
     *getList({ payload }, { call, put }) {
       const response = yield call(getList, payload);
       yield put({
@@ -35,6 +43,17 @@ export default {
   },
 
   reducers: {
+    pubFetch(state, { payload }) {
+      if (!payload) {
+        return {
+          ...state,
+        };
+      }
+      return {
+        ...state,
+        pData: payload.data,
+      };
+    },
     getPermissionStatus(state, { payload }) {
       if (!payload) {
         return {

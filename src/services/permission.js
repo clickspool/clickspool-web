@@ -115,3 +115,26 @@ export async function unlockMember(params) {
     body: params,
   });
 }
+
+
+/**
+ *
+ * @name 查询所有用户列表
+ * @param {page:1} param page从1开始
+ *
+ */
+export async function getPublisherList(params) {
+  return request('/admin/member/getAdminPublisherList', {
+    method: 'GET',
+    body: params,
+  });
+}
+
+export async function modifyPublisher(params) {
+  return request('/admin/member/modifyPublisher', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+

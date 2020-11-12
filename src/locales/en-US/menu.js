@@ -94,7 +94,7 @@ export default {
   "menu.pReport.payout": "Payout Analytics",
   "menu.afiliate": "Afiliate Marketplace",
   "menu.support": "Support",
-  "menu.opUser": "User",
+  "menu.opUser": "Users",
   "menu.promotional": "Promotional Materical",
   "menu.payroll": "Payroll Manage",
   "menu.oReport": "Report and Analytic",

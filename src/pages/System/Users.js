@@ -22,8 +22,7 @@ import { formatMessage } from 'umi/locale';
 import { operationEnum, getKey } from '../../../config/role.enum';
 
 import styles from './Permission.less';
-import PermissionAdd from './PermissionAdd';
-import PermissionEdit from './PermissionEdit';
+import UsersEdit from './UsersEdit';
 
 const Search = Input.Search;
 
@@ -36,7 +35,7 @@ function toParseInt(str) {
 
 @connect(
   ({
-    permission: { data, roleList, statusList },
+    permission: { roleList, statusList,pData:data },
     routing: {
       location: { pathname },
     },
@@ -104,7 +103,7 @@ class Permission extends PureComponent {
     const { dispatch } = this.props;
     const { pagination } = this.state;
     dispatch({
-      type: 'permission/getList',
+      type: 'permission/getPublisherList',
       payload: pagination,
     });
   }
@@ -116,7 +115,7 @@ class Permission extends PureComponent {
   handleTableChange(page) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'permission/getList',
+      type: 'permission/getPublisherList',
       payload: { page },
     });
   }
@@ -166,8 +165,8 @@ class Permission extends PureComponent {
     const columns = [
       {
         title: formatMessage({ id: 'app.permission.table.menberid' }),
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'pid',
+        key: 'pid',
       },
       {
         title: formatMessage({ id: 'app.permission.table.name' }),
@@ -175,65 +174,37 @@ class Permission extends PureComponent {
         key: 'nickname',
       },
       {
+        title: 'First name',
+        dataIndex: 'first_name',
+        key: 'first_name',
+      },
+      {
+        title: 'Last name',
+        dataIndex: 'last_name',
+        key: 'last_name',
+      },
+      {
         title: formatMessage({ id: 'app.permission.table.phone' }),
         dataIndex: 'email',
         key: 'email',
       },
       {
-        title: formatMessage({ id: 'app.permission.table.role' }),
-        dataIndex: 'role_names',
-        key: 'role_names',
-        render: text => {
-          const roleNames = [];
-          Object.keys(text).forEach((item, index) => {
-            if (index === Object.keys(text).length - 1) {
-              roleNames.push(<span key={item}>{text[item]}</span>);
-            } else {
-              roleNames.push(
-                <span key={item}>
-                  {text[item]}
-                  <Divider type="vertical" />
-                </span>
-              );
-            }
-          });
-
-          return roleNames;
-        },
-      },
-      {
-        title: formatMessage({ id: 'app.permission.table.status' }),
-        dataIndex: 'status',
-        key: 'status',
-        render: text => {
-          if (text == 2) {
-            return (
-              <span className="status-badge">
-                {statusList[text]}
-                <Badge status="warning" offset={[10, -8]} />
-              </span>
-            );
-          } else {
-            return (
-              <span className="status-badge">
-                {statusList[text]}
-                <Badge status="success" offset={[10, -8]} />
-              </span>
-            );
-          }
-        },
+        title: 'Telephone',
+        dataIndex: 'phone_number',
+        key: 'phone_number',
       },
       {
         title: formatMessage({ id: 'app.permission.time' }),
         dataIndex: 'group',
         key: 'group',
+        width: '220px',
         render: (text, record) => (
           <div>
             <p>
-              {formatMessage({ id: 'app.role.creat-time' })}:{record.create_time}
+              {formatMessage({ id: 'app.role.creat-time' })}:{record.created_at}
             </p>
             <p>
-              {formatMessage({ id: 'app.role.update-time' })}:{record.update_time}
+              {formatMessage({ id: 'app.role.update-time' })}:{record.updated_at}
             </p>
           </div>
         ),
@@ -241,21 +212,13 @@ class Permission extends PureComponent {
       {
         title: formatMessage({ id: 'app.image.table.operation' }),
         key: 'op',
-        width: '250px',
+        width: '120px',
         render: (text, record) => (
           <span>
-            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
               <a href="#" onClick={() => this.userEdit(record)}>
                 {formatMessage({ id: 'app.permission.edit' })}
               </a>
-            {/* )} */}
-            <Divider type="vertical" />
-            {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
-              <a href="#" onClick={() => this.userEdit(record, true)}>
-                {formatMessage({ id: 'app.permission.password' })}
-              </a>
-            {/* )} */}
-            <Divider type="vertical" />
+            {/* <Divider type="vertical" />
             {
               record.status==1&& (<a href="#" onClick={this.lockHandle.bind(this,record,record.status)}>
               {formatMessage({ id: 'app.permission.lock' })}
@@ -265,7 +228,7 @@ class Permission extends PureComponent {
               record.status==2&& (<a href="#" className={styles.dengerColor} onClick={this.lockHandle.bind(this,record,record.status)}>
               {formatMessage({ id: 'app.permission.unlock' })}
             </a>)
-            }
+            } */}
             {/*  <Divider type="vertical" />
            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.del)) > -1 && ( */}
               {/* <Popconfirm
@@ -297,7 +260,7 @@ class Permission extends PureComponent {
               <Icon type="lock" />
               <span>{formatMessage({ id: 'menu.operation' })}</span>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{formatMessage({ id: 'menu.system.permission' })}</Breadcrumb.Item>
+            <Breadcrumb.Item>{formatMessage({ id: 'menu.opUser' })}</Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <div className={styles.addBtn}>
@@ -311,9 +274,9 @@ class Permission extends PureComponent {
           </div>
           <div className={styles.btnBox}>
             {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && ( */}
-              <Button type="primary" onClick={this.addVisbleHandle}>
+              {/* <Button type="primary" onClick={this.addVisbleHandle}>
                 {formatMessage({ id: 'app.permission.addaccount' })}
-              </Button>
+              </Button> */}
             {/* )} */}
           </div>
           <div />
@@ -340,9 +303,8 @@ class Permission extends PureComponent {
             />
           </div>
         {/* )} */}
-        {addVisible && <PermissionAdd visible={addVisible} onCallback={this.addVisbleHandle} />}
         {editVisible && (
-          <PermissionEdit
+          <UsersEdit
             visible={editVisible}
             editDataSource={editDataSource}
             onCallback={this.onCloseEditModel}

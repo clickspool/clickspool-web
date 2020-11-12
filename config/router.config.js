@@ -78,7 +78,7 @@ export default [
         path: '/op_user',
         name: 'opUser',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Users',
         key: '12',
       },
       {
