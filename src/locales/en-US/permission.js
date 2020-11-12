@@ -17,9 +17,9 @@ export default {
   'app.permission.pleasePassword': 'Password',
   'app.permission.lock': 'Lock',
   'app.permission.unlock': 'Unlock',
-  "app.image.table.operation":"Operation",
-  "app.config.country":"All country",
-  "app.permission.time":"Time",
-  "app.image.makesure":"Ok?",
-  "menu.system.webversion":'version'
+  "app.image.table.operation": "Operation",
+  "app.config.country": "All country",
+  "app.permission.time": "Time",
+  "app.image.makesure": "Ok?",
+  "menu.system.webversion": 'version'
 };

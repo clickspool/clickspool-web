@@ -74,7 +74,7 @@ class LoginPage extends Component {
       <div>
         <div className={styles.main}>
           <Form onSubmit={this.handleSubmit} className="login-form">
-            <FormItem>
+            {/* <FormItem>
               {getFieldDecorator('telephone', {
                 rules: [{ required: true, message: 'Please input your email!' }],
               })(
@@ -83,8 +83,8 @@ class LoginPage extends Component {
                   placeholder="Email"
                 />
               )}
-            </FormItem>
-            {/* <FormItem>
+            </FormItem> */}
+            <FormItem>
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'Please input your email!' }],
               })(
@@ -93,7 +93,7 @@ class LoginPage extends Component {
                   placeholder="Email"
                 />
               )}
-            </FormItem> */}
+            </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
                 rules: [{ required: true, message: 'Please input your Password!' }],
