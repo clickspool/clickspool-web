@@ -176,8 +176,8 @@ class Permission extends PureComponent {
       },
       {
         title: formatMessage({ id: 'app.permission.table.phone' }),
-        dataIndex: 'telephone',
-        key: 'telephone',
+        dataIndex: 'email',
+        key: 'email',
       },
       {
         title: formatMessage({ id: 'app.permission.table.role' }),
@@ -224,7 +224,7 @@ class Permission extends PureComponent {
         },
       },
       {
-        title: formatMessage({ id: 'app.role.data' }),
+        title: formatMessage({ id: 'app.permission.time' }),
         dataIndex: 'group',
         key: 'group',
         render: (text, record) => (
@@ -246,7 +246,7 @@ class Permission extends PureComponent {
           <span>
             {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.edit)) > -1 && ( */}
               <a href="#" onClick={() => this.userEdit(record)}>
-                {formatMessage({ id: 'app.image.edit' })}
+                {formatMessage({ id: 'app.permission.edit' })}
               </a>
             {/* )} */}
             <Divider type="vertical" />
@@ -312,7 +312,7 @@ class Permission extends PureComponent {
           <div className={styles.btnBox}>
             {/* {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && ( */}
               <Button type="primary" onClick={this.addVisbleHandle}>
-                {formatMessage({ id: 'app.versions.add' })}
+                {formatMessage({ id: 'app.permission.addaccount' })}
               </Button>
             {/* )} */}
           </div>

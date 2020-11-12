@@ -60,4 +60,5 @@ export default {
   'app.host.show.status': '开播状态',
   'app.host.show.status.on': '直播中',
   'app.host.show.status.off': '结束',
+  
 };

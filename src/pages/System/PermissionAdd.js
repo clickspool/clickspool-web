@@ -25,7 +25,7 @@ class PermissionAdd extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const params = values;
-        params.role_ids = params.role_ids ? params.role_ids.join(',') : '';
+        params.role_ids = params.role_ids ? params.role_ids: '';
         add(params).then(res => {
           if (res && !res.code) {
             this.props.onCallback('refresh');
@@ -94,7 +94,7 @@ class PermissionAdd extends React.Component {
               {...formItemLayout}
               label={formatMessage({ id: 'app.permission.table.phone' })}
             >
-              {getFieldDecorator('telephone', {
+              {getFieldDecorator('email', {
                 rules: [
                   {
                     required: true,
@@ -126,7 +126,7 @@ class PermissionAdd extends React.Component {
                 ],
               })(
                 <Select
-                  mode="multiple"
+                  // mode="multiple"
                   size={'default'}
                   placeholder={formatMessage({ id: 'app.permission.table.pleaserole' })}
                   style={{ width: '100%' }}

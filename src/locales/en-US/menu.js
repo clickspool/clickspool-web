@@ -72,7 +72,7 @@ export default {
   'menu.node': 'Node Management',
   // 新
   'menu.operation.tag': 'Tag Management',
-  'menu.operation.user': 'User',
+  'menu.operation.user': 'Profile',
   'menu.operation.user.list': 'User Management',
   'menu.operation.user.seed': 'Seed User',
   'menu.operation.user.star': 'Social User',

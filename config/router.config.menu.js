@@ -27,7 +27,7 @@ export default [
       },
       {
         path: '/profile',
-        name: 'user',
+        name: 'profile',
         icon: 'solution',
         key: '7',
       },

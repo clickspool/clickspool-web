@@ -17,4 +17,5 @@ export default {
   'app.permission.pleasePassword': '请输入密码',
   'app.permission.lock': '锁定',
   'app.permission.unlock': '解锁',
+  "app.permission.time":"时间"
 };

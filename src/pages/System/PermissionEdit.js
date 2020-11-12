@@ -35,7 +35,7 @@ class PermissionEdit extends React.Component {
           });
           return;
         }
-        params.role_ids = params.role_ids ? params.role_ids.join(',') : '';
+        params.role_ids = params.role_ids ? params.role_ids : '';
         modify(params).then(res => {
           if (res && !res.code) {
             onCallback('refresh');
@@ -76,7 +76,7 @@ class PermissionEdit extends React.Component {
         <Modal
           title={
             !isEditPw
-              ? formatMessage({ id: 'app.versions.edit' })
+              ? formatMessage({ id: 'app.permission.edit' })
               : formatMessage({ id: 'app.permission.editpassword' })
           }
           visible={visible}
@@ -108,8 +108,8 @@ class PermissionEdit extends React.Component {
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.phone' })}
               >
-                {getFieldDecorator('telephone', {
-                  initialValue: editDataSource.telephone,
+                {getFieldDecorator('email', {
+                  initialValue: editDataSource.email,
                   rules: [
                     {
                       required: true,
@@ -150,7 +150,7 @@ class PermissionEdit extends React.Component {
                   ],
                 })(
                   <Select
-                    mode="multiple"
+                    // mode="multiple"
                     size={'default'}
                     placeholder={formatMessage({ id: 'app.permission.table.pleaserole' })}
                     style={{ width: '100%' }}
