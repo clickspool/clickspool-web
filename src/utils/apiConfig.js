@@ -1,2 +1,2 @@
-const apiConfig ="https://api.clickspool.com";
+const apiConfig =" https://api.clickspool.com";
  export default apiConfig;
