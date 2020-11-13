@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { fetch, create, deleteItem, patch, patchStatus, fetchStatuses, fetchTypeMap } from '../services';
+import { fetch, create, deleteItem, patch, patchStatus, fetchStatuses, fetchTypeMap, fetchMerchantMap } from '../services';
 export default {
   namespace: "material",
   state: {
@@ -10,10 +10,11 @@ export default {
     page: null,
     pageSize: 20,
     loading: false,
-    statuses: [],
+    statuses: {},
     groupTypes: new Map(),
     tags: new Map(),
-    types:{}
+    types: new Map(),
+    merchantMap: {},
   },
   reducers: {
     updateState: (state, { payload }) => {
@@ -131,6 +132,25 @@ export default {
         }
       });
     },
+    * fetchTypeMap(payload, { call, put }) {
+      const { data } = yield call(fetchTypeMap);
+      yield put({
+        type: 'updateState',
+        payload: {
+          types: data
+        }
+      });
+    },
+    * fetchMerchantMap(payload, { call, put }) {
+      const { data } = yield call(fetchMerchantMap);
+      yield put({
+        type: 'updateState',
+        payload: {
+          merchantMap: data
+        }
+      });
+    },
+
     * reload(action, { put, select }) {
       yield put({ type: 'fetch' });
     },
@@ -138,9 +158,11 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, search }) => {
-        if (pathname === '/afiliate') {
+        if (pathname === '/promotional') {
           dispatch({ type: 'material/fetch' });
           dispatch({ type: 'material/fetchStatuses' });
+          dispatch({ type: 'material/fetchTypeMap' });
+          dispatch({ type: 'material/fetchMerchantMap' });
         }
       });
     },

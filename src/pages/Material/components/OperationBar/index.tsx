@@ -8,23 +8,16 @@ import styles from './style.m.less';
 //@ts-ignore
 @Form.create()
 class OperationBar extends PureComponent<any, any> {
-  handleValues = () => {
+  public handleValues = () => {
     this.props.form.validateFields((errors, values) => {
-      if (errors) return
-      Object.keys(values).map(key => {
-        if (!values[key]) return;
-        if (values[key].format) {
-          values[key] = values[key].format('YYYY-MM-DD HH:mm:ss');
-        }
-      })
       this.props.search(values);
     })
   }
-  reset = () => {
+  public reset = () => {
     this.props.form.resetFields();
     this.props.search();
   }
-  render() {
+  public render() {
     const { form: { getFieldDecorator }, statuses } = this.props;
     const Option = Select.Option;
 
@@ -43,6 +36,19 @@ class OperationBar extends PureComponent<any, any> {
                 >
                   {getFieldDecorator('title')(
                     <Input  placeholder={formatMessage({ id: 'app.material.name' })}/>
+                  )}
+                </Form.Item>
+          </Col>
+          <Col span={6}>
+              <Form.Item
+                  style={{ marginBottom: 0}}
+                >
+                  {getFieldDecorator('status')(
+                    <Select
+                      placeholder ={formatMessage({ id: 'app.material.status' })}
+                    >
+                      {statusesEl}
+                    </Select>
                   )}
                 </Form.Item>
           </Col>

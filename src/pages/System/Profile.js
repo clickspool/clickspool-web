@@ -66,6 +66,14 @@ class Index extends React.Component {
         <Row>
           <Col span={12}>
             <Form>
+            <FormItem
+                {...formItemLayout}
+                label={formatMessage({ id: 'app.permission.table.phone' })}
+              >
+                {getFieldDecorator('email', {
+                  initialValue: publisherInfo.email,
+                })(<Input style={{background: "none",border: "none",color:'#111'}} disabled={true}/>)}
+              </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.name' })}
@@ -80,20 +88,7 @@ class Index extends React.Component {
                   ],
                 })(<Input placeholder={formatMessage({ id: 'app.permission.table.name' })}/>)}
               </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={formatMessage({ id: 'app.permission.table.phone' })}
-              >
-                {getFieldDecorator('email', {
-                  initialValue: publisherInfo.email,
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'app.permission.pleasePhone' }),
-                    },
-                  ],
-                })(<Input disabled={true} placeholder={formatMessage({ id: 'app.permission.table.phone'})}/>)}
-              </FormItem>
+              
               <FormItem
                 {...formItemLayout}
                 label={"First Name"}
@@ -135,20 +130,6 @@ class Index extends React.Component {
                     },
                   ],
                 })(<Input placeholder={"Telephone"}/>)}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={"Paypal account"}
-              >
-                {getFieldDecorator('paypal_account', {
-                  initialValue: publisherInfo.paypal_account,
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please input paypal account",
-                    },
-                  ],
-                })(<Input placeholder={"Paypal account"}/>)}
               </FormItem>
             </Form>
             <Row>

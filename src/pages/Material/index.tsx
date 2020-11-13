@@ -21,7 +21,7 @@ import {
 } from 'antd';
 
 const cx = classnames.bind(styles);
-@connect(({ material: { list, total, page, pageSize, tags, statuses = [] } }) => ({ list, total, page, pageSize, tags, statuses }))
+@connect(({ material: { list, total, page, pageSize, types, statuses={} } }) => ({ list, total, page, pageSize, types, statuses }))
 class TemplateList extends PureComponent<any, any> {
   constructor(props) {
     super(props);
@@ -59,19 +59,19 @@ class TemplateList extends PureComponent<any, any> {
   deleteRecord = (record) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'daily/delete',
+      type: 'material/delete',
       payload: record
     });
   }
   putOnline = id => {
     this.props.dispatch({
-      type: 'daily/patchStatus',
+      type: 'material/patchStatus',
       payload: { id, status: 1 }
     });
   }
   putOffline = id => {
     this.props.dispatch({
-      type: 'daily/patchStatus',
+      type: 'material/patchStatus',
       payload: { id, status: 0 }
     });
   }
@@ -79,19 +79,19 @@ class TemplateList extends PureComponent<any, any> {
     this.setState({ search: values });
     const { pageSize, page = 1 } = this.props;
     this.props.dispatch({
-      type: 'daily/updateState',
+      type: 'material/updateState',
       payload: {
         filter: values
       }
     });
     this.props.dispatch({
       payload: { ...values, page, pageSize },
-      type: 'daily/fetch'
+      type: 'material/fetch'
     });
   }
   onShowSizeChange = (current, size) => {
     this.props.dispatch({
-      type: 'daily/changePageSize',
+      type: 'material/changePageSize',
       payload: {
         page: current,
         pageSize: size
@@ -102,7 +102,7 @@ class TemplateList extends PureComponent<any, any> {
   fetchPage = (page, pageSize) => {
     const { search = {} } = this.state;
     this.props.dispatch({
-      type: 'daily/fetch',
+      type: 'material/fetch',
       payload: {
         page,
         page_size: pageSize,
@@ -114,16 +114,16 @@ class TemplateList extends PureComponent<any, any> {
   render() {
     const crumbs = [
       {
-        icon: 'star',
-        title: formatMessage({ id: 'menu.explore' }),
+        icon: 'lock',
+        title: formatMessage({ id: 'menu.operation' }),
       }, {
-        title: formatMessage({ id: 'menu.explore.daily' }),
+        title: formatMessage({ id: 'menu.afiliate' }),
       }
     ];
     // const [count, setCount] = React.useState<number>(0);
     // const [count, setCount] = React.useState(0);
 
-    const { list, total, page, pageSize, tags, statuses } = this.props;
+    const { list, total, page, pageSize, types, statuses } = this.props;
     const { editShowing, addShowing, editRecord } = this.state;
     const { showEdit, hideEdit, deleteRecord, hideAdd, showAdd, search, putOnline, putOffline } = this;
     const columns = [
@@ -131,21 +131,61 @@ class TemplateList extends PureComponent<any, any> {
         title: formatMessage({ id: 'app.material.id' }),
         dataIndex: 'mid',
         align: 'center',
-        width:120
+        width: 120
       },
       {
         title: formatMessage({ id: 'app.material.title' }),
         dataIndex: 'title',
         align: 'center',
-        width:200
+        width: 200
       },
       {
         title: formatMessage({ id: 'app.material.type' }),
         dataIndex: 'type',
         align: 'center',
-        width:200,
-        render:(text)=>{
-          return 
+        width: 200,
+        render: (text) => {
+          return
+        }
+      },
+      {
+        title: formatMessage({ id: 'app.material.promotepic' }),
+        dataIndex: 'images',
+        align: 'center',
+        width: 200,
+        render: (value) => {
+          if (value && value.length) {
+            return null;
+          }
+          return (
+            <>
+            {
+              value.map((item, index) => {
+                return <img className={styles.icon} src={item} alt="" key={index} />
+              })
+            }
+            </>
+          );
+        }
+      },
+      {
+        title: formatMessage({ id: 'app.material.promotevideo' }),
+        dataIndex: 'videos',
+        align: 'center',
+        width: 200,
+        render: (value) => {
+          if (value && value.length) {
+            return null;
+          }
+          return (
+            <>
+            {
+              value.map((item, index) => {
+                return <video className={styles.icon} src={item} key={index} />
+              })
+            }
+            </>
+          );
         }
       },
       {
@@ -163,17 +203,18 @@ class TemplateList extends PureComponent<any, any> {
         title: formatMessage({ id: 'app.material.status' }),
         dataIndex: 'status',
         align: 'center',
-        width:200,
+        width: 200,
         render: (value, record) => {
-          let color, satus;
+          let color;
+          // tslint:disable-next-line:prefer-conditional-expression
           if (+value === 0) {
             color = 'gray';
-            satus = formatMessage({ id: 'app.material.revoke' });
+            // satus = formatMessage({ id: 'app.material.revoke' });
           } else {
             color = 'blue';
-            satus = formatMessage({ id: 'app.material.published' });
+            // satus = formatMessage({ id: 'app.material.published' });
           }
-          return <Tag color={color}>{satus}</Tag>
+          return <Tag color={color}>{statuses[value]}</Tag>
         }
       },
       {
@@ -183,8 +224,8 @@ class TemplateList extends PureComponent<any, any> {
         render(text, record) {
           return (
             <Fragment>
-              <div><Icon type='file-sync' /> {record.update_at}</div>
-              <div><Icon type='file-add' /> {record.create_at}</div>
+              <div><Icon type='file-sync' /> {record.created_at}</div>
+              <div><Icon type='file-add' /> {record.updated_at}</div>
             </Fragment>
           );
         }
@@ -193,7 +234,7 @@ class TemplateList extends PureComponent<any, any> {
         title: formatMessage({ id: 'app.material.lastOperator' }),
         dataIndex: 'operationer',
         align: 'center',
-        width:200
+        width: 200
       },
       {
         title: formatMessage({ id: 'app.material.operation' }),
@@ -203,13 +244,12 @@ class TemplateList extends PureComponent<any, any> {
         width: 150,
         render: (value, record) => {
           let caption, icon_type = 'edit', checked, statusEl, deleteEl;
-          const deleteCaption = formatMessage({ id: 'app.scene.tools.delete' });
           if (record.status == 0) {
             checked = false;
             caption = formatMessage({ id: 'app.material.published' });
             statusEl = (
               <Popconfirm
-                title={formatMessage({ id: 'app.material.sure' })}
+                title={formatMessage({ id: 'app.material.suredown' })}
                 okText={formatMessage({ id: 'app.material.yes' })}
                 cancelText={formatMessage({ id: 'app.material.cancel' })}
                 okType='danger'
@@ -251,7 +291,7 @@ class TemplateList extends PureComponent<any, any> {
       <Fragment>
         <CommonBreadCrumb items={crumbs} />
         <div className={cx('operate')}>
-          <OperationBar statuses={statuses} search={search} addTitle={formatMessage({ id: 'app.material.add' })} add={showAdd} tags={tags} />
+          <OperationBar statuses={statuses} search={search} addTitle={formatMessage({ id: 'app.material.add' })} add={showAdd} />
         </div>
         <Table
           className={cx('list')}
@@ -275,8 +315,8 @@ class TemplateList extends PureComponent<any, any> {
               onChange: this.fetchPage
             }
           }></Table>
-        {addShowing && <EditTemplate caption={formatMessage({ id: 'app.explore.daily.add' })} visible={addShowing} close={hideAdd} />}
-        {editRecord && <EditTemplate caption={formatMessage({ id: 'app.explore.daily.edit' })} id={editRecord.id} record={editRecord} visible={!!this.state.editRecord} close={hideEdit} />}
+        {addShowing && <EditTemplate caption={formatMessage({ id: 'app.explore.material.add' })} visible={addShowing} close={hideAdd} />}
+        {editRecord && <EditTemplate caption={formatMessage({ id: 'app.explore.material.edit' })} id={editRecord.id} record={editRecord} visible={!!this.state.editRecord} close={hideEdit} />}
       </Fragment>
     );
   }

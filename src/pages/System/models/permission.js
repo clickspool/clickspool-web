@@ -106,7 +106,7 @@ export default {
     setup({ dispatch, history }) {
       // Subscribe history(url) change, trigger `load` action if pathname is `/`
       return history.listen(({ pathname, search }) => {
-        if('/profile'.indexOf(pathname)>-1){
+        if(['/profile','/payment_setting'].indexOf(pathname)>-1){
           dispatch({
             type: 'permission/getPublisherInfo',
           });

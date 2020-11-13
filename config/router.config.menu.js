@@ -46,21 +46,30 @@ export default [
           {
             path: '/p_report/earn',
             name: 'earn',
-  
             key: '9-1',
           },
           {
             path: '/p_report/payout',
             name: 'payout',
-  
             key: '9-2',
           }]
       },
       {
-        path: '/afiliate',
+        path: '/material',
         name: 'afiliate',
         icon: 'bank',
         key: '10',
+        routes: [
+          {
+            path: '/material/market',
+            name: 'market',
+            key: '10-1',
+          },
+          {
+            path: '/material/my',
+            name: 'my',
+            key: '10-2',
+          }]
       },
       {
         path: '/support',

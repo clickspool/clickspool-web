@@ -38,7 +38,7 @@ export default [
         path: '/payment_setting',
         name: 'paymentSetting',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/PaymentSetting',
         key: '8',
       },
       {
@@ -61,11 +61,22 @@ export default [
           }]
       },
       {
-        path: '/afiliate',
+        path: '/material',
         name: 'afiliate',
         icon: 'message',
-        component: './Material/index',
+        // component: './Material/index',
         key: '10',
+        routes: [
+          {
+            path: '/material/market',
+            component: './Exception/404',
+            key: '10-1',
+          },
+          {
+            path: '/material/my',
+            component: './Exception/404',
+            key: '10-2',
+          }]
       },
       {
         path: '/support',
@@ -85,7 +96,7 @@ export default [
         path: '/promotional',
         name: 'promotional',
         icon: 'message',
-        component: './Exception/404',
+        component: './Material/index',
         key: '13',
       },
 
