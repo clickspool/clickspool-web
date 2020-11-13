@@ -1,0 +1,123 @@
+.operate {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+}
+.icon {
+  width: 100px;
+}
+
+.handle {
+  cursor: pointer;
+}
+
+.operations-wraper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit {
+  text-decoration: none;
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.edit {
+  width: 90px;
+}
+
+.danger {
+  color: #f5222d;
+  &:active,
+  &:hover,
+  &:focus,
+  &:visited {
+    color: #ff4d4f;
+    text-decoration: none;
+  }
+  &:active {
+    color: #cf1322;
+  }
+}
+
+.delete {
+  composes: danger;
+}
+
+:global{
+  .ant-upload-list{
+    float: left;
+  }
+}
+
+.mrm{
+  margin-right: 20px;
+}
+.search {
+  width: 16em;
+}
+
+.list {
+  margin-top: 20px;
+}
+
+.avatar {
+  width: 80px;
+  border-radius: 100%;
+  background-color: #4fbcff;
+}
+
+.time {
+  font-size: 12px;
+}
+
+.edit,
+.delete {
+  white-space: nowrap;
+}
+
+.delete {
+  color: #f5222d;
+}
+
+.divide {
+  margin: 6px 0;
+}
+
+.date {
+  width: 100%;
+}
+
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  background: rgba(0, 0, 0, .1);
+}
+
+.hide {
+  display: none;
+}
+
+:global {
+  .ant-upload-list-item {
+    cursor: pointer;
+  }
+  .ant-upload-list {
+    float: left;
+  }
+}

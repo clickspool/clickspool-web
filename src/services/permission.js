@@ -146,4 +146,11 @@ export async function pModifyPublisher(params) {
   });
 }
 
+export async function getPublisherInfo(query) {
+  return request('/user/publisher/getPublisherInfo', {
+    method: 'GET',
+    body: query,
+  });
+}
+
 

@@ -1,4 +1,4 @@
-import { getList, getRoleList, getMemberStatusList, getPublisherList } from '@/services/permission';
+import { getList, getRoleList, getMemberStatusList, getPublisherList, getPublisherInfo } from '@/services/permission';
 import { type } from '@/utils/utils';
 
 export default {
@@ -6,18 +6,32 @@ export default {
 
   state: {
     data: { data: [] },
-    pData:{ data: [] },
+    pData: { data: [] },
     roleList: [],
     statusList: [],
+    publisherInfo: {}
   },
 
   effects: {
+    *getPublisherInfo({ payload }, { call, put }) {
+      const response = yield call(getPublisherInfo, payload);
+      if (!response.code) {
+        yield put({
+          type: 'pubFetch',
+          payload: { publisherInfo: response.data },
+        });
+      }
+
+    },
     *getPublisherList({ payload }, { call, put }) {
       const response = yield call(getPublisherList, payload);
-      yield put({
-        type: 'pubFetch',
-        payload: response,
-      });
+      if (!response.code) {
+        yield put({
+          type: 'pubFetch',
+          payload: { pData: response.data },
+        });
+      }
+
     },
     *getList({ payload }, { call, put }) {
       const response = yield call(getList, payload);
@@ -51,7 +65,7 @@ export default {
       }
       return {
         ...state,
-        pData: payload.data,
+        ...payload,
       };
     },
     getPermissionStatus(state, { payload }) {
@@ -86,6 +100,18 @@ export default {
         ...state,
         statusList: payload.data,
       };
+    },
+  },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      // Subscribe history(url) change, trigger `load` action if pathname is `/`
+      return history.listen(({ pathname, search }) => {
+        if('/profile'.indexOf(pathname)>-1){
+          dispatch({
+            type: 'permission/getPublisherInfo',
+          });
+        }
+      });
     },
   },
 };

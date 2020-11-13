@@ -1,62 +1,40 @@
-import { modify, modifyPassword,modifyPublisher } from '@/services/permission';
+import { modify, modifyPassword, pModifyPublisher } from '@/services/permission';
 
 import { connect } from 'dva';
 
-import { Input, Form, Modal, Select, message } from 'antd';
+import { Input, Form, Modal, Select, message, Breadcrumb, Icon, Row, Col, Button } from 'antd';
 
 import React from 'react';
 
 import { formatMessage } from 'umi/locale';
+
+import styles from './Permission.less';
 
 const FormItem = Form.Item;
 
 const Option = Select.Option;
 
 @Form.create()
-@connect(({ permission: { roleList } }) => ({
-  roleList,
+@connect(({ permission: { publisherInfo } }) => ({
+  publisherInfo,
 }))
-class PermissionEdit extends React.Component {
+class Index extends React.Component {
+
   onOk = () => {
     const {
-      editDataSource: { id },
-      isEditPw,
-      onCallback,
+      publisherInfo
     } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const params = values;
-        params.member_id = id;
-
-        modifyPublisher(params).then(res => {
-          if (res && !res.code) {
-            onCallback('refresh');
-          }
-        })
-
-        return
-        // if (isEditPw) {
-        //   modifyPassword(params).then(res => {
-        //     if (res && !res.code) {
-        //       onCallback('refresh');
-        //     }
-        //   });
-        //   return;
-        // }
-        // params.role_ids = params.role_ids ? params.role_ids : '';
-        // modify(params).then(res => {
-        //   if (res && !res.code) {
-        //     onCallback('refresh');
-        //   }
-        // });
+        modifyPublisher({...publisherInfo,...values})
       }
     });
   };
   onCancel = () => {
     this.props.onCallback();
   };
-  uploadImage = () => {};
-  componentDidMount() {}
+  uploadImage = () => { };
+  componentDidMount() { }
   render() {
     const formItemLayout = {
       labelCol: {
@@ -71,121 +49,123 @@ class PermissionEdit extends React.Component {
     const {
       form: { getFieldDecorator },
       visible,
-      roleList,
-      editDataSource,
-      isEditPw,
+      publisherInfo,
     } = this.props;
-    const children = [];
-    roleList.forEach(element => {
-      children.push(<Option key={element.id}>{element.name}</Option>);
-    });
+
     return (
-      !!visible && (
-        <Modal
-          title={
-            !isEditPw
-              ? formatMessage({ id: 'app.permission.edit' })
-              : formatMessage({ id: 'app.permission.editpassword' })
-          }
-          visible={visible}
-          cancelText={formatMessage({ id: 'app.model.cancel' })}
-          okText={formatMessage({ id: 'app.model.okText' })}
-          onOk={this.onOk}
-          onCancel={this.onCancel}
-          width="550px"
-        >
-          <Form>
-           
+      <>
+        <div className={styles.breadcrumbBox}>
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Icon type="lock" />
+              <span>{formatMessage({ id: 'menu.operation' })}</span>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>{formatMessage({ id: 'menu.profile' })}</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
+        <Row>
+          <Col span={12}>
+            <Form>
               <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.name' })}
               >
                 {getFieldDecorator('nickname', {
-                  initialValue: editDataSource.nickname,
+                  initialValue: publisherInfo.nickname,
                   rules: [
                     {
                       required: true,
                       message: formatMessage({ id: 'app.global.form.pleaseName' }),
                     },
                   ],
-                })(<Input />)}
+                })(<Input placeholder={formatMessage({ id: 'app.permission.table.name' })}/>)}
               </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.phone' })}
               >
                 {getFieldDecorator('email', {
-                  initialValue: editDataSource.email,
+                  initialValue: publisherInfo.email,
                   rules: [
                     {
                       required: true,
                       message: formatMessage({ id: 'app.permission.pleasePhone' }),
                     },
                   ],
-                })(<Input  disabled={true}/>)}
+                })(<Input disabled={true} placeholder={formatMessage({ id: 'app.permission.table.phone'})}/>)}
               </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={"First Name"}
               >
                 {getFieldDecorator('first_name', {
-                  initialValue: editDataSource.first_name,
+                  initialValue: publisherInfo.first_name,
                   rules: [
                     {
                       required: true,
                       message: "Please input first name",
                     },
                   ],
-                })(<Input />)}
+                })(<Input placeholder={"First Name"}/>)}
               </FormItem>
-
               <FormItem
                 {...formItemLayout}
                 label={"Last Name"}
               >
                 {getFieldDecorator('last_name', {
-                  initialValue: editDataSource.last_name,
+                  initialValue: publisherInfo.last_name,
                   rules: [
                     {
                       required: true,
-                      message: "Please input last name",
+                      message: "Please input last_name",
                     },
                   ],
-                })(<Input />)}
+                })(<Input  placeholder={"Last Name"}/>)}
               </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={"Telephone"}
               >
                 {getFieldDecorator('phone_number', {
-                  initialValue: editDataSource.phone_number,
+                  initialValue: publisherInfo.last_name,
                   rules: [
                     {
                       required: true,
                       message: "Please input telephone",
                     },
                   ],
-                })(<Input />)}
-                 </FormItem>
-                <FormItem
+                })(<Input placeholder={"Telephone"}/>)}
+              </FormItem>
+              <FormItem
                 {...formItemLayout}
                 label={"Paypal account"}
               >
                 {getFieldDecorator('paypal_account', {
-                  initialValue: editDataSource.paypal_account,
+                  initialValue: publisherInfo.paypal_account,
                   rules: [
                     {
                       required: true,
                       message: "Please input paypal account",
                     },
                   ],
-                })(<Input />)}
+                })(<Input placeholder={"Paypal account"}/>)}
               </FormItem>
-          </Form>
-        </Modal>
-      )
+            </Form>
+            <Row>
+              <Col span={6} />
+              <Col span={18}>
+                <Button type="primary" onClick={this.onOk}>
+                  {formatMessage({ id: "app.permission.save" })}
+                </Button>
+              </Col>
+
+            </Row>
+
+          </Col>
+        </Row>
+      </>
     );
   }
 }
 
-export default PermissionEdit;
+export default Index;

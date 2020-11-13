@@ -31,7 +31,7 @@ export default [
         path: '/profile',
         name: 'profile',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Profile',
         key: '7',
       },
       {
@@ -64,7 +64,7 @@ export default [
         path: '/afiliate',
         name: 'afiliate',
         icon: 'message',
-        component: './Exception/404',
+        component: './Material/index',
         key: '10',
       },
       {

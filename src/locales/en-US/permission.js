@@ -21,5 +21,6 @@ export default {
   "app.config.country": "All country",
   "app.permission.time": "Time",
   "app.image.makesure": "Ok?",
-  "menu.system.webversion": 'version'
+  "menu.system.webversion": 'version',
+  "app.permission.save": "Save"
 };
