@@ -134,6 +134,15 @@ export async function modifyPublisher(params) {
   return request('/admin/member/modifyPublisher', {
     method: 'POST',
     body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+
+export async function pModifyPublisher(params) {
+  return request('/user/publisher/modifyPublisher', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
   });
 }
 

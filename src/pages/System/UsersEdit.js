@@ -110,9 +110,7 @@ class PermissionEdit extends React.Component {
                   ],
                 })(<Input />)}
               </FormItem>
-          
-          
-              <FormItem
+              {/* <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.phone' })}
               >
@@ -125,8 +123,7 @@ class PermissionEdit extends React.Component {
                     },
                   ],
                 })(<Input />)}
-              </FormItem>
-              
+              </FormItem> */}
               <FormItem
                 {...formItemLayout}
                 label={"First Name"}
