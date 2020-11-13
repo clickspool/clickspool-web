@@ -60,7 +60,7 @@ class Index extends React.Component {
               <Icon type="lock" />
               <span>{formatMessage({ id: 'menu.operation' })}</span>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{formatMessage({ id: 'menu.profile' })}</Breadcrumb.Item>
+            <Breadcrumb.Item>{formatMessage({ id: 'menu.paymentSetting' })}</Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <Row>

@@ -66,14 +66,6 @@ class Index extends React.Component {
         <Row>
           <Col span={12}>
             <Form>
-            <FormItem
-                {...formItemLayout}
-                label={formatMessage({ id: 'app.permission.table.phone' })}
-              >
-                {getFieldDecorator('email', {
-                  initialValue: publisherInfo.email,
-                })(<Input style={{background: "none",border: "none",color:'#111'}} disabled={true}/>)}
-              </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.permission.table.name' })}

@@ -118,7 +118,7 @@ export default {
 
   "menu.knowledge": "Knowledge Base",
   "menu.profile": "Profile",
-  "menu.paymentSetting": "PaymentSetting",
+  "menu.paymentSetting": "Payment Setting",
   "menu.pReport": "Report and Analyfics",
   "menu.pDeport.earn": "Earn Analytics",
   "menu.pDeport.payout": "Payout Analytics",

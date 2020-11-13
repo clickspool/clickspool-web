@@ -249,7 +249,7 @@ class TemplateList extends PureComponent<any, any> {
             caption = formatMessage({ id: 'app.material.published' });
             statusEl = (
               <Popconfirm
-                title={formatMessage({ id: 'app.material.suredown' })}
+                title={formatMessage({ id: 'app.material.sureup' })}
                 okText={formatMessage({ id: 'app.material.yes' })}
                 cancelText={formatMessage({ id: 'app.material.cancel' })}
                 okType='danger'
@@ -265,7 +265,7 @@ class TemplateList extends PureComponent<any, any> {
             caption = formatMessage({ id: 'app.material.revoke' });
             statusEl = (
               <Popconfirm
-                title={formatMessage({ id: 'app.material.sureup' })}
+                title={formatMessage({ id: 'app.material.suredown' })}
                 okText={formatMessage({ id: 'app.material.yes' })}
                 cancelText={formatMessage({ id: 'app.material.cancel' })}
                 okType='danger'

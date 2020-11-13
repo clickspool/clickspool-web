@@ -440,8 +440,16 @@ export const nodeList = {
     ]
     },
     {
-      "title": "Afiliate Marketplace",
+      "title": "Material Marketplace",
       "key": "10",
+      "children": [{
+        "title": "Material Market",
+        "key": "10-1"
+      },
+      {
+        "title": "My Materials",
+        "key": "10-2"
+      }],
     },
     {
       "title": "Support",
