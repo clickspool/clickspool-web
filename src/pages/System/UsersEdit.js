@@ -112,20 +112,6 @@ class PermissionEdit extends React.Component {
               </FormItem>
               <FormItem
                 {...formItemLayout}
-                label={formatMessage({ id: 'app.permission.table.phone' })}
-              >
-                {getFieldDecorator('email', {
-                  initialValue: editDataSource.email,
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'app.permission.pleasePhone' }),
-                    },
-                  ],
-                })(<Input  disabled={true}/>)}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
                 label={"First Name"}
               >
                 {getFieldDecorator('first_name', {
