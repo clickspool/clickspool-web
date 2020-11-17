@@ -112,6 +112,8 @@ export default {
   "app.withdraw.id":"Id",
   "app.push.del":"Delete",
   "app.versions.table.platform":"Platform",
+  "app.support.content":"Content",
+  "app.support.submit":"Submit",
   ...analysis,
   ...exception,
   ...form,

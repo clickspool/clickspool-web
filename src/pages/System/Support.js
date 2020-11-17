@@ -1,4 +1,4 @@
-import { modify, modifyPassword, pModifyPublisher } from '@/services/permission';
+import { feedbackAdd } from '@/services/permission';
 
 import { connect } from 'dva';
 
@@ -26,7 +26,12 @@ class Index extends React.Component {
     } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        modifyPublisher({...publisherInfo,...values})
+        feedbackAdd({ ...values })
+        .then((res)=>{
+          if(!res.code){
+            this.props.form.resetFields();
+          }
+        })
       }
     });
   };
@@ -68,67 +73,24 @@ class Index extends React.Component {
             <Form>
               <FormItem
                 {...formItemLayout}
-                label={formatMessage({ id: 'app.permission.table.name' })}
+                label={formatMessage({ id: 'app.support.content' })}
               >
-                {getFieldDecorator('nickname', {
-                  initialValue: publisherInfo.nickname,
+                {getFieldDecorator('content', {
                   rules: [
                     {
                       required: true,
-                      message: formatMessage({ id: 'app.global.form.pleaseName' }),
+                      message: formatMessage({ id: 'app.support.content' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'app.permission.table.name' })}/>)}
+                })(<Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} placeholder={formatMessage({ id: "app.support.content" })} />)}
               </FormItem>
-              
-              <FormItem
-                {...formItemLayout}
-                label={"First Name"}
-              >
-                {getFieldDecorator('first_name', {
-                  initialValue: publisherInfo.first_name,
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please input first name",
-                    },
-                  ],
-                })(<Input placeholder={"First Name"}/>)}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={"Last Name"}
-              >
-                {getFieldDecorator('last_name', {
-                  initialValue: publisherInfo.last_name,
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please input last_name",
-                    },
-                  ],
-                })(<Input  placeholder={"Last Name"}/>)}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label={"Telephone"}
-              >
-                {getFieldDecorator('phone_number', {
-                  initialValue: publisherInfo.last_name,
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please input telephone",
-                    },
-                  ],
-                })(<Input placeholder={"Telephone"}/>)}
-              </FormItem>
+
             </Form>
             <Row>
-              <Col span={6} />
-              <Col span={18}>
+              <Col span={18} />
+              <Col span={6} style={{ textAlign: 'right' }}>
                 <Button type="primary" onClick={this.onOk}>
-                  {formatMessage({ id: "app.permission.save" })}
+                  {formatMessage({ id: "app.support.submit" })}
                 </Button>
               </Col>
 
