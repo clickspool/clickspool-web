@@ -321,6 +321,16 @@ export default class EditTemplate extends PureComponent<any, any> {
             listType="picture-card"
             fileList={imgList}
             showUploadList={!!mine ? { showPreviewIcon: true, showDownloadIcon: true, showRemoveIcon: false } : true}
+            onPreview={(e) => {
+              console.log(e);
+              window.open(e.name);
+              return
+            }}
+            onDownload={(e) => {
+              console.log(e);
+              window.open(e.name);
+              return
+            }}
             customRequest={(options) => {
               this.handleChange(options, 'image')
             }}
