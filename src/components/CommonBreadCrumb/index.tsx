@@ -7,7 +7,7 @@ interface CommonBreadCrumbProps {
 const CommonBreadCrumb: React.FC<CommonBreadCrumbProps> = (props) => {
   const { items } = props;
   return (
-    <Breadcrumb className='breadcrumb-box' separator='/'>
+    <Breadcrumb className='breadcrumb-box'  style={{borderBottom:' 1px solid #ccc',paddingBottom:' 10px'}} separator='/'>
       {
         items.map(item => (
           <Breadcrumb.Item key={item.title}>

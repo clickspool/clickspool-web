@@ -302,7 +302,7 @@ class FaqEdit extends Component {
                   }
               </style>
             <div className={styles.breadcrumbBox}>
-              <Breadcrumb>
+            <Breadcrumb style={{borderBottom:' 1px solid #ccc',paddingBottom:' 10px'}}>
                 <Breadcrumb.Item>
                   <Icon type="lock" />
                   <span>{formatMessage({ id: 'menu.feedback' })}</span>

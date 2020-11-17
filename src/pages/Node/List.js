@@ -225,7 +225,7 @@ class List extends PureComponent {
     return (
       <div>
         <div className={styles.breadcrumbBox}>
-          <Breadcrumb>
+        <Breadcrumb style={{borderBottom:' 1px solid #ccc',paddingBottom:' 10px'}}>
             <Breadcrumb.Item>
               <Icon type="cluster" />
               <span>{formatMessage({ id: 'menu.node' })}</span>

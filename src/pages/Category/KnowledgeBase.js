@@ -293,7 +293,6 @@ class FeedbackCategroy extends PureComponent {
               width:100%;
               box-sizing: border-box;
               padding: 40px;
-              border-top: 1px solid #ccc;
             }
             .box__{
               width:100%;
@@ -314,7 +313,7 @@ class FeedbackCategroy extends PureComponent {
           </style>
   
           <div className={styles.breadcrumbBox}>
-            <Breadcrumb>
+          <Breadcrumb style={{borderBottom:' 1px solid #ccc',paddingBottom:' 10px'}}>
               <Breadcrumb.Item>
                 <Icon type="profile" />
                 <span>{formatMessage({ id: 'menu.knowledge' })}</span>

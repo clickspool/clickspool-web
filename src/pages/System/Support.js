@@ -60,7 +60,7 @@ class Index extends React.Component {
     return (
       <>
         <div className={styles.breadcrumbBox}>
-          <Breadcrumb>
+        <Breadcrumb style={{borderBottom:' 1px solid #ccc',paddingBottom:' 10px'}}>
             <Breadcrumb.Item>
               <Icon type="diff" />
               <span>{formatMessage({ id: 'menu.support' })}</span>
@@ -69,7 +69,11 @@ class Index extends React.Component {
           </Breadcrumb>
         </div>
         <Row>
-          <Col span={12}>
+          <Col span={12} style={{
+            background:' #fff',
+            padding: '20px',
+            borderRadius: '5px',
+          }}>
             <Form>
               <FormItem
                 {...formItemLayout}
@@ -87,8 +91,8 @@ class Index extends React.Component {
 
             </Form>
             <Row>
-              <Col span={18} />
-              <Col span={6} style={{ textAlign: 'right' }}>
+              <Col span={6} />
+              <Col span={18} style={{ textAlign: 'right' }}>
                 <Button type="primary" onClick={this.onOk}>
                   {formatMessage({ id: "app.support.submit" })}
                 </Button>

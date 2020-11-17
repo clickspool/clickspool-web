@@ -115,18 +115,19 @@ export default [
             key: '4-6',
           },
           {
-            path: '/feedback/customer',
-            name: 'customer',
-            component: './Feedback/Customer',
-            key: '4-1',
-          },
-          {
             path: '/feedback/faq',
             name: 'faq',
             noMenu: true,
             component: './Feedback/Faq',
             key: '4-3',
           },
+          {
+            path: '/feedback/customer',
+            name: 'customer',
+            component: './Feedback/Customer',
+            key: '4-1',
+          },
+          
         ],
       },
       {
