@@ -110,6 +110,8 @@ export default {
   'app.feedbackcategory.is_recommend':'Recommend ?',
   'app.feedbackcategory.norecommend':'Not recommended',
   "app.withdraw.id":"Id",
+  "app.push.del":"Delete",
+  "app.versions.table.platform":"Platform",
   ...analysis,
   ...exception,
   ...form,

@@ -113,7 +113,7 @@ class Setting extends PureComponent {
     } = this.props;
     const { breadcrumb, group } = this.state;
     const SettingBoxElements = [];
-    if (type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1) {
+    // if (type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1) {
       if (data && data.data) {
         for (let item in data.data) {
           // data.data[item]['1'].key = item.toString();
@@ -124,7 +124,7 @@ class Setting extends PureComponent {
           );
         }
       }
-    }
+    // }
     return (
       <div>
         <div className={styles.breadcrumbBox}>
@@ -153,16 +153,16 @@ class Setting extends PureComponent {
             />
           </div>
           <div className={styles.btnBox}>
-            {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && (
+            {/* {keys.indexOf(getKey(pathname, operationEnum.add)) > -1 && ( */}
               <Button type="primary" onClick={this.addGlob}>
                 {formatMessage({ id: 'app.versions.add' })}
               </Button>
-            )}
+            {/* )} */}
           </div>
           <div />
         </div>
         {SettingBoxElements}
-        {type(keys) == 'array' && keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && (
+        {/* {keys.indexOf(getKey(pathname, operationEnum.select)) > -1 && ( */}
           <div className={styles.rightPagination}>
             <Pagination
                showTotal={total => formatMessage({ id: 'app.glob.pagetotal' },{total:total})}
@@ -172,7 +172,7 @@ class Setting extends PureComponent {
               total={this.toParseInt(total_count)}
             />
           </div>
-        )}
+        {/* )} */}
         {editModel && <GlobEdit visible={editModel} />}
         {addVisibleModel && <GlobAdd visible={addVisibleModel} />}
       </div>
