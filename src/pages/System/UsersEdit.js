@@ -19,14 +19,14 @@ const Option = Select.Option;
 class PermissionEdit extends React.Component {
   onOk = () => {
     const {
-      editDataSource: { id },
+      editDataSource: { aid },
       isEditPw,
       onCallback,
     } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const params = values;
-        params.member_id = id;
+        params.member_id = aid;
 
         modifyPublisher(params).then(res => {
           if (res && !res.code) {

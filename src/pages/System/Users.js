@@ -183,11 +183,11 @@ class Permission extends PureComponent {
         dataIndex: 'last_name',
         key: 'last_name',
       },
-      {
-        title: formatMessage({ id: 'app.permission.table.phone' }),
-        dataIndex: 'email',
-        key: 'email',
-      },
+      // {
+      //   title: formatMessage({ id: 'app.permission.table.phone' }),
+      //   dataIndex: 'email',
+      //   key: 'email',
+      // },
       {
         title: 'Telephone',
         dataIndex: 'phone_number',

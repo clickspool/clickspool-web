@@ -380,9 +380,7 @@ class FaqAdd extends Component {
                                             )}
                                     </Form.Item>
                                     <Form.Item  {...formItemLayout}  label={formatMessage({ id: 'app.feedback.issueCategory' })+'：'}>
-                                        {getFieldDecorator('category', {
-                                            initialValue: category[0].id,
-                                        })(
+                                        {getFieldDecorator('category')(
                                         <Select
                                             placeholder={formatMessage({ id: 'app.faq.pleaseCategory'})}
                                         >

@@ -285,7 +285,7 @@ class Customer extends PureComponent {
     } = this.props;
     const { addVisible, editVisible, editDataSource, selectedRowKeys, languageList } = this.state;
     const { onShowSizeChange } = this;
-
+    console.log(category,'categorycategorycategory')
     const rowSelection = {
 
       onChange: (selectedRowKeys, selectedRows) => {
@@ -605,13 +605,8 @@ class Customer extends PureComponent {
                 </Col>
                 <Col lg={6} md={12} sm={24}>
                   <Form.Item label={formatMessage({ id: 'app.feedback.issueCategory' })}>
-                    {getFieldDecorator('category', {
-                      initialValue: '',
-                    })(
-                      <Select>
-                        <Option value="">
-                          {formatMessage({ id: 'app.feedback.allIssueCategory' })}
-                        </Option>
+                    {getFieldDecorator('category')(
+                      <Select placeholder={formatMessage({ id: 'app.feedback.issueCategory' })}>
                         {category && category.length && category.map((item, index) => {
                           return (
                             <Option key={index} value={item.id}>
