@@ -314,21 +314,22 @@ class Faq extends PureComponent {
         
         },
       },
-      {
-        title: formatMessage({ id: 'app.faq.status' }),
-        dataIndex: 'status',
-        key: 'status',
-        width: '100px',
-        render: (text, record) => {
+      // {
+      //   title: formatMessage({ id: 'app.faq.status' }),
+      //   dataIndex: 'status',
+      //   key: 'status',
+      //   width: '100px',
+      //   render: (text, record) => {
          
-        },
-      },
+      //   },
+      // },
         
       {
         title: formatMessage({ id: 'app.feedback.operation' }),
         dataIndex: 'action',
         key: 'action',
-        width: '220px',
+        width: '300px',
+        fixed:'right',
         render: (text, record) => {
           return (
             <span>
@@ -525,7 +526,7 @@ class Faq extends PureComponent {
           dataSource={list}
           pagination={false}
           bordered
-          scroll={{ x: 1300 }}
+          scroll={{ x: 2000 }}
           rowKey={(record, index) => `${record.id}${index}`}
         />
         <div className={styles.rightPagination}>

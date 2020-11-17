@@ -1,6 +1,6 @@
-import { type,isEmptyObject } from '@/utils/utils';
+import { type, isEmptyObject } from '@/utils/utils';
 
-import { delFaq,modifyFaq,batchStatusUpdate } from '@/services/faq';
+import { delFaq, modifyFaq, batchStatusUpdate } from '@/services/faq';
 
 import { connect } from 'dva';
 import Link from 'umi/link';
@@ -59,7 +59,7 @@ function toParseInt(str) {
  * status  3 驳回
  */
 
-const QcodeUrl = /test/.test(apiConfig)?`http://test-h5.xuansky.cn/faqdetail/index.html?type=help&id=`:`https://h5.feishiapp.com/faqdetail/index.html?type=help&id=`;
+const QcodeUrl = /test/.test(apiConfig) ? `http://test-h5.xuansky.cn/faqdetail/index.html?type=help&id=` : `https://h5.feishiapp.com/faqdetail/index.html?type=help&id=`;
 
 @connect(
   ({
@@ -73,7 +73,7 @@ const QcodeUrl = /test/.test(apiConfig)?`http://test-h5.xuansky.cn/faqdetail/ind
     memberInfo: {
       data: { keys },
     },
-    faq:{
+    faq: {
       data: { list, page, total_count },
       statusList,
     }
@@ -86,7 +86,7 @@ const QcodeUrl = /test/.test(apiConfig)?`http://test-h5.xuansky.cn/faqdetail/ind
     category,
     version,
     statusList,
-    
+
   })
 )
 @Form.create()
@@ -94,11 +94,11 @@ class Faq extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      pagination: { page_size: 20, page:1, total_count: props.total_count },
+      pagination: { page_size: 20, page: 1, total_count: props.total_count },
       selectedRowKeys: [],
-      selectedRowKeys1:[],
-      showPreview:false,
-      previewurl:'',
+      selectedRowKeys1: [],
+      showPreview: false,
+      previewurl: '',
     };
     _.bindAll(this, ['updataConfiList', 'handleTableChange']);
   }
@@ -108,7 +108,7 @@ class Faq extends PureComponent {
     });
   }
 
-  goResolve = () => {}
+  goResolve = () => { }
 
   delFaq = id => {
     delFaq({
@@ -120,20 +120,20 @@ class Faq extends PureComponent {
     });
   };
 
-  batchRejectHandel = (index,id) => {
+  batchRejectHandel = (index, id) => {
     const { selectedRowKeys1 } = this.state;
-    if (!selectedRowKeys1.length&&typeof(id)=='undefined') {
+    if (!selectedRowKeys1.length && typeof (id) == 'undefined') {
       return;
     }
     batchStatusUpdate({
-      ids: typeof(id)=='undefined'?selectedRowKeys1.join(','):id,
+      ids: typeof (id) == 'undefined' ? selectedRowKeys1.join(',') : id,
       status: index,
     }).then(res => {
       if (res && !res.code) {
         this.updataConfiList();
         this.setState({
-          selectedRowKeys1:[],
-          selectedRowKeys:[],
+          selectedRowKeys1: [],
+          selectedRowKeys: [],
         })
       }
     });
@@ -161,8 +161,8 @@ class Faq extends PureComponent {
     dispatch({
       type: 'faq/getFaqCateStatusList',
     });
-   
-    
+
+
   }
 
   updataConfiList() {
@@ -221,13 +221,13 @@ class Faq extends PureComponent {
       if (values.pushtime && type(values.pushtime) === 'array') {
         time = {
           create_date_start: moment(values.pushtime[0]).format('YYYY-MM-DD') + ' 00:00:00',
-          create_date_end: moment(values.pushtime[1]).format('YYYY-MM-DD') + moment(values.pushtime[0]).format('YYYY-MM-DD')==moment(values.pushtime[1]).format('YYYY-MM-DD')?' 23:59:59':' 00:00:00',
+          create_date_end: moment(values.pushtime[1]).format('YYYY-MM-DD') + moment(values.pushtime[0]).format('YYYY-MM-DD') == moment(values.pushtime[1]).format('YYYY-MM-DD') ? ' 23:59:59' : ' 00:00:00',
         };
       }
       if (values.checktime && type(values.checktime) === 'array') {
         time = Object.assign({}, time, {
           update_date_start: moment(values.checktime[0]).format('YYYY-MM-DD') + ' 00:00:00',
-          update_date_end: moment(values.checktime[0]).format('YYYY-MM-DD') + moment(values.pushtime[0]).format('YYYY-MM-DD')==moment(values.pushtime[1]).format('YYYY-MM-DD')?' 23:59:59':' 00:00:00',
+          update_date_end: moment(values.checktime[0]).format('YYYY-MM-DD') + moment(values.pushtime[0]).format('YYYY-MM-DD') == moment(values.pushtime[1]).format('YYYY-MM-DD') ? ' 23:59:59' : ' 00:00:00',
         });
       }
       delete values['pushtime'];
@@ -256,24 +256,24 @@ class Faq extends PureComponent {
     console.log(current, pageSize);
   };
 
-  handleQcode=(id)=>{
+  handleQcode = (id) => {
     this.setState({
-      previewurl:QcodeUrl+id
-    },()=>{
+      previewurl: QcodeUrl + id
+    }, () => {
       this.setState({
-        showPreview:true
+        showPreview: true
       })
     })
   }
 
 
-  handleAddFaq=()=>{
+  handleAddFaq = () => {
     router.push('/feedback/faq/add');
   }
-  handleCancel=()=>{
-      this.setState({
-        showPreview:false
-      })
+  handleCancel = () => {
+    this.setState({
+      showPreview: false
+    })
   }
   render() {
     const {
@@ -288,7 +288,7 @@ class Faq extends PureComponent {
       version,
       form: { getFieldDecorator },
     } = this.props;
-    const { addVisible, editVisible, editDataSource,selectedRowKeys } = this.state;
+    const { addVisible, editVisible, editDataSource, selectedRowKeys } = this.state;
     const { onShowSizeChange } = this;
 
     const rowSelection = {
@@ -312,13 +312,13 @@ class Faq extends PureComponent {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
-        width: '30px',
+        width: '100px',
       },
       {
         title: formatMessage({ id: 'app.faq.id' }),
         dataIndex: 'sort',
         key: 'sort',
-        width: '80px',
+        width: '100px',
       },
       {
         title: formatMessage({ id: 'app.faq.category' }),
@@ -326,15 +326,15 @@ class Faq extends PureComponent {
         key: 'category',
         width: '100px',
         render: (text, record) => {
-          const arr =  category.filter((item)=>{
-             return text == item.id
-         })[0]
-           if(arr){
-             return arr.name;
-           }else{
-             return ''
-           }
-         },
+          const arr = category.filter((item) => {
+            return text == item.id
+          })[0]
+          if (arr) {
+            return arr.name;
+          } else {
+            return ''
+          }
+        },
       },
       {
         title: formatMessage({ id: 'app.faq.title' }),
@@ -343,15 +343,15 @@ class Faq extends PureComponent {
         width: '100px',
         render: (text, record) => {
           text = text || '';
-          var name = text.length > 15 ? `${text.substring(0,15)}...` : text;
+          var name = text.length > 15 ? `${text.substring(0, 15)}...` : text;
           return (
-          <div style={{cursor: 'pointer'}} onClick={()=>{this.handleQcode(record.id)}}>
+            <div style={{ cursor: 'pointer' }} onClick={() => { this.handleQcode(record.id) }}>
               <div title={text}>
-               { record.is_hot=='1'&&<Tag color="green">{formatMessage({ id:'app.faq.hot' })}</Tag>}
-               { record.is_recommend=='1'&& <Tag color="geekblue">{formatMessage({ id:'app.faq.recommend' })}</Tag>}
+                {record.is_hot == '1' && <Tag color="green">{formatMessage({ id: 'app.faq.hot' })}</Tag>}
+                {record.is_recommend == '1' && <Tag color="geekblue">{formatMessage({ id: 'app.faq.recommend' })}</Tag>}
                 {name}
               </div>
-          </div>
+            </div>
           );
         }
       },
@@ -362,17 +362,17 @@ class Faq extends PureComponent {
         width: '80px',
       },
       {
-        title: formatMessage({ id:'app.faq.date' }),
+        title: formatMessage({ id: 'app.faq.date' }),
         dataIndex: 'create_time',
         key: 'create_time',
-        width: '120px',
+        width: '220px',
         render: (text, record) => {
-            return (
-              <div>
-                <p>{formatMessage({ id:'app.faq.update'})}{record.update_time}</p>
-                <p>{formatMessage({ id:'app.faq.publish'})}{record.create_time}</p>
-              </div>
-            )
+          return (
+            <div>
+              <p>{formatMessage({ id: 'app.faq.update' })}{record.update_time}</p>
+              <p>{formatMessage({ id: 'app.faq.publish' })}{record.create_time}</p>
+            </div>
+          )
         }
       },
       {
@@ -389,48 +389,51 @@ class Faq extends PureComponent {
         dataIndex: 'version',
         key: 'version',
         width: '100px',
-        
+
       },
       {
         title: formatMessage({ id: 'app.faq.helpfull' }),
         dataIndex: 'helpful',
         key: 'helpful',
+        width: '100px',
       },
       {
         title: formatMessage({ id: 'app.faq.unhelpfull' }),
         dataIndex: 'unhelpfull',
         key: 'unhelpfull',
+        width: '100px',
       },
       {
         title: formatMessage({ id: 'app.feedback.content' }),
         dataIndex: 'content',
         key: 'content',
-        width: '130px',
+        // width: '130px',
         render: (text, record) => {
           text = text || '';
           var name = text.length > 40 ? `${text.substring(0, 40)}...` : text;
           return <p title={text}>{name}</p>;
         },
       },
-     
+
       {
         title: formatMessage({ id: 'app.feedback.operation' }),
         dataIndex: 'action',
         key: 'action',
+        fixed:'right',
         width: '220px',
         render: (text, record) => {
           return (
             <span>
-                <Link to={`/feedback/faq/edit/${record.id}`}>
-                  {formatMessage({ id: 'app.faq.edit' })}
-                </Link>
-                {
-                  record.status=='0'&&
+              <Link to={`/feedback/faq/edit/${record.id}`}>
+                {formatMessage({ id: 'app.faq.edit' })}
+              </Link>
+              {
+                record.status == '0' &&
                 <span>
                   <Divider type="vertical" />
                   <Popconfirm
                     title={formatMessage({ id: 'app.faq.confirmup' })}
-                    onConfirm={() => this.batchRejectHandel(1,record.id)}
+                    onConfirm={() => this.batchRejectHandel(1, record.id)}
                     key={record.id}
                   >
                     <a href="#" >
@@ -438,14 +441,14 @@ class Faq extends PureComponent {
                     </a>
                   </Popconfirm>
                 </span>
-                }
-                {
-                  record.status=='1'&&
-                  <span>
+              }
+              {
+                record.status == '1' &&
+                <span>
                   <Divider type="vertical" />
                   <Popconfirm
                     title={formatMessage({ id: 'app.faq.confirmdown' })}
-                    onConfirm={() => this.batchRejectHandel(0,record.id)}
+                    onConfirm={() => this.batchRejectHandel(0, record.id)}
                     key={record.id}
                   >
                     <a href="#" className={styles.dengerColor}>
@@ -453,20 +456,20 @@ class Faq extends PureComponent {
                     </a>
                   </Popconfirm>
                 </span>
-                }
-              
-                <span>
-                  <Divider type="vertical" />
-                  <Popconfirm
-                    title={formatMessage({ id: 'app.faq.confirmdel'})}
-                    onConfirm={() => this.delFaq(record.id)}
-                    key={record.id+'del'}
-                  >
-                    <a href="#" className={styles.dengerColor}>
-                      {formatMessage({ id: 'app.faq.del' })}
-                    </a>
-                  </Popconfirm>
-                </span>
+              }
+
+              <span>
+                <Divider type="vertical" />
+                <Popconfirm
+                  title={formatMessage({ id: 'app.faq.confirmdel' })}
+                  onConfirm={() => this.delFaq(record.id)}
+                  key={record.id + 'del'}
+                >
+                  <a href="#" className={styles.dengerColor}>
+                    {formatMessage({ id: 'app.faq.del' })}
+                  </a>
+                </Popconfirm>
+              </span>
             </span>
           );
         },
@@ -554,7 +557,7 @@ class Faq extends PureComponent {
                         <Option value="">
                           {formatMessage({ id: 'app.feedback.allIssueCategory' })}
                         </Option>
-                        {!isEmptyObject(category)&&category.map((item,index) => {
+                        {!isEmptyObject(category) && category.map((item, index) => {
                           return (
                             <Option key={index} value={item.id}>
                               {item.name}
@@ -585,7 +588,7 @@ class Faq extends PureComponent {
                     )}
                   </Form.Item>
                 </Col>
-                <Col lg={4} md={12} sm={24}>
+                {/* <Col lg={4} md={12} sm={24}>
                   <Form.Item label={formatMessage({ id: 'app.feedback.versions' })}>
                     {getFieldDecorator('version', {
                       initialValue: '',
@@ -604,50 +607,50 @@ class Faq extends PureComponent {
                       </Select>
                     )}
                   </Form.Item>
-                </Col>
-                  <Col lg={4} md={12} sm={24}>
-                      <Button type="primary" className={styles.btnSmt} onClick={this.SearchBtnHandle}>
-                        {formatMessage({ id: 'app.content.search' })}
-                      </Button>
-                      <Button
-                        className={styles.btnSmt}
-                        style={{ marginLeft: 8 }}
-                        onClick={this.SearchResetBtnHandle}
-                      >
-                        {formatMessage({ id: 'app.content.reset' })}
-                      </Button>
-                      {/* <Button type="primary"  style={{ marginLeft: 8 }} className={styles.btnSmt} onClick={this.handleAddFaq}>
+                </Col> */}
+                <Col lg={10} md={12} sm={24}>
+                  <Button type="primary" className={styles.btnSmt} onClick={this.SearchBtnHandle}>
+                    {formatMessage({ id: 'app.content.search' })}
+                  </Button>
+                  <Button
+                    className={styles.btnSmt}
+                    style={{ marginLeft: 8 }}
+                    onClick={this.SearchResetBtnHandle}
+                  >
+                    {formatMessage({ id: 'app.content.reset' })}
+                  </Button>
+                  {/* <Button type="primary"  style={{ marginLeft: 8 }} className={styles.btnSmt} onClick={this.handleAddFaq}>
                         {formatMessage({ id: 'app.faq.add' })}
                       </Button> */}
                 </Col>
-                
+
               </Row>
               <Row gutter={16} className="regDate">
-                <Col lg={6} md={12} sm={24}>
-                      <Button
-                        type="primary"
-                        className={styles.btnSmt}
-                        style={{ marginLeft: 8 }}
-                        onClick={this.handleAddFaq}
-                      >
-                        {formatMessage({ id: 'app.faq.add' })}
-                      </Button>
-                      <Button
-                        type="primary"
-                        className={styles.btnSmt}
-                        style={{ marginLeft: 8 }}
-                        onClick={()=>{this.batchRejectHandel(1)}}
-                      >
-                        {formatMessage({ id:'app.faq.batchup' })}
-                      </Button>
-                      <Button
-                        type="danger"
-                        className={styles.btnSmt}
-                        style={{ marginLeft: 8 }}
-                        onClick={()=>{this.batchRejectHandel(0)}}
-                      >
-                        {formatMessage({ id: 'app.faq.batchdown' })}
-                      </Button>
+                <Col lg={12} md={12} sm={24}>
+                  <Button
+                    type="primary"
+                    className={styles.btnSmt}
+                    style={{ marginLeft: 8 }}
+                    onClick={this.handleAddFaq}
+                  >
+                    {formatMessage({ id: 'app.faq.add' })}
+                  </Button>
+                  <Button
+                    type="primary"
+                    className={styles.btnSmt}
+                    style={{ marginLeft: 8 }}
+                    onClick={() => { this.batchRejectHandel(1) }}
+                  >
+                    {formatMessage({ id: 'app.faq.batchup' })}
+                  </Button>
+                  <Button
+                    type="danger"
+                    className={styles.btnSmt}
+                    style={{ marginLeft: 8 }}
+                    onClick={() => { this.batchRejectHandel(0) }}
+                  >
+                    {formatMessage({ id: 'app.faq.batchdown' })}
+                  </Button>
                 </Col>
               </Row>
             </Form>
@@ -659,32 +662,32 @@ class Faq extends PureComponent {
           dataSource={list}
           pagination={false}
           bordered
-          scroll={{ x: 1300 }}
+          scroll={{ x: 2000 }}
           rowKey={(record, index) => `${record.id}${index}`}
         />
         <div className={styles.rightPagination}>
           <Pagination
-             showTotal={total => formatMessage({ id: 'app.glob.pagetotal' },{total:total})}
+            showTotal={total => formatMessage({ id: 'app.glob.pagetotal' }, { total: total })}
             pageSizeOptions={['20', '30', '40']}
             showSizeChanger
             onShowSizeChange={onShowSizeChange}
             current={toParseInt(this.state.pagination.page)}
-            pageSize={this.state.pagination.page_size||20}
+            pageSize={this.state.pagination.page_size || 20}
             onChange={this.handleTableChange}
             total={toParseInt(total_count)}
           />
         </div>
         <Modal
-                title={null}
-                visible={this.state.showPreview}
-                onCancel={this.handleCancel}
-                footer={null}
-                closable={false}
-                centered={true}
-                maskClosable={true}
-                wrapClassName={'web'} //对话框外部的类名，主要是用来修改这个modal的样式的
-                >
-                    <QRCode value={this.state.previewurl} />,
+          title={null}
+          visible={this.state.showPreview}
+          onCancel={this.handleCancel}
+          footer={null}
+          closable={false}
+          centered={true}
+          maskClosable={true}
+          wrapClassName={'web'} //对话框外部的类名，主要是用来修改这个modal的样式的
+        >
+          <QRCode value={this.state.previewurl} />,
                 </Modal>
       </div>
     );

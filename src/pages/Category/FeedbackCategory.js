@@ -301,7 +301,7 @@ class FeedbackCategroy extends PureComponent {
         title: formatMessage({ id: 'app.faq.pos' }),
         dataIndex: 'display_pos',
         key: 'display_pos',
-        width: '80',
+        width: '120',
         render: (text, record) => {
           if(!posmap.length){
             return ''
@@ -318,6 +318,8 @@ class FeedbackCategroy extends PureComponent {
         title: formatMessage({ id: 'app.feedbackcategory.act' }),
         dataIndex: 'act',
         key: 'act',
+        width:"300",
+        fixed:'right',
         render: (text, record) =>{
           const keys = Object.keys(faqCateStatusList)
           const status = keys.filter((item)=>{
@@ -380,6 +382,7 @@ class FeedbackCategroy extends PureComponent {
               columns={columns}
               dataSource={list}
               pagination={false}
+              scroll={{ x: 2000 }}
               bordered
               rowKey={(record, index) => `${record.id}${index}`}
             />

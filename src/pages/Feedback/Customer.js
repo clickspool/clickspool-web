@@ -327,17 +327,17 @@ class Customer extends PureComponent {
         key: 'create_at',
         width: '120px',
       },
-      {
-        title: formatMessage({ id: 'app.feedback.language' }),
-        dataIndex: 'lan',
-        key: 'lan',
-        width: '120px',
-        render: (text, record) => {
-          return !!languageList.length && languageList.filter(item => {
-            return item.value == text
-          })[0].name
-        }
-      },
+      // {
+      //   title: formatMessage({ id: 'app.feedback.language' }),
+      //   dataIndex: 'lan',
+      //   key: 'lan',
+      //   width: '120px',
+      //   render: (text, record) => {
+      //     return !!languageList.length && languageList.filter(item => {
+      //       return item.value == text
+      //     })[0].name
+      //   }
+      // },
       {
         title: formatMessage({ id: 'app.users.Name' }),
         dataIndex: 'nickname',
@@ -443,20 +443,21 @@ class Customer extends PureComponent {
           return <p title={text}>{name}</p>;
         },
       },
-      {
-        title: formatMessage({ id: 'app.feedback.rejectStatus' }),
-        dataIndex: 'status',
-        key: 'status',
-        width: '130px',
-        render: text => {
-          return statusList[text];
-        },
-      },
+      // {
+      //   title: formatMessage({ id: 'app.feedback.rejectStatus' }),
+      //   dataIndex: 'status',
+      //   key: 'status',
+      //   width: '130px',
+      //   render: text => {
+      //     return statusList[text];
+      //   },
+      // },
       {
         title: formatMessage({ id: 'app.feedback.operation' }),
         dataIndex: 'action',
         key: 'action',
         width: '220px',
+        fixed:'right',
         render: (text, record) => {
           return (
             <span>
@@ -622,7 +623,7 @@ class Customer extends PureComponent {
                     )}
                   </Form.Item>
                 </Col>
-                <Col lg={6} md={12} sm={24}>
+                {/* <Col lg={6} md={12} sm={24}>
                   <Form.Item label={formatMessage({ id: 'app.feedback.issueStatus' })}>
                     {getFieldDecorator('status', {
                       initialValue: '',
@@ -641,10 +642,10 @@ class Customer extends PureComponent {
                       </Select>
                     )}
                   </Form.Item>
-                </Col>
+                </Col> */}
               </Row>
               <Row gutter={16} className="regDate">
-                <Col lg={6} md={12} sm={24}>
+                {/* <Col lg={6} md={12} sm={24}>
                   <Form.Item label={formatMessage({ id: 'app.feedback.versions' })}>
                     {getFieldDecorator('version', {
                       initialValue: '',
@@ -663,8 +664,8 @@ class Customer extends PureComponent {
                       </Select>
                     )}
                   </Form.Item>
-                </Col>
-                <Col lg={6} md={12} sm={24}>
+                </Col> */}
+                {/* <Col lg={6} md={12} sm={24}>
                   <Form.Item label={formatMessage({ id: 'app.feedback.language' })}>
                     {getFieldDecorator('lan', {
                       initialValue: '',
@@ -683,7 +684,7 @@ class Customer extends PureComponent {
                       </Select>
                     )}
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col lg={10} md={12} sm={24}>
                   <Button type="primary" className={styles.btnSmt} onClick={this.SearchBtnHandle}>
                     {formatMessage({ id: 'app.content.search' })}
@@ -717,7 +718,7 @@ class Customer extends PureComponent {
           dataSource={list}
           pagination={false}
           bordered
-          scroll={{ x: true }}
+          scroll={{ x: 2000 }}
           rowKey={(record, index) => `${record.id}${index}`}
         />
         <div className={styles.rightPagination}>

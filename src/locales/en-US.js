@@ -13,6 +13,11 @@ import matters from './en-US/matters';
 import global from './en-US/global';
 import role from "./en-US/role";
 import permission from "./en-US/permission";
+import feedbackcategory from "./en-US/feedbackcategory";
+import faq from "./en-US/faq";
+import customer from "./en-US/customer";
+import group from "./en-US/group";
+
 
 export default {
   'navBar.lang': 'Language',
@@ -101,6 +106,10 @@ export default {
   "app.material.detail":"Details",
   "app.material.promotetime":"Promote time",
   "app.material.mineplaceholder":"Pick up materials to view promotional links",
+  'app.feedbackcategory.status':'Status',
+  'app.feedbackcategory.is_recommend':'Recommend ?',
+  'app.feedbackcategory.norecommend':'Not recommended',
+  "app.withdraw.id":"Id",
   ...analysis,
   ...exception,
   ...form,
@@ -115,5 +124,9 @@ export default {
   ...matters,
   ...global,
   ...role,
-  ...permission
+  ...permission,
+  ...feedbackcategory,
+  ...faq,
+  ...customer,
+  ...group
 };
