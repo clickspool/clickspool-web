@@ -185,7 +185,7 @@ export default class EditTemplate extends PureComponent<any, any> {
           <span style={{ color: " rgba(0, 0, 0, 0.85)", fontSize: '14' }}>Material ID:</span>
         </Col>
         <Col span={16}>
-          {mid || aid}
+          {mid || record.material_id}
         </Col>
       </Row>}
       <FormItem

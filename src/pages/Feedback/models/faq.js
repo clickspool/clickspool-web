@@ -11,7 +11,7 @@ export default {
 
   effects: {
     *getList({ payload }, { call, put }) {
-      const response = yield call(getFaqList, payload);
+      const response = yield call(getFaqList,  { page_size: 20, ...payload });
       yield put({
         type: 'getFaqListStatus',
         payload: response,

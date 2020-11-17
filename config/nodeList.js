@@ -472,6 +472,24 @@ export const nodeList = {
       "key": "15",
     },
     {
+      "title": "Feedback Management",
+      "key": "4",
+      "children": [
+        {
+          "title": "Feedback Category",
+          "key": "4-6",
+        },
+        {
+          "title": "Feedback Management",
+          "key": "4-1",
+        },
+        {
+          "title": "FAQ Management",
+          "key": "4-3",
+        }
+      ]
+    },
+    {
       "title": "System Management",
       "key": "2",
       "children": [{
