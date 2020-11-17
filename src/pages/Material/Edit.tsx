@@ -1,6 +1,7 @@
-import { Button, DatePicker, Divider, Form, Icon, Input, Modal, Popconfirm, Select, Switch, Upload } from 'antd';
-import BraftEditor from 'braft-editor';
-import 'braft-editor/dist/index.css';
+import CustomUpload from '@/components/CustomUpload/Index';
+// tslint:disable-next-line:ordered-imports
+import { Button, Col, DatePicker, Divider, Form, Icon, Input, Modal, Popconfirm, Row, Select, message, Upload } from 'antd';
+import { uploadMultiMedia } from "./services/index"
 import { connect } from 'dva';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
@@ -8,305 +9,424 @@ import isEqual from 'lodash/isEqual';
 import memoize from 'memoize-one';
 import moment from 'moment';
 import React, { PureComponent } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 //@ts-ignore
 import { formatMessage } from 'umi/locale';
-import { uploadMultiMedia } from './services/index';
-const uuidv1 = require('uuid/v1');
+const FormItem = Form.Item;
+const { Option } = Select;
 
-@connect(({ material: { list } }) => ({ list }))
+@connect(({ material: { list, types, merchantMap }, market: { promotion_url } }) => ({ list, types, merchantMap, promotion_url }))
 //@ts-ignore
 @Form.create()
 export default class EditTemplate extends PureComponent<any, any> {
+  // handlePreview: (file: UploadFile<any>) => void;
   constructor(props) {
     super(props);
+    this.state = {
+      imgList: [],
+      videoList: [],
+    }
   }
-  state = {
-    visible: false,
-    formItemLayout: {
-      labelCol: {
-        xs: { span: 8 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 20 },
-      },
-    },
-    dateFormat: 'YYYY-MM-DD',
-    fields: [
-      {
-        name: 'title',
-        options: {
-          rules: [{ required: true, message: formatMessage({ id: 'app.explore.daily.name.placeholder' }) }],
-        },
-        properties: {
-          placeholder: formatMessage({ id: 'app.explore.daily.name.placeholder' }),
-        },
-        label: formatMessage({ id: 'app.explore.daily.name' }),
-      },
-      {
-        name: 'show_date',
-        options: {
-          rules: [{ required: true, message: formatMessage({ id: 'app.explore.daily.time.placeholder' }) }],
-        },
-        properties: {
-          placeholder: formatMessage({ id: 'app.explore.daily.time.placeholder' }),
-        },
-        label: formatMessage({ id: 'app.explore.daily.time' }),
-        type: 'date',
-      },
-      {
-        name: 'cover',
-        placeholder: formatMessage({ id: 'app.face.tools.thumb_placeholder' }),
-        options: {
-          rules: [{ required: true, message: formatMessage({ id: 'app.face.tools.thumb_required' }) }],
-        },
-        type: 'upload',
-        label: formatMessage({ id: 'app.face.tools.thumb' }),
-        properties: {
-          listType: 'picture-card'
-        },
-      },
-      {
-        name: 'status',
-        options: {
-          valuePropName: 'checked',
-          initialValue: false,
-          rules: [],
-        },
-        type: 'switch',
-        label: formatMessage({ id: 'app.scene.category.switch' }),
-      },
-    ]
-  }
-  cancelSwitch = () => {
-    this.props.form.setFieldsValue({
-      status: true
+
+  public handleOk = (e, status) => {
+    const { form: { validateFields, getFieldsValue }, dispatch, record = {} } = this.props;
+    const { imgList, videoList } = this.state;
+    const { mid } = record;
+    e.preventDefault();
+    console.log(imgList)
+    validateFields({ force: true }, (err, values) => { // 设置force为true
+      if (!err) {
+        console.log('Received values of form: ', values);
+        const { type, title1: title, description, destination_link, merchant_id } = values;
+        const llist = { img_url: "", video_url: "" };
+        if (!!imgList.length) {
+          llist.img_url = imgList.map(item => {
+            return item.name
+          }).join(',')
+        }
+        if (!!videoList.length) {
+          llist.video_url = videoList.map(item => {
+            return item.name
+          }).join(',')
+        }
+        dispatch({
+          type: mid ? 'material/patch' : 'material/create',
+          payload: {
+            mid, title, type, description, merchant_id, destination_link, status, ...llist
+          }
+        })
+          .then((res) => {
+            if (!res.code) {
+              this.handleCancel();
+            }
+          })
+      }
     });
   }
-  confirmSwitch = () => {
-    this.props.form.setFieldsValue({
-      status: false
-    });
-  }
-  handleCancel = () => {
-    this.setState({ visible: false });
-    this.props.form.resetFields();
+
+  public handleCancel = () => {
     this.props.close();
   }
 
-  handleOk = async () => {
-    const { form: { validateFields, getFieldsValue, resetFields }, dispatch, close, id, list } = this.props;
-    const record = list.find(item => item.id === id);
-    validateFields(async errors => {
-      if (errors) return;
-      const values = getFieldsValue();
-      const params = new FormData();
 
-      values.status = values.status === true && 1 || 0;
-      Object.keys(values).forEach(key => {
-        let value = values[key];
-        if (value === undefined) {
-          return;
-        }
-        if (value && value.date) {
-          return params.append(key, value.format(this.state.dateFormat));
-        }
-
-        if (value.convertOptions) {
-          return params.append(key, value.toHTML());
-        }
-        if (Array.isArray(value)) {
-          let picList = [];
-          const initPicList = record && record[key] ? record[key].split(',') : [];
-          picList = value.map(item => {
-            if (item.url) {
-              return initPicList.find(pic => item.url.indexOf(pic) !== -1);
-            }
-            return item.response.path;
-          })
-          return params.append(key, picList.join(','));
-        }
-        params.append(key, value);
-      });
-
-      if (id) {
-        params.append('id', id);
-      }
-      console.info('params__', { values, params, id });
-
-      const result = id ? await dispatch({ payload: { params, id }, type: 'daily/patch' }) : await dispatch({ payload: params, type: 'daily/create' });
-      if (result) {
-        close();
-        resetFields();
-      }
-    });
-  }
-  normFile = (e) => {
-    console.info('normFile__', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    // if (e && Array.isArray(e.fileList)) {
-    //   return e.fileList.slice(-1);
-    // }
-    const files = e.fileList.map(file => {
-      if (!file.url) {
-        file.percent = 100;
-      }
-      return file;
-    });
-    return files;
-  }
-  renderFieldName = () => {
+  handleChange = (e, type) => {
+    // tslint:disable-next-line:no-this-assignment
     const _this = this;
-    return memoize((field, init, fieldValue, fieldError, status) => {
-      const { form: { getFieldDecorator, getFieldValue }, id } = this.props;
-      let { formItemLayout } = this.state;
+    const { imgList, videoList, img_url, video_url } = this.state;
+    const multiMedia = new FormData();
+    multiMedia.append("multiMedia", e.file)
+    uploadMultiMedia(multiMedia)
+      .then(res => {
+        if (!res.code) {
+          const len = (type === 'image' ? imgList : videoList).length;
+          const list = [...(type === 'image' ? imgList : videoList), {
+            uid: `${len}`,
+            name: res.data.url,
+            status: 'done',
+            url: type === 'image' ? `${res.data.url}?x-oss-process=image/resize,w_80,h_80` : `${res.data.url}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
+          }]
 
-      const { name, options, input_type, placeholder, label, type, properties = {} } = field;
-      let input = <Input type={input_type} {...properties} />;
-      let showPopConfirm = false;
-      let hint = '';
-      let { optionList } = field;
-      if (typeof optionList === 'string') {
-        optionList = this.props[optionList] || [];
-      }
-
-      if (name in init) {
-        if (field.type === 'switch') {
-          field.options.initialValue = !!+init[name];
-        } else if (field.type === 'select') {
-          field.options.initialValue = this.props[field.optionList][+init[name]];
-        } else if (field.type === 'date') {
-          field.options.initialValue = moment(init[name], this.state.dateFormat);
-        } else if (field.type === 'richText') {
-          field.options.initialValue = BraftEditor.createEditorState(init[name]);
-        } else if (field.type === 'upload') {
-          if (init[field.name]) {
-            const picList = init[`remote_${field.name}s`] || init[`remote_${field.name}`];
-            const pics = Array.isArray(picList) ? picList : [picList];
-            field.options.initialValue = pics.map((pic) => {
-              return {
-                url: pic,
-                name: init.bundle_name || name,
-                uid: uuidv1(),
-              }
-            });
-          }
-        } else {
-          field.options.initialValue = init[field.name];
+          _this.setState({
+            [type === 'image' ? "imgList" : "videoList"]: list,
+          })
         }
-      }
-      if (type === 'switch') {
-        if (id && options.initialValue === true && field.name === 'status') {
-          showPopConfirm = true;
-          hint = init.tool_count > 0 ? formatMessage({ id: 'app.scene.category.has_tool_offline_hint' }) : formatMessage({ id: 'app.scene.category.offline_hint' });
-        }
-        input = <Switch />;
-      }
-      if (type === 'date') {
-        input = <DatePicker {...properties} />;
-      }
-      if (type === 'richText') {
-        input = (
-          <BraftEditor
-            className="my-editor"
-            {...properties}
-          />
-        );
-      }
-      if (type === 'select') {
-        const Option = Select.Option;
-        const optionsEl = [...optionList].map((item, index) => {
-          return <Option key={index} value={index}>{item}</Option>
-        });
-        input = (
-          <Select {...properties}>
-            {optionsEl}
-          </Select>
-        );
-      }
-      if (type === 'upload') {
-        options.valuePropName = 'fileList';
-        options.getValueFromEvent = this.normFile;
-        properties.customRequest = ({ file, onSuccess, onProgress }) => {
-          console.info('custom_request_', { file, onSuccess });
-          const params = new FormData();
-          params.append('multiMedia', file);
-          uploadMultiMedia(params, {
-            onUploadProgress: ({ total, loaded }) => {
-              console.info('total__', { loaded, total });
-              onProgress({ percent: Math.round(loaded / total * 100).toFixed(2) }, file);
-            },
-          }).then(({ data: response }) => {
-            onSuccess(response, file);
-          });
-        };
-        input = (
-          <Upload key={name} {...properties}>
-            <Button>
-              <Icon type="cloud-upload" /> {placeholder}
-            </Button>
-          </Upload>
-        );
-      }
-      return (
-        <Form.Item key={name} {...formItemLayout} label={label}>
-          {showPopConfirm ? <Popconfirm
-            title={hint}
-            okText={formatMessage({ id: 'app.scene.category.offline_confirm' })}
-            cancelText={formatMessage({ id: 'app.scene.category.offline_cancel' })}
-            okType='danger'
-            onCancel={_this.cancelSwitch}
-            onConfirm={_this.confirmSwitch}
-          >
-            {getFieldDecorator(name, options)(input)}
-          </Popconfirm> : getFieldDecorator(name, options)(input)}
-        </Form.Item>
-      );
-    }, isEqual);
+      })
   }
 
-  render() {
-    const { visible: isVisible, fields } = this.state;
-    const { visible, form: { getFieldError, getFieldValue }, caption, id, list, record = {} } = this.props;
-    const { handleOk, handleCancel } = this;
-    // editing with initial value
-    // let init = {};
-    // if (id && list) {
-    //   init = list && list.find(item => item.id === id);
-    // }
-    const formFields = fields.map(field => {
-      const renderFunctionName = `renderField_${field.name}`;
-      let renderFunction = this[renderFunctionName];
-      if (!renderFunction) {
-        renderFunction = this[renderFunctionName] = this.renderFieldName();
+  handleOnRemove = (e, type) => {
+    const { imgList, videoList } = this.state;
+    let tmp = type === 'image' ? imgList : videoList;
+    tmp = tmp.reduce((total, currentValue, currentIndex, arr) => {
+      if (e.uid != currentValue.uid) {
+        total = [...total, currentValue]
       }
-      const fieldError = getFieldError(field.name);
-      let fieldValue = getFieldValue(field.name);
-      let status;
-      const value = getFieldValue(field.name);
-      if (Array.isArray(value)) {
-        status = value.map(item => {
-          return item.status
-        }).join('');
-        fieldValue = get(getFieldValue(field.name)[0], 'status') || getFieldValue(field.name).length;
-      }
-      return renderFunction(field, record, fieldValue, fieldError, status);
-    });
+      return total;
+    }, [])
+    this.setState({
+      [type === 'image' ? "imgList" : "videoList"]: tmp
+    })
+  }
+  public componentDidMount() {
+    if (!this.props.record) {
+      return
+    }
+    const { images = [], videos = [] } = this.props.record;
+    // tslint:disable-next-line:one-variable-per-declaration
+    const i = [], v = [];
+    if (!!images.length) {
+      images.map((item, index) => {
+        i.push({
+          uid: index,
+          name: item,
+          status: 'done',
+          url: `${item}?x-oss-process=image/resize,w_80,h_80`
+        })
+      })
+    }
 
-    return (
-      <Modal
-        title={caption}
-        visible={isVisible || visible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+    if (!!videos.length) {
+      videos.map((item, index) => {
+        v.push({
+          uid: index,
+          name: item,
+          status: 'done',
+          url: `${item}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
+        })
+      })
+    }
+
+    this.setState({
+      imgList: i,
+      videoList: v
+    })
+  }
+
+  public setMine = () => {
+    const { dispatch, record: { mid } } = this.props;
+    dispatch({
+      type: "market/receive",
+      payload: {
+        material_id: mid
+      }
+    })
+  }
+
+  public FromRender = () => {
+    // tslint:disable-next-line:no-this-assignment
+    const { handleChange, handleOnRemove } = this;
+    const { handleOk, handleCancel, setMine } = this;
+    const { imgList, videoList } = this.state;
+    const { form: { getFieldDecorator }, types, merchantMap, record, mine, mym, promotion_url } = this.props;
+    const { type, title, description, destination_link, merchant_id, mid, aid } = record || {};
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
+    const uploadButton = (
+      <div>
+        <Icon type='plus' />
+      </div>
+    );
+    const disb = (mine) ? { disabled: true } : {};
+
+    return <>
+      {!!mine && <Row type="flex" justify={'end'} style={{ marginBottom: '24px' }}>
+        <Col span={8} style={{
+          textAlign: 'right',
+          boxSizing: 'border-box',
+          paddingRight: "7px"
+        }}>
+          <span style={{ color: " rgba(0, 0, 0, 0.85)", fontSize: '14' }}>Material ID:</span>
+        </Col>
+        <Col span={16}>
+          {mid || aid}
+        </Col>
+      </Row>}
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.type" })}
       >
-        <Form autoComplete='off'>
-          {formFields}
-        </Form>
-      </Modal>
+        {getFieldDecorator('type', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.type" }) },
+          ],
+          initialValue: type,
+        })(
+          <Select {...disb} placeholder={formatMessage({ id: "app.material.type" })}>
+            {
+              Object.keys(types).length &&
+              Object.keys(types).map((item, index) => {
+                return <Option value={item} key={index}>{types[item]}</Option>
+              })
+            }
+          </Select>
+        )}
+      </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.title" })}
+      >
+        {getFieldDecorator('title1', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.title" }) },
+          ],
+          initialValue: title,
+        })(
+          <Input {...disb} type="text" placeholder={formatMessage({ id: "app.material.title" })} />
+        )}
+      </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.merchant" })}
+      >
+        {getFieldDecorator('merchant_id', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.merchant" }) },
+          ],
+          initialValue: merchant_id,
+        })(
+          <Select {...disb} placeholder={formatMessage({ id: "app.material.merchant" })}>
+            {
+              Object.keys(merchantMap).length &&
+              Object.keys(merchantMap).map((item, index) => {
+                return <Option value={item} key={index}>{merchantMap[item]}</Option>
+              })
+            }
+          </Select>
+        )}
+      </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.description" })}
+      >
+        {getFieldDecorator('description', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.description" }) },
+          ],
+          initialValue: description,
+        })(
+          <Input.TextArea {...disb} autoSize={{ minRows: 2, maxRows: 6 }} placeholder={formatMessage({ id: "app.material.description" })} />
+        )}
+      </FormItem>
+      {!mine && <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.destinationlink" })}
+      >
+        {getFieldDecorator('destination_link', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.destinationlink" }) },
+          ],
+          initialValue: destination_link,
+        })(
+          <Input type="text" placeholder={formatMessage({ id: "app.material.destinationlink" })} />
+        )}
+      </FormItem>}
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.promotevideo" })}
+      >
+        {getFieldDecorator('videoList', {
+          validateTrigger: 'onSubmit', // 设置进行表单验证的时机为onSubmit
+          initialValue: videoList,
+        })(
+          <Upload
+            // accept={"image/*"}
+            accept={"video/*"}
+            listType="picture-card"
+            fileList={videoList}
+            onPreview={(e) => {
+              console.log(e);
+              window.open(e.name);
+              return
+            }}
+            onDownload={(e) => {
+              console.log(e);
+              window.open(e.name);
+              return
+            }}
+            showUploadList={!!mine ? { showPreviewIcon: true, showDownloadIcon: true, showRemoveIcon: false } : true}
+            // onChange={(e) => { }
+            customRequest={(options) => {
+              this.handleChange(options, 'video')
+            }}
+            onRemove={(file) => {
+              this.handleOnRemove(file, 'video')
+            }}
+          >
+            {videoList.length >= 8 ? null : !mine && uploadButton}
+          </Upload>
+        )
+        }
+      </FormItem>
+      <FormItem
+        {...formItemLayout}
+        label={formatMessage({ id: "app.material.promotepic" })}
+      >
+        {getFieldDecorator('imgList', {
+          rules: [
+            { required: true, message: formatMessage({ id: "app.material.promotepic" }) },
+            // { validator: this.handleCheckImg },
+          ],
+          validateTrigger: 'onSubmit', // 设置进行表单验证的时机为onSubmit
+          initialValue: imgList,
+        })(
+          <Upload
+            accept={"image/*"}
+            listType="picture-card"
+            fileList={imgList}
+            showUploadList={!!mine ? { showPreviewIcon: true, showDownloadIcon: true, showRemoveIcon: false } : true}
+            customRequest={(options) => {
+              this.handleChange(options, 'image')
+            }}
+            onRemove={(file) => {
+              this.handleOnRemove(file, 'image')
+            }}
+          >
+            {imgList.length >= 8 ? null : !mine && uploadButton}
+          </Upload>
+        )
+        }
+      </FormItem>
+      {(!!mine || !!mym) && <Row type="flex" justify={'end'} style={{ marginBottom: '24px' }}>
+        <Col span={8} style={{
+          textAlign: 'right',
+          boxSizing: 'border-box',
+          paddingRight: "7px"
+        }}>
+          <span style={{ position: 'relative', top: '4px', color: " rgba(0, 0, 0, 0.85)", fontSize: '14px' }}>{formatMessage({ id: "app.material.destinationlink" })}:</span>
+        </Col>
+        <Col span={14}>
+          <Input type={'text'} value={record.promotion_url || promotion_url} placeholder={formatMessage({ id: "app.material.mineplaceholder" })} />
+        </Col>
+        <Col span={2}>
+          {(record.promotion_url || promotion_url) &&
+            <CopyToClipboard
+              text={record.promotion_url || promotion_url}
+              onCopy={() => message.success("Copy Success!!")}
+            >
+              <Button type="link" size={'small'} style={
+                {
+                  position: 'relative',
+                  top: '4px',
+                }
+              }>Copy</Button>
+            </CopyToClipboard>
+
+          }
+        </Col>
+      </Row>}
+
+      <div className="ant-modal-footer">
+        {!!mine &&
+          <div>
+            <button type="button" className="ant-btn ant-btn-danger"
+              onClick={handleCancel}
+            >
+              <span>{formatMessage({ id: "app.material.cancel" })}</span>
+            </button>
+            {!mym && <button type="button" className="ant-btn ant-btn-primary"
+              onClick={(e) => { setMine() }}
+            >
+              <span>{formatMessage({ id: "app.material.Setasmine" })}</span>
+            </button>}
+          </div>
+        }
+        {!mine && <div>
+          <button type="button" className="ant-btn ant-btn-danger"
+            onClick={handleCancel}
+          >
+            <span>{formatMessage({ id: "app.material.cancel" })}</span>
+          </button>
+          <button type="button" className="ant-btn"
+            onClick={(e) => { handleOk(e, 0) }}
+          >
+            <span>{formatMessage({ id: "app.material.saveasdraft" })}</span>
+          </button>
+          <button type="button" className="ant-btn ant-btn-primary"
+            onClick={(e) => { handleOk(e, 1) }}
+          >
+            <span>{formatMessage({ id: "app.material.publish" })}</span>
+          </button>
+        </div>}
+      </div>
+    </>
+  }
+
+  public render() {
+    const { caption, visible } = this.props;
+    // tslint:disable-next-line:no-this-assignment
+    const { handleOk, handleCancel, FromRender } = this;
+    return (
+      <>
+        <style>
+          {`
+         .___warp .ant-modal-body {
+           padding: 24px 0 0;
+         }
+        `}
+        </style>
+        <Modal
+          className={'___warp'}
+          title={caption}
+          visible={visible}
+          onOk={handleOk}
+          okText={formatMessage({ id: "app.material.publish" })}
+          cancelText={formatMessage({ id: "app.material.saveasdraft" })}
+          onCancel={handleCancel}
+          width={600}
+          footer={null}
+        >
+          <Form autoComplete='off'>
+            <FromRender />
+          </Form>
+        </Modal>
+      </>
     );
   }
 }

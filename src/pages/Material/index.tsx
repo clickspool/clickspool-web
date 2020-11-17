@@ -21,12 +21,13 @@ import {
 } from 'antd';
 
 const cx = classnames.bind(styles);
-@connect(({ material: { list, total, page, pageSize, types, statuses={} } }) => ({ list, total, page, pageSize, types, statuses }))
+@connect(({ material: { list, total, page, page_size, types, statuses = {}, merchantMap } }) => ({ list, total, page, page_size, types, statuses, merchantMap }))
 class TemplateList extends PureComponent<any, any> {
   constructor(props) {
     super(props);
     this.state = {
       editShowing: false,
+      addShowing: false,
     };
   }
   showEdit = (e, record) => {
@@ -63,49 +64,43 @@ class TemplateList extends PureComponent<any, any> {
       payload: record
     });
   }
-  putOnline = id => {
+  putOnline = record => {
     this.props.dispatch({
       type: 'material/patchStatus',
-      payload: { id, status: 1 }
+      payload: { ...record, status: 1 }
     });
   }
-  putOffline = id => {
+  putOffline = record => {
     this.props.dispatch({
       type: 'material/patchStatus',
-      payload: { id, status: 0 }
+      payload: { ...record, status: 0 }
     });
   }
   search = (values) => {
     this.setState({ search: values });
-    const { pageSize, page = 1 } = this.props;
+    // const { page_size, page = 1 } = this.props;
     this.props.dispatch({
-      type: 'material/updateState',
-      payload: {
-        filter: values
-      }
-    });
-    this.props.dispatch({
-      payload: { ...values, page, pageSize },
+      payload: { ...values },
       type: 'material/fetch'
     });
   }
   onShowSizeChange = (current, size) => {
     this.props.dispatch({
-      type: 'material/changePageSize',
+      type: 'material/changePage_size',
       payload: {
         page: current,
-        pageSize: size
+        page_size: size
       }
     });
     this.fetchPage(current, size);
   }
-  fetchPage = (page, pageSize) => {
+  fetchPage = (page, page_size) => {
     const { search = {} } = this.state;
     this.props.dispatch({
       type: 'material/fetch',
       payload: {
         page,
-        page_size: pageSize,
+        page_size: page_size,
         ...search
       }
     });
@@ -123,7 +118,7 @@ class TemplateList extends PureComponent<any, any> {
     // const [count, setCount] = React.useState<number>(0);
     // const [count, setCount] = React.useState(0);
 
-    const { list, total, page, pageSize, types, statuses } = this.props;
+    const { list, total, page, page_size, types, statuses } = this.props;
     const { editShowing, addShowing, editRecord } = this.state;
     const { showEdit, hideEdit, deleteRecord, hideAdd, showAdd, search, putOnline, putOffline } = this;
     const columns = [
@@ -145,8 +140,14 @@ class TemplateList extends PureComponent<any, any> {
         align: 'center',
         width: 200,
         render: (text) => {
-          return
+          return types[text]
         }
+      },
+      {
+        title: formatMessage({ id: 'app.material.destinationlink' }),
+        dataIndex: 'destination_link',
+        align: 'center',
+        width: 200
       },
       {
         title: formatMessage({ id: 'app.material.promotepic' }),
@@ -155,17 +156,17 @@ class TemplateList extends PureComponent<any, any> {
         width: 200,
         render: (value) => {
           if (value && value.length) {
-            return null;
+            return (
+              <>
+                {
+                  value.map((item, index) => {
+                    return <img className={styles.icon} src={item} height={100} alt="" key={index} />
+                  })
+                }
+              </>
+            );
           }
-          return (
-            <>
-            {
-              value.map((item, index) => {
-                return <img className={styles.icon} src={item} alt="" key={index} />
-              })
-            }
-            </>
-          );
+          return null;
         }
       },
       {
@@ -175,29 +176,24 @@ class TemplateList extends PureComponent<any, any> {
         width: 200,
         render: (value) => {
           if (value && value.length) {
-            return null;
+            return (
+              <>
+                {
+                  value.map((item, index) => {
+                    return <video className={styles.icon} src={item} key={index} />
+                  })
+                }
+              </>
+            );
           }
-          return (
-            <>
-            {
-              value.map((item, index) => {
-                return <video className={styles.icon} src={item} key={index} />
-              })
-            }
-            </>
-          );
+          return null;
         }
       },
       {
         title: formatMessage({ id: 'app.material.description' }),
-        dataIndex: 'remote_cover',
+        dataIndex: 'description',
         align: 'center',
-        width: 300,
-        render: (value) => {
-          return (
-            <img className={styles.icon} src={value} alt="" />
-          );
-        }
+        width: 300
       },
       {
         title: formatMessage({ id: 'app.material.status' }),
@@ -221,20 +217,15 @@ class TemplateList extends PureComponent<any, any> {
         title: formatMessage({ id: 'app.material.time' }),
         dataIndex: 'create_time',
         align: 'center',
+        width: 200,
         render(text, record) {
           return (
             <Fragment>
-              <div><Icon type='file-sync' /> {record.created_at}</div>
-              <div><Icon type='file-add' /> {record.updated_at}</div>
+              <div><Icon type='file-add' /> {record.created_at}</div>
+              <div><Icon type='file-sync' /> {record.updated_at}</div>
             </Fragment>
           );
         }
-      },
-      {
-        title: formatMessage({ id: 'app.material.lastOperator' }),
-        dataIndex: 'operationer',
-        align: 'center',
-        width: 200
       },
       {
         title: formatMessage({ id: 'app.material.operation' }),
@@ -255,7 +246,7 @@ class TemplateList extends PureComponent<any, any> {
                 okType='danger'
                 placement="topRight"
                 // onCancel={this.cancelSwitch}
-                onConfirm={() => { putOnline(record.id) }}
+                onConfirm={() => { putOnline(record) }}
               >
                 <a href="#" className={styles.edit}>{caption}</a>
               </Popconfirm>
@@ -271,7 +262,7 @@ class TemplateList extends PureComponent<any, any> {
                 okType='danger'
                 placement="topRight"
                 // onCancel={this.cancelSwitch}
-                onConfirm={() => { putOffline(record.id) }}
+                onConfirm={() => { putOffline(record) }}
               >
                 <a href="#" className={`${styles.edit} ${styles.danger}`}>{caption}</a>
               </Popconfirm>
@@ -296,17 +287,17 @@ class TemplateList extends PureComponent<any, any> {
         <Table
           className={cx('list')}
           bordered
-          rowKey='id'
+          rowKey='mid'
           //@ts-ignore
           columns={columns}
-          dataSource={list}
+          dataSource={list || []}
           scroll={{ x: 2000 }}
           pagination={
             {
               position: 'both',
-              pageSize,
+              pageSize: page_size,
               showSizeChanger: true,
-              pageSizeOptions: ['20', '30', '40'],
+              page_sizeOptions: ['20', '30', '40'],
               onShowSizeChange: this.onShowSizeChange,
               total,
               current: page,
@@ -315,8 +306,8 @@ class TemplateList extends PureComponent<any, any> {
               onChange: this.fetchPage
             }
           }></Table>
-        {addShowing && <EditTemplate caption={formatMessage({ id: 'app.explore.material.add' })} visible={addShowing} close={hideAdd} />}
-        {editRecord && <EditTemplate caption={formatMessage({ id: 'app.explore.material.edit' })} id={editRecord.id} record={editRecord} visible={!!this.state.editRecord} close={hideEdit} />}
+        {addShowing && <EditTemplate caption={formatMessage({ id: 'app.material.add' })} visible={addShowing} close={hideAdd} />}
+        {editRecord && <EditTemplate caption={formatMessage({ id: 'app.material.edit' })} id={editRecord.id} record={editRecord} visible={!!this.state.editRecord} close={hideEdit} />}
       </Fragment>
     );
   }

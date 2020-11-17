@@ -1,19 +1,19 @@
 import queryString from 'query-string';
 
-import { fetch, create, deleteItem, patch, patchStatus, fetchStatuses, fetchTypeMap, fetchMerchantMap } from '../services';
+import { create, deleteItem, fetch, fetchMerchantMap, fetchStatuses, fetchTypeMap, patch, patchStatus } from '../services';
 export default {
   namespace: "material",
   state: {
     list: [],
     total: null,
     pages: null,
-    page: null,
-    pageSize: 20,
+    page: 1,
+    page_size: 20,
     loading: false,
     statuses: {},
     groupTypes: new Map(),
     tags: new Map(),
-    types: new Map(),
+    types: {},
     merchantMap: {},
   },
   reducers: {
@@ -23,52 +23,14 @@ export default {
     save(state, { payload: { list, total, pages } }) {
       return { ...state, list, total, pages };
     },
-    saveSingle(state, { payload: { item } }) {
-      let { list = [] } = { ...state };
-      list = list.map(el => {
-        if (el.id === item.id) {
-          return item;
-        }
-        return el;
-      });
-      return { ...state, list }
-    },
-    deleteUpdate(state, { payload: { deletedId } }) {
-      let { list } = state;
-      list = list.filter(item => {
-        return item.id != deletedId
-      });
-      return { ...state, list }
-    },
-    changePageSize(state, { payload: { page, pageSize } }) {
-      return { ...state, page, pageSize };
-    },
-    saveGroupTypes(state, { payload: { types } }) {
-      const typeMap = new Map();
-      const arr = Object.keys(types);
-      // tslint:disable-next-line:no-unused-expression
-      Array.isArray(arr) && arr.map(type => {
-        typeMap.set(type, types[type]);
-      });
-      return { ...state, groupTypes: typeMap };
-    },
-    saveTags(state, { payload: { tags } }) {
-      const tagMap = new Map();
-      const arr = Object.keys(tags);
-      // tslint:disable-next-line:no-unused-expression
-      Array.isArray(arr) && arr.map(tag => {
-        tagMap.set(tag, tags[tag]);
-      });
-      return { ...state, tags: tagMap };
-    },
   },
   effects: {
     * create({ payload: values }, { call, put }) {
       const result = yield call(create, values);
       if (result && result.code === 0) {
         yield put({ type: 'reload' })
-        return result;
       }
+      return result;
     },
     * delete({ payload: { id } }, { call, put }) {
       const result = yield call(deleteItem, { id, status: 1 });
@@ -77,24 +39,28 @@ export default {
           type: 'deleteUpdate',
           payload: { deletedId: id }
         });
+
       }
+      return result;
     },
-    * patch({ payload: { params, id } }, { call, put }) {
-      const result = yield call(patch, params);
+    * patch({ payload: values }, { call, put }) {
+      const result = yield call(patch, values);
       if (result && result.code === 0) {
-        yield put({ type: 'fetchSingle', payload: { id } });
-        return result;
+        yield put({ type: 'reload' });
       }
+      return result;
     },
-    * fetch({ payload: { ...values } }, { call, put }) {
-      const { page } = values;
-      const { data: { list, total_count, total_page } } = yield call(fetch, values);
+    * fetch({ payload: values }, { call, put, select }) {
+      // tslint:disable-next-line:variable-name
+      const page_size = yield select(state => state.material.page_size);
+      const page = yield select(state => state.material.page);
+      const { data: { list, total_count, total_page } } = yield call(fetch, { page_size, page, ...values });
 
       // tslint:disable-next-line:no-unused-expression
-      page && (yield put({
+      ((values || {}).page || page) && (yield put({
         type: 'updateState',
         payload: {
-          page
+          page: ((values || {}).page || page)
         }
       }));
       yield put({
@@ -106,22 +72,12 @@ export default {
         },
       });
     },
-    * fetchSingle({ payload: { id } }, { call, put }) {
-      const data = yield call(fetch, { id });
-      if (data && data.code === 0) {
-        const item = data.data.list.filter(item => item.id == id)[0];
-        yield put({
-          type: 'saveSingle',
-          payload: { item }
-        });
-      }
-    },
-    *patchStatus({ payload: { id, status } }, { call, put }) {
-      const result = yield call(patchStatus, { status, id });
+    * patchStatus({ payload: { mid, status } }, { call, put }) {
+      const result = yield call(patchStatus, { mid, status });
       if (result && result.code === 0) {
-        yield put({ type: 'fetchSingle', payload: { id } })
-        return result;
+        yield put({ type: 'reload' });
       }
+      return result;
     },
     * fetchStatuses(payload, { call, put }) {
       const { data } = yield call(fetchStatuses);
@@ -159,10 +115,15 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, search }) => {
         if (pathname === '/promotional') {
-          dispatch({ type: 'material/fetch' });
-          dispatch({ type: 'material/fetchStatuses' });
-          dispatch({ type: 'material/fetchTypeMap' });
-          dispatch({ type: 'material/fetchMerchantMap' });
+          dispatch({ type: 'fetch' });
+          dispatch({ type: 'fetchStatuses' });
+          dispatch({ type: 'fetchTypeMap' });
+          dispatch({ type: 'fetchMerchantMap' });
+        }
+        if (pathname.indexOf("material") > -1) {
+          dispatch({ type: 'fetchStatuses' });
+          dispatch({ type: 'fetchTypeMap' });
+          dispatch({ type: 'fetchMerchantMap' });
         }
       });
     },

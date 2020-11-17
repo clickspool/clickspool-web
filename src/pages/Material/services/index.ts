@@ -6,9 +6,9 @@ import request from '@/utils/request';
  * @param {*} params 
  */
 export async function uploadMultiMedia(params) {
-  return request('/admin/material/addMaterial', {
+  return request('/admin/upload/uploadMultiMedia', {
     method: 'POST',
-    headers: { 'Content-Type': 'amultipart/form-data' },
+    headers: { 'Content-Type': '' },
     body: params
   });
 }
@@ -36,7 +36,7 @@ export async function patch(params) {
   });
 }
 /**
- * 获取列表
+ * 
  */
 export async function fetch(query) {
   return request('/admin/material/getList', {

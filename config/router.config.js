@@ -69,12 +69,12 @@ export default [
         routes: [
           {
             path: '/material/market',
-            component: './Exception/404',
+            component: './Material/Market',
             key: '10-1',
           },
           {
             path: '/material/my',
-            component: './Exception/404',
+            component: './Material/My',
             key: '10-2',
           }]
       },
