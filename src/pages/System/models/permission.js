@@ -108,7 +108,7 @@ export default {
       return history.listen(({ pathname, search }) => {
         if (['/profile', '/payment_setting'].indexOf(pathname) > -1) {
           dispatch({
-            type: 'permission/getPublisherInfo',
+            type: 'getPublisherInfo',
           });
         }
       });

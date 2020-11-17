@@ -26,7 +26,7 @@ class Index extends React.Component {
     } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        pModifyPublisher({...publisherInfo,...values})
+        modifyPublisher({...publisherInfo,...values})
       }
     });
   };
@@ -60,7 +60,7 @@ class Index extends React.Component {
               <Icon type="lock" />
               <span>{formatMessage({ id: 'menu.operation' })}</span>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{formatMessage({ id: 'menu.paymentSetting' })}</Breadcrumb.Item>
+            <Breadcrumb.Item>{formatMessage({ id: 'menu.support' })}</Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <Row>
@@ -68,17 +68,60 @@ class Index extends React.Component {
             <Form>
               <FormItem
                 {...formItemLayout}
-                label={"Paypal account"}
+                label={formatMessage({ id: 'app.permission.table.name' })}
               >
-                {getFieldDecorator('paypal_account', {
-                  initialValue: publisherInfo.paypal_account,
+                {getFieldDecorator('nickname', {
+                  initialValue: publisherInfo.nickname,
                   rules: [
                     {
                       required: true,
-                      message: "Please input paypal account",
+                      message: formatMessage({ id: 'app.global.form.pleaseName' }),
                     },
                   ],
-                })(<Input placeholder={"Paypal account"}/>)}
+                })(<Input placeholder={formatMessage({ id: 'app.permission.table.name' })}/>)}
+              </FormItem>
+              
+              <FormItem
+                {...formItemLayout}
+                label={"First Name"}
+              >
+                {getFieldDecorator('first_name', {
+                  initialValue: publisherInfo.first_name,
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input first name",
+                    },
+                  ],
+                })(<Input placeholder={"First Name"}/>)}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label={"Last Name"}
+              >
+                {getFieldDecorator('last_name', {
+                  initialValue: publisherInfo.last_name,
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input last_name",
+                    },
+                  ],
+                })(<Input  placeholder={"Last Name"}/>)}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label={"Telephone"}
+              >
+                {getFieldDecorator('phone_number', {
+                  initialValue: publisherInfo.last_name,
+                  rules: [
+                    {
+                      required: true,
+                      message: "Please input telephone",
+                    },
+                  ],
+                })(<Input placeholder={"Telephone"}/>)}
               </FormItem>
             </Form>
             <Row>

@@ -24,7 +24,7 @@ export default [
         path: '/knowledge_base',
         name: 'knowledge',
         icon: 'message',
-        component: './Exception/404',
+        component: './Category/KnowledgeBase',
         key: '6',
       },
       {
@@ -82,7 +82,7 @@ export default [
         path: '/support',
         name: 'support',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Support',
         key: '11',
       },
       {

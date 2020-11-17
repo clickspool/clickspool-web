@@ -1,4 +1,4 @@
-import { modify, modifyPassword, pModifyPublisher } from '@/services/permission';
+import { modify, pModifyPublisher } from '@/services/permission';
 
 import { connect } from 'dva';
 
@@ -26,7 +26,7 @@ class Index extends React.Component {
     } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        modifyPublisher({...publisherInfo,...values})
+        pModifyPublisher({...publisherInfo,...values})
       }
     });
   };
