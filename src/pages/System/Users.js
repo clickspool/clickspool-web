@@ -257,10 +257,10 @@ class Permission extends PureComponent {
         <div className={styles.breadcrumbBox}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Icon type="lock" />
-              <span>{formatMessage({ id: 'menu.operation' })}</span>
+              <Icon type="user" />
+              <span>{formatMessage({ id: 'menu.opUser' })}</span>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{formatMessage({ id: 'menu.opUser' })}</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>{formatMessage({ id: 'menu.opUser' })}</Breadcrumb.Item> */}
           </Breadcrumb>
         </div>
         <div className={styles.addBtn}>

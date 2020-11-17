@@ -329,12 +329,12 @@ class FeedbackCategroy extends PureComponent {
           })
           return (
             <p className="active">
-                  <a href="javastript:void(0)" onClick={this.onChangeStatus.bind(this,record['id'],status[0])} className={status[0] == 0 ? "danger" : null}>{faqCateStatusList[status[0]]}</a>
-                  <a href="javastript:void(0)" onClick={this.openModel.bind(this,record['id'])}>{ formatMessage({ id: 'app.activity.edit' })}</a>
-                  <a href="javastript:void(0)" onClick={this.onChangeRecommend.bind(this,record['id'],record.is_recommend)} className={record.is_recommend == 0 ? null:"danger"}>{
+                  <a onClick={this.onChangeStatus.bind(this,record['id'],status[0])} className={status[0] == 0 ? "danger" : null}>{faqCateStatusList[status[0]]}</a>
+                  <a onClick={this.openModel.bind(this,record['id'])}>{ formatMessage({ id: 'app.activity.edit' })}</a>
+                  <a onClick={this.onChangeRecommend.bind(this,record['id'],record.is_recommend)} className={record.is_recommend == 0 ? null:"danger"}>{
                     record.is_recommend == 0? formatMessage({ id: 'app.activity.recommend' }):formatMessage({ id: 'app.feedbackcategory.norecommend' })
                   }</a>
-                  <a href="javastript:void(0)" className="danger" onClick={this.handleDel.bind(this,record['id'],status[0])}>{ formatMessage({ id: 'app.activity.del' })}</a>
+                  <a className="danger" onClick={this.handleDel.bind(this,record['id'],status[0])}>{ formatMessage({ id: 'app.activity.del' })}</a>
               </p>
           )
         }

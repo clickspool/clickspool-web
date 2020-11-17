@@ -109,11 +109,12 @@ class TemplateList extends PureComponent<any, any> {
   render() {
     const crumbs = [
       {
-        icon: 'lock',
-        title: formatMessage({ id: 'menu.operation' }),
-      }, {
+        icon: 'monitor',
         title: formatMessage({ id: 'menu.afiliate' }),
-      }
+      },
+      //  {
+      //   title: formatMessage({ id: 'menu.afiliate' }),
+      // }
     ];
     // const [count, setCount] = React.useState<number>(0);
     // const [count, setCount] = React.useState(0);

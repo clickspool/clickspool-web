@@ -62,10 +62,10 @@ class Index extends React.Component {
         <div className={styles.breadcrumbBox}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Icon type="lock" />
-              <span>{formatMessage({ id: 'menu.operation' })}</span>
+              <Icon type="diff" />
+              <span>{formatMessage({ id: 'menu.support' })}</span>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{formatMessage({ id: 'menu.support' })}</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>{formatMessage({ id: 'menu.support' })}</Breadcrumb.Item> */}
           </Breadcrumb>
         </div>
         <Row>

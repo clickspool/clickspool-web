@@ -51,8 +51,8 @@ class TemplateList extends PureComponent<any, any> {
   public render() {
     const crumbs = [
       {
-        icon: 'lock',
-        title: formatMessage({ id: 'menu.operation' }),
+        icon: 'bank',
+        title: formatMessage({ id: 'menu.afiliate' }),
       }, {
         title: formatMessage({ id: 'menu.afiliate.market' }),
       }

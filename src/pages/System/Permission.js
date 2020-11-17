@@ -295,7 +295,7 @@ class Permission extends PureComponent {
           <Breadcrumb>
             <Breadcrumb.Item>
               <Icon type="lock" />
-              <span>{formatMessage({ id: 'menu.operation' })}</span>
+              <span>{formatMessage({ id: 'menu.system' })}</span>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{formatMessage({ id: 'menu.system.permission' })}</Breadcrumb.Item>
           </Breadcrumb>

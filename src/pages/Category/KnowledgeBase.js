@@ -316,10 +316,10 @@ class FeedbackCategroy extends PureComponent {
           <div className={styles.breadcrumbBox}>
             <Breadcrumb>
               <Breadcrumb.Item>
-                <Icon type="lock" />
-                <span>{formatMessage({ id: 'menu.feedback' })}</span>
+                <Icon type="profile" />
+                <span>{formatMessage({ id: 'menu.knowledge' })}</span>
               </Breadcrumb.Item>
-              <Breadcrumb.Item>{formatMessage({ id: 'menu.knowledge' })}</Breadcrumb.Item>
+              {/* <Breadcrumb.Item>{formatMessage({ id: 'menu.knowledge' })}</Breadcrumb.Item> */}
             </Breadcrumb>
           </div>
           <div className={'knowledge_base'}>
