@@ -118,7 +118,7 @@ class Index extends React.Component {
                 label={"Telephone"}
               >
                 {getFieldDecorator('phone_number', {
-                  initialValue: publisherInfo.last_name,
+                  initialValue: publisherInfo.phone_number,
                   rules: [
                     {
                       required: true,
