@@ -97,7 +97,7 @@ export default {
   "menu.afiliate.my": "My Materials",
   "menu.support": "Support",
   "menu.opUser": "Users",
-  "menu.promotional": "Materical Management",
+  "menu.promotional": "Material Management",
   "menu.payroll": "Payroll Manage",
   "menu.oReport": "Report and Analytic",
   "app.image.edit":"edit",

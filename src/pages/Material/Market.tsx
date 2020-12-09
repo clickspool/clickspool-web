@@ -91,6 +91,12 @@ class TemplateList extends PureComponent<any, any> {
           }
         </style>
         <CommonBreadCrumb items={crumbs} />
+        <Row style={{ marginTop: 10 }} justify={"end"}>
+          <Col span={12} />
+          <Col span={12}>
+            <Pagination style={{ float: "right" }} showQuickJumper={true} current={page} total={total} pageSize={page_size} onChange={onChange} />
+          </Col>
+        </Row>
         <Row gutter={16} style={{ marginTop: 10 }}>
           {
             !!list.length &&
