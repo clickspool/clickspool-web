@@ -9,6 +9,8 @@ import { FormattedMessage,setLocale } from 'umi/locale';
 
 import { goLinkMenuKeys, goLinkRouter } from '../../../config/role.enum';
 
+import routerConfig from '../../../config/router.config.menu';
+
 import styles from './Login.less';
 
 const FormItem = Form.Item;
@@ -43,15 +45,23 @@ class LoginPage extends Component {
               payload: {},
             }).then(() => {
               const { keys } = this.props;
-              let key = '';
-              for (var ii = 0; ii < goLinkMenuKeys.length; ii++) {
-                if (keys.indexOf(goLinkMenuKeys[ii]) > -1) {
-                  key = goLinkMenuKeys[ii];
-                  break;
-                }
-              }
-              router.push('/welcome');
-            });
+              let routers= [];
+              function fib(item){
+                item.map((item)=>{
+                  if(keys.indexOf(item.key)>-1 && !item.routes){
+                    routers.push({
+                      key:item.key,
+                      path:item.path
+                    })
+                  }
+                  if(keys.indexOf(item.key)>-1 && item.routes){
+                    fib(item.routes);
+                  }
+              })
+            }
+            fib(routerConfig[1].routes);
+            router.push(routers[0].path);
+          });
           }
         });
       }

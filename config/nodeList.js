@@ -21,7 +21,7 @@ export const nodeList = {
       "title": "Report and Analyfics",
       "key": "9",
       "children": [{
-        "title": "Earn Analytics",
+        "title": "Performance Analytics",
         "key": "9-1"
       },
       {

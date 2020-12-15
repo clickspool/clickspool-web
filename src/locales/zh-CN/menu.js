@@ -120,7 +120,7 @@ export default {
   "menu.profile": "Profile",
   "menu.paymentSetting": "Payment Setting",
   "menu.pReport": "Report and Analyfics",
-  "menu.pDeport.earn": "Earn Analytics",
+  "menu.pDeport.earn": "Performance Analytics",
   "menu.pDeport.payout": "Payout Analytics",
   "menu.afiliate": "Material Marketplace",
   "menu.afiliate.market": "Material Market",
