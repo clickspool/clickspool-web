@@ -28,15 +28,18 @@ export default {
   },
   effects: {
     * receive({ payload: values }, { call, put, select }) {
-      const { data: { promotion_url } } = yield call(receive, values);
+      const res= yield call(receive, values);
       // tslint:disable-next-line:no-unused-expression
-      promotion_url && (yield put({
+      res.data.promotion_url && (yield put({
         type: 'updateState',
         payload: {
-          promotion_url
+          promotion_url:res.data.promotion_url
         }
       }));
-      yield put({ type: 'fetch' });
+      if(!res.code){
+        yield put({ type: 'fetch' });
+      }
+      return res;
     },
     * fetch({ payload: values }, { call, put, select }) {
       // const { page } = values;

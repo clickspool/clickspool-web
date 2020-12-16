@@ -69,39 +69,17 @@ class Index extends React.Component {
           </Breadcrumb>
         </div>
         <Row>
-          <Col span={12} style={{
+          <Col span={24} style={{
             background:' #fff',
             padding: '20px',
             borderRadius: '5px',
           }}>
-            {/* <Form>
-              <FormItem
-                {...formItemLayout}
-                label={formatMessage({ id: 'app.support.content' })}
-              >
-                {getFieldDecorator('content', {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'app.support.content' }),
-                    },
-                  ],
-                })(<Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} placeholder={formatMessage({ id: "app.support.content" })} />)}
-              </FormItem>
-
-            </Form> */}
-            <Row>
-              <Col span={6} />
-              <Col span={18} style={{ textAlign: 'right' }}>
-                <Button type="primary" onClick={this.onOk}>
-                  {formatMessage({ id: "app.support.submit" })}
-                </Button>
-              </Col>
-
+            If you hava any question, please email to contactus@clickspool.com
+            <Button type="primary" style={{marginLeft:'8px'}}>
+                 <a href="mailto:contactus@clickspool.com"> Send Email</a>
+            </Button>
+                </Col>
             </Row>
-
-          </Col>
-        </Row>
       </>
     );
   }

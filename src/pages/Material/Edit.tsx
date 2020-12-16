@@ -3,11 +3,6 @@ import CustomUpload from '@/components/CustomUpload/Index';
 import { Button, Col, DatePicker, Divider, Form, Icon, Input, Modal, Popconfirm, Row, Select, message, Upload } from 'antd';
 import { uploadMultiMedia } from "./services/index"
 import { connect } from 'dva';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-// tslint:disable-next-line:ordered-imports
-import memoize from 'memoize-one';
-import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 //@ts-ignore

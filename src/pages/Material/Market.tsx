@@ -8,7 +8,9 @@ import EditTemplate from './Edit';
 import classnames from 'classnames/bind';
 // tslint:disable-next-line:ordered-imports
 import TableList from '@/components/TableList';
+import copy from 'copy-to-clipboard';
 import styles from './style.less';
+import { message } from 'antd';
 import {
   Icon,
   Input,
@@ -20,11 +22,12 @@ import {
   Card,
   Col,
   Row,
+  Message,
   Pagination
 } from 'antd';
 
 const cx = classnames.bind(styles);
-@connect(({ market: { list, total, page, pages, page_size, promotion_url, statuses = {} }, material: { materialList, merchantMap, types} }) => ({ list, total, page, pages, page_size, types, statuses, merchantMap, promotion_url, materialList }))
+@connect(({ market: { list, total, page, pages, page_size, promotion_url, statuses = {} }, material: { materialList, merchantMap, types } }) => ({ list, total, page, pages, page_size, types, statuses, merchantMap, promotion_url, materialList }))
 class TemplateList extends PureComponent<any, any> {
   constructor(props) {
     super(props);
@@ -49,6 +52,28 @@ class TemplateList extends PureComponent<any, any> {
     })
   }
 
+  public setMine = (material_id) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: "market/receive",
+      payload: {
+        material_id
+      }
+    })
+      .then((res) => {
+        // tslint:disable-next-line:no-shadowed-variable
+        const { code, data: { promotion_url }, message } = res
+        if (code != 0) {
+          return Message.warn(message);
+        }
+        if (copy(promotion_url)) {
+          Message.success("copy success");
+        } else {
+          Message.error("copy fail");
+        }
+      })
+  }
+
   public render() {
     const crumbs = [
       {
@@ -61,7 +86,7 @@ class TemplateList extends PureComponent<any, any> {
     const { record } = this.state;
     const { total, pages, page, page_size, list, merchantMap, promotion_url, types } = this.props;
     // tslint:disable-next-line:no-this-assignment
-    const { onChange, handleDetail } = this;
+    const { onChange, setMine, handleDetail } = this;
     return (
       <>
         <style>
@@ -98,42 +123,7 @@ class TemplateList extends PureComponent<any, any> {
             <Pagination style={{ float: "right" }} showQuickJumper={true} current={page} total={total} pageSize={page_size} onChange={onChange} />
           </Col>
         </Row>
-        {/* <Row gutter={16} style={{ marginTop: 10 }}>
-          {
-            !!list.length &&
-            list.map((item, index) => {
-              return <Fragment key={index}>
-                <Col style={{ marginTop: 10 }} span={12}>
-                  <Card title={item.title} bordered={false}>
-                    <Card.Meta
-                      avatar={<div style={{ height: 120, width: 100, display: "flex", alignItems: "center", position: "relative" }}>
-                        {!!item.is_received && <div className="new-item-badge">{formatMessage({ id: 'app.material.mined' })}</div>}
-                        <div style={{ height: 120, width: 100, overflow: 'hidden', display: "flex", alignItems: "center", position: "relative", border: "1px solid #ececec", borderRadius: '5px' }}>
-                          <img width={100} src={item.images[0]} />
-                        </div>
-                      </div>}
-                      description={(
-                        <>
-                          <p>{item.description}</p>
-                          <div className="ant-modal-footer">
-                            <div>
-                              <button type="button" className="ant-btn ant-btn-primary"
-                                onClick={(e) => { handleDetail(item) }}
-                              >
-                                <span>{formatMessage({ id: "app.material.detail" })}</span>
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    />
-                  </Card>
-                </Col>
-              </Fragment>
-            })
-          }
-        </Row> */}
-        <TableList list={list || []} {...{ merchantMap, promotion_url, types }} />
+        <TableList list={list || []} {...{ merchantMap, promotion_url, types, setMine, handleDetail }} />
         <Row style={{ marginTop: 10 }} justify={"end"}>
           <Col span={12} />
           <Col span={12}>

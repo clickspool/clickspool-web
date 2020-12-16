@@ -4,11 +4,12 @@ import { Icon, Tooltip, Message } from 'antd';
 import classnames from 'classnames/bind';
 import copy from 'copy-to-clipboard';
 import styles from './index.less';
+import { contentDetail } from '@/services/content';
 
 const cx = classnames.bind(styles);
 
 export default function index(props) {
-  const { list, types, merchantMap, promotion_url } = props;
+  const { list, types, merchantMap, setMine } = props;
   const [unfold, setUnfold] = useState({})
   useEffect(() => {
 
@@ -35,18 +36,23 @@ export default function index(props) {
             <div className={cx('wrap_box', 'flex_box')}>
               <Tooltip title="Get Code">
                 <div className={cx('icon_box')} onClick={() => {
-                  
-                  if (copy('1111')) {
-                    Message.success("copy success");
-                  } else {
-                    Message.error("copy fail");
+                  if(item.promotion_url){
+                     if (copy(item.promotion_url)) {
+                      Message.success("copy success");
+                    } else {
+                      Message.error("copy fail");
+                    }
+                    return
                   }
+                  setMine(item.merchant_id);
                 }}>
                   <Icon type="link" />
                 </div>
               </Tooltip>
               <Tooltip title="Detailed information">
-                <div className={cx('icon_box')} style={{marginLeft:'5px'}} onClick={() => { }}>
+                <div className={cx('icon_box')} style={{marginLeft:'5px'}} onClick={() => {
+                   props.handleDetail(item);
+                 }}>
                   <Icon type="idcard" />
                 </div>
               </Tooltip>
