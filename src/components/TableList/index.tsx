@@ -25,7 +25,7 @@ export default function index(props) {
             <div className={cx('wrap_box', 'image_box')}>
               <img className={cx('image')} src={item.images[0]} />
             </div>
-            <div className={cx('des_')}>
+            <div className={cx('wrap_box','des_')}>
               {item.description}
             </div>
             {merchantMap[item.merchant_id] && <div className={cx('wrap_box', 'flex_box')}>
@@ -34,14 +34,20 @@ export default function index(props) {
             }
             <div className={cx('wrap_box', 'flex_box')}>
               <Tooltip title="Get Code">
-                <div className={cx('icon_box')} onClick={()=>{
-                  if(copy('1111')){
+                <div className={cx('icon_box')} onClick={() => {
+                  
+                  if (copy('1111')) {
                     Message.success("copy success");
-                  }else{
+                  } else {
                     Message.error("copy fail");
                   }
                 }}>
                   <Icon type="link" />
+                </div>
+              </Tooltip>
+              <Tooltip title="Detailed information">
+                <div className={cx('icon_box')} style={{marginLeft:'5px'}} onClick={() => { }}>
+                  <Icon type="idcard" />
                 </div>
               </Tooltip>
             </div>
