@@ -79,7 +79,7 @@
     "antd-theme-webpack-plugin": "^1.1.8",
     "babel-eslint": "^10.0.1",
     "babel-plugin-import": "^1.12.1",
-    "copy-to-clipboard": "^3.0.8",
+    "copy-to-clipboard": "^3.3.1",
     "cross-env": "^5.1.1",
     "cross-port-killer": "^1.0.1",
     "draftjs-to-html": "^0.8.4",

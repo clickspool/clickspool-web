@@ -1,0 +1,123 @@
+.table_list{
+  border: 1px solid #ccc;
+  background: #fff;
+  width:100%;
+  box-sizing: border-box;
+  margin-top:8px;
+  border-radius: 3px;
+  ul{
+    padding:0;
+    margin:0;
+    li{
+      background:#fff;
+      padding: 10px;
+      width:100%;
+      box-sizing: border-box;
+      border-bottom: 1px dashed #ccc;
+      cursor: pointer;
+      position: relative;
+      &:hover{
+        background: #F9F9F9;
+        &::before{
+          content: '';
+          width:100%;
+          left:0;
+          top:0;
+          height:1px;
+          background:none;
+          box-shadow: 0 -3px 3px #C1C1C1;
+          position: absolute;
+          z-index: 10
+        }
+        &::after{
+          content: '';
+          width:100%;
+          left:0;
+          bottom:0;
+          height:1px;
+          background:none;
+          box-shadow: 0 3px 3px #C1C1C1;
+          position: absolute;
+          z-index: 10
+        }
+       
+      }
+      &.unfold{
+        background: #F9F9F9;
+        &::before{
+          content: '';
+          width:100%;
+          left:0;
+          top:0;
+          height:1px;
+          background:none;
+          box-shadow: 0 -3px 3px #C1C1C1;
+          position: absolute;
+          z-index: 10
+        }
+        &::after{
+          content: '';
+          width:100%;
+          left:0;
+          bottom:0;
+          height:1px;
+          background:none;
+          box-shadow: 0 3px 3px #C1C1C1;
+          position: absolute;
+          z-index: 10
+        }
+      }
+      .detail_{
+        width:100%;
+        box-sizing: border-box;
+
+      }
+      .wrap_{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width:100%;
+        box-sizing: border-box;
+        .wrap_box{
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &.image_box{
+            width: 150px;
+          }
+          &.flex_box{
+            flex:1
+          }
+          .image{
+            width:150px;
+            height:auto;
+          }
+          .icon_box{
+            width:30px;
+            height:30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            box-sizing: border-box;
+            outline: none;
+            border-radius: 3px;
+            border:1px solid #C1C1C1;
+            &:hover{
+              border:1px solid #52C41A;
+              color:#52C41A;
+            }
+          }
+        }
+        .des_{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 300px;
+        }
+      }
+    }
+  }
+}

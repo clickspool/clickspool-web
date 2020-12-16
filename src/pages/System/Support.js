@@ -74,7 +74,7 @@ class Index extends React.Component {
             padding: '20px',
             borderRadius: '5px',
           }}>
-            <Form>
+            {/* <Form>
               <FormItem
                 {...formItemLayout}
                 label={formatMessage({ id: 'app.support.content' })}
@@ -89,7 +89,7 @@ class Index extends React.Component {
                 })(<Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} placeholder={formatMessage({ id: "app.support.content" })} />)}
               </FormItem>
 
-            </Form>
+            </Form> */}
             <Row>
               <Col span={6} />
               <Col span={18} style={{ textAlign: 'right' }}>

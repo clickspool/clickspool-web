@@ -6,7 +6,8 @@ import CommonBreadCrumb from '@/components/CommonBreadCrumb';
 import OperationBar from './components/OperationBar';
 import EditTemplate from './Edit';
 import classnames from 'classnames/bind';
-// import OperationBar from './components/OperationBar';
+// tslint:disable-next-line:ordered-imports
+import TableList from '@/components/TableList';
 import styles from './style.less';
 import {
   Icon,
@@ -23,7 +24,7 @@ import {
 } from 'antd';
 
 const cx = classnames.bind(styles);
-@connect(({ market: { list, total, page, pages, page_size, types, statuses = {} } }) => ({ list, total, page, pages, page_size, types, statuses }))
+@connect(({ market: { list, total, page, pages, page_size, promotion_url, statuses = {} }, material: { materialList, merchantMap, types} }) => ({ list, total, page, pages, page_size, types, statuses, merchantMap, promotion_url, materialList }))
 class TemplateList extends PureComponent<any, any> {
   constructor(props) {
     super(props);
@@ -35,8 +36,8 @@ class TemplateList extends PureComponent<any, any> {
   public onChange = (page) => {
     const { dispatch } = this.props;
     dispatch({
-      type:"market/fetch",
-      payload:{
+      type: "market/fetch",
+      payload: {
         page
       }
     })
@@ -58,7 +59,7 @@ class TemplateList extends PureComponent<any, any> {
       }
     ];
     const { record } = this.state;
-    const { total, pages, page, page_size, list } = this.props;
+    const { total, pages, page, page_size, list, merchantMap, promotion_url, types } = this.props;
     // tslint:disable-next-line:no-this-assignment
     const { onChange, handleDetail } = this;
     return (
@@ -97,7 +98,7 @@ class TemplateList extends PureComponent<any, any> {
             <Pagination style={{ float: "right" }} showQuickJumper={true} current={page} total={total} pageSize={page_size} onChange={onChange} />
           </Col>
         </Row>
-        <Row gutter={16} style={{ marginTop: 10 }}>
+        {/* <Row gutter={16} style={{ marginTop: 10 }}>
           {
             !!list.length &&
             list.map((item, index) => {
@@ -111,22 +112,11 @@ class TemplateList extends PureComponent<any, any> {
                           <img width={100} src={item.images[0]} />
                         </div>
                       </div>}
-                      // title="Card title"
                       description={(
                         <>
                           <p>{item.description}</p>
                           <div className="ant-modal-footer">
                             <div>
-                              {/* <button type="button" className="ant-btn ant-btn-danger"
-                                // onClick={handleCancel}
-                              >
-                                <span>{formatMessage({ id: "app.material.cancel" })}</span>
-                              </button>
-                              <button type="button" className="ant-btn"
-                                // onClick={(e) => { handleOk(e, 0) }}
-                              >
-                                <span>{formatMessage({ id: "app.material.saveasdraft" })}</span>
-                              </button> */}
                               <button type="button" className="ant-btn ant-btn-primary"
                                 onClick={(e) => { handleDetail(item) }}
                               >
@@ -142,8 +132,8 @@ class TemplateList extends PureComponent<any, any> {
               </Fragment>
             })
           }
-        </Row>
-
+        </Row> */}
+        <TableList list={list || []} {...{ merchantMap, promotion_url, types }} />
         <Row style={{ marginTop: 10 }} justify={"end"}>
           <Col span={12} />
           <Col span={12}>
