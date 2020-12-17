@@ -116,7 +116,7 @@ class Permission extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'permission/getPublisherList',
-      payload: { page },
+      payload: { page,page_size:20 },
     });
   }
 

@@ -41,6 +41,9 @@ export default {
       });
     },
     *getRoleList({ payload }, { call, put }) {
+      if(!payload){
+        payload = {page:1}
+      }
       const response = yield call(getRoleList, payload);
       yield put({
         type: 'getRoleListStatus',

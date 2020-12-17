@@ -136,6 +136,10 @@ export default function request(url, option = {}) {
   }
 
   removeNullItem(newOptions);
+  if(_.get(newOptions.body,'page')&& !_.get(newOptions.body,'page_size')){
+    newOptions.body.page_size=20;
+  }
+  
   if (
     newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||
