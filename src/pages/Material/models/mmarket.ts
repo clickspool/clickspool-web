@@ -9,7 +9,7 @@ export default {
     total: null,
     pages: null,
     page: 1,
-    page_size: 6,
+    page_size: 20,
     loading: false,
     statuses: {},
     groupTypes: new Map(),

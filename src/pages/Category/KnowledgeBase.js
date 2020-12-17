@@ -230,7 +230,7 @@ class FeedbackCategroy extends PureComponent {
     });
     this.updataConfiList();
   }
-  NameRender = (record)=>{
+  NameRender = (record,flag)=>{
     const name =()=>{
       if(record.multi_name){
        let chinese =  JSON.parse(record.multi_name).filter((item)=>{
@@ -245,6 +245,9 @@ class FeedbackCategroy extends PureComponent {
       }
       return text
     } 
+    if(flag){
+      return name();
+    }
     return (
       <div>
         <span style={{ marginRight: 5 }}>{name()}</span>
@@ -328,7 +331,11 @@ class FeedbackCategroy extends PureComponent {
                   
                   !!list.length &&
                   list.map((item, index) => {
-                    return <Col span={6} key={index}  style={{marginTop:'8px'}}>
+                    return <Col span={12} key={index}  style={{marginTop:'8px',cursor:'pointer'}}
+                      onClick={()=>{
+                        router.push(`/knowledge_base/${item.id}/${this.NameRender(item,1)}`)
+                      }}
+                    >
                     <div className={'box__'}>
                       <div style={{textAlign:'center',color:"#000"}}>{this.NameRender(item)}</div>
                       <div style={{textAlign:'center',marginTop:'5px',fontSize:'12px'}}>{item.desc}</div>

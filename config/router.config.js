@@ -28,6 +28,11 @@ export default [
         key: '6',
       },
       {
+        path: '/knowledge_base/:category/:name',
+        name: 'knowledge',
+        component: './Category/KnowledgeBaseDetail',
+      },
+      {
         path: '/profile',
         name: 'profile',
         icon: 'message',

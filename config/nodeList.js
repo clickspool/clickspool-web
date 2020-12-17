@@ -63,19 +63,19 @@ export const nodeList = {
       "key": "15",
     },
     {
-      "title": "Feedback Management",
+      "title": "Knowledge Management",
       "key": "4",
       "children": [
         {
-          "title": "Feedback Category",
+          "title": "Knowledge Category",
           "key": "4-6",
         },
         {
-          "title": "Feedback Management",
+          "title": "Knowledge Management",
           "key": "4-1",
         },
         {
-          "title": "FAQ Management",
+          "title": "Knowledge Management",
           "key": "4-3",
         }
       ]
