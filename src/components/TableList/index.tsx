@@ -44,7 +44,7 @@ export default function index(props) {
                     }
                     return
                   }
-                  setMine(item.merchant_id);
+                  setMine(item.mid);
                 }}>
                   <Icon type="link" />
                 </div>
