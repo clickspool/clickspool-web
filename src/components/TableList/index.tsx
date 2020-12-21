@@ -24,9 +24,11 @@ export default function index(props) {
         return <li key={indexx} className={indexx === +Object.keys(unfold)[0] ? cx('unfold') : ''}>
           <div className={cx('wrap_')}>
             <div className={cx('wrap_box', 'image_box')}>
-              <img className={cx('image')} src={item.images[0]} />
+              <div className={cx('image_', item.promotion_url ? "act" : '')}>
+                <img className={cx('image')} src={item.images[0]} />
+              </div>
             </div>
-            <div className={cx('wrap_box','des_')}>
+            <div className={cx('wrap_box', 'des_')}>
               {item.description}
             </div>
             {merchantMap[item.merchant_id] && <div className={cx('wrap_box', 'flex_box')}>
@@ -36,8 +38,8 @@ export default function index(props) {
             <div className={cx('wrap_box', 'flex_box')}>
               <Tooltip title="Get Code">
                 <div className={cx('icon_box')} onClick={() => {
-                  if(item.promotion_url){
-                     if (copy(item.promotion_url)) {
+                  if (item.promotion_url) {
+                    if (copy(item.promotion_url)) {
                       Message.success("copy success");
                     } else {
                       Message.error("copy fail");
@@ -50,9 +52,9 @@ export default function index(props) {
                 </div>
               </Tooltip>
               <Tooltip title="Detailed information">
-                <div className={cx('icon_box')} style={{marginLeft:'5px'}} onClick={() => {
-                   props.handleDetail(item);
-                 }}>
+                <div className={cx('icon_box')} style={{ marginLeft: '5px' }} onClick={() => {
+                  props.handleDetail(item);
+                }}>
                   <Icon type="idcard" />
                 </div>
               </Tooltip>

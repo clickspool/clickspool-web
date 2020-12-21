@@ -82,7 +82,7 @@
         width:100%;
         box-sizing: border-box;
         .wrap_box{
-          overflow: hidden;
+          // overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -112,9 +112,29 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            .image{
+            .image_{
               width:auto;
               height:100px;
+              position: relative;
+              &.act{
+                &::before{
+                  content: 'Mine';
+                  padding: 2px 4px;
+                  right: -15px;
+                  top: -5px;
+                  /* transform: translate3d(0, -50%, 0); */
+                  background: #52C41A;
+                  position: absolute;
+                  z-index: 1;
+                  color: #fff;
+                  border-radius: 3px;
+                  line-height:14px;
+                }
+              }
+              .image{
+                width:auto;
+                height:100px;
+              }
             }
           }
           &.flex_box{
