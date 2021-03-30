@@ -119,6 +119,41 @@ export default [
         component: './Exception/404',
         key: '15',
       },
+      {
+        path: '/user_management',
+        name: 'userManagement',
+        icon: 'message',
+        component: './Exception/404',
+        key: '16',
+      },
+      {
+        path: '/book_management',
+        name: 'BookManagement',
+        icon: 'message',
+        component: './Books/index',
+        key: '17',
+      },
+      {
+        path: '/coupon_management',
+        name: 'couponManagement',
+        icon: 'message',
+        component: './Exception/404',
+        key: '18',
+      },
+      {
+        path: '/order_management',
+        name: 'orderManagement',
+        icon: 'message',
+        component: './Exception/404',
+        key: '19',
+      },
+      {
+        path: '/purchase_management',
+        name: 'purchaseManagement',
+        icon: 'message',
+        component: './Exception/404',
+        key: '20',
+      },
 
       {
         path: '/feedback',

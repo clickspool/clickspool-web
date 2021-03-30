@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
+    "@tinymce/tinymce-react": "^3.12.1",
     "antd": "^3.23.2",
     "bizcharts": "^3.5.6",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",

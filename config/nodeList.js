@@ -18,6 +18,26 @@ export const nodeList = {
       "key": "8",
     },
     {
+      title: 'userManagement',
+      key: '16',
+    },
+    {
+      title: 'BookManagement',
+      key: '17',
+    },
+    {
+      title: 'couponManagement',
+      key: '18',
+    },
+    {
+      title: 'orderManagement',
+      key: '19',
+    },
+    {
+      title: 'purchaseManagement',
+      key: '20',
+    },
+    {
       "title": "Report and Analyfics",
       "key": "9",
       "children": [{

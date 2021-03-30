@@ -236,13 +236,13 @@ class BasicLayout extends React.PureComponent {
     const currRouterData = this.matchParamsPath(pathname);
 
     if (!currRouterData) {
-      return 'clickspool';
+      return 'Chestnutreads';
     }
     const pageName = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${pageName} - clickspool`;
+    return `${pageName} - Chestnutreads`;
   };
 
   getLayoutStyle = () => {
