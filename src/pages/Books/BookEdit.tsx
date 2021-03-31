@@ -3,7 +3,7 @@ import CustomUpload from '@/components/CustomUpload/Index';
 import { Button, Col, DatePicker, Divider, Form, Icon, Input, Modal, Popconfirm, Row, Select, message, Upload } from 'antd';
 import { uploadMultiMedia } from "./services/index"
 import { connect } from 'dva';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 //@ts-ignore
 import { formatMessage } from 'umi/locale';
@@ -20,12 +20,13 @@ const uploadButton = (
 );
 
 const FormUploader = React.forwardRef((props, ref) => {
-  const { value = [] } = props;
+  // const { value = [] } = props;
   // tslint:disable-next-line:variable-name
-  const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/;
+  // const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/;
 
+  const val = get(props['data-__meta'], 'initialValue') || [];
   // tslint:disable-next-line:variable-name
-  let file_list: any = isArray(value) ? value : [];
+  let file_list: any = isArray(val) ? val : [];
 
   file_list = !!file_list.length && file_list.map((item, index) => {
     return {
@@ -35,6 +36,7 @@ const FormUploader = React.forwardRef((props, ref) => {
       url: `${item}?x-oss-process=image/resize,w_80,h_80`
     }
   })
+  const [filList, setFileList] = useState(file_list);
   console.log(file_list, 'file_list')
 
   const handleEditorChange = (val) => {
@@ -43,7 +45,7 @@ const FormUploader = React.forwardRef((props, ref) => {
   return <Upload
     accept={"image/*"}
     listType="picture-card"
-    fileList={file_list}
+    fileList={filList}
     showUploadList={{ showPreviewIcon: true, showDownloadIcon: true, showRemoveIcon: true }}
     onPreview={(e) => {
       window.open(e.name);
@@ -54,15 +56,26 @@ const FormUploader = React.forwardRef((props, ref) => {
       return
     }}
     customRequest={(options) => {
-      console.log(options, 'options')
-      props.handleChange(options, 'image')
+      // console.log(options, 'options')
+      props.handleChange(options, (url) => {
+        const urlObj = {
+          uid: url,
+          name: url,
+          status: 'done',
+          url: `${url}?x-oss-process=image/resize,w_80,h_80`
+        }
+        setFileList([urlObj]);
+        handleEditorChange(url);
+      })
     }}
     onRemove={(file) => {
-      console.log(file, 'file')
-      props.handleOnRemove(file)
+      // console.log(file, 'file')
+      setFileList([]);
+      handleEditorChange('');
+      // props.handleOnRemove(file)
     }}
   >
-    {file_list.length >= 1 ? null : uploadButton}
+    {filList.length >= 1 ? null : uploadButton}
   </Upload>
 }
 )
@@ -115,72 +128,38 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public handleOk = (e, status) => {
-    const { form: { validateFields, getFieldsValue }, dispatch, record = {} } = this.props;
+    const { form: { validateFields, getFieldsValue }, dispatch, book_info = {} } = this.props;
     const { imgList, videoList } = this.state;
-    const { mid } = record;
     e.preventDefault();
     console.log(imgList)
     validateFields({ force: true }, (err, values) => { // 设置force为true
       if (!err) {
-        console.log('Received values of form: ', values);
-        const { type, title1: title, description, destination_link, merchant_id } = values;
-        const llist = { img_url: "", video_url: "" };
-        if (!!imgList.length) {
-          llist.img_url = imgList.map(item => {
-            return item.name
-          }).join(',')
-        }
-        if (!!videoList.length) {
-          llist.video_url = videoList.map(item => {
-            return item.name
-          }).join(',')
-        }
+
         dispatch({
-          type: mid ? 'material/patch' : 'material/create',
+          type: 'book_info/patchBookInfo',
           payload: {
-            mid, title, type, description, merchant_id, destination_link, status, ...llist
+            ...book_info, ...values
           }
         })
           .then((res) => {
             if (!res.code) {
-              this.handleCancel();
+              this.handleCancel(1);
             }
           })
       }
     });
   }
 
-  public handleCancel = () => {
+  public handleCancel = (refresh) => {
+    if (refresh === 1) {
+      this.props.close(1);
+      return
+    }
     this.props.close();
   }
 
-
-  handleChange = (e, type) => {
-    // tslint:disable-next-line:no-this-assignment
-    const _this = this;
-    const { imgList, videoList, img_url, video_url } = this.state;
-    const multiMedia = new FormData();
-    multiMedia.append("multiMedia", e.file)
-    uploadMultiMedia(multiMedia)
-      .then(res => {
-        if (!res.code) {
-          const len = (type === 'image' ? imgList : videoList).length;
-          const list = [...(type === 'image' ? imgList : videoList), {
-            uid: `${len}`,
-            name: res.data.url,
-            status: 'done',
-            url: type === 'image' ? `${res.data.url}?x-oss-process=image/resize,w_80,h_80` : `${res.data.url}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
-          }]
-
-          _this.setState({
-            [type === 'image' ? "imgList" : "videoList"]: list,
-          })
-        }
-      })
-  }
-
   handleOnRemove = (e, type) => {
-    const {dispatch,book_info} = this.props;
+    const { dispatch, book_info } = this.props;
     dispatch({
       type: 'book_info/updateState',
       payload: {
@@ -188,41 +167,6 @@ export default class EditTemplate extends PureComponent<any, any> {
       }
     })
   }
-  // public componentDidMount() {
-  //   if (!this.props.record) {
-  //     return
-  //   }
-  //   const { images = [], videos = [] } = this.props.record;
-  //   // tslint:disable-next-line:one-variable-per-declaration
-  //   const i = [], v = [];
-  //   if (!!images.length) {
-  //     images.map((item, index) => {
-  //       i.push({
-  //         uid: index,
-  //         name: item,
-  //         status: 'done',
-  //         url: `${item}?x-oss-process=image/resize,w_80,h_80`
-  //       })
-  //     })
-  //   }
-
-  //   if (!!videos.length) {
-  //     videos.map((item, index) => {
-  //       v.push({
-  //         uid: index,
-  //         name: item,
-  //         status: 'done',
-  //         url: `${item}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
-  //       })
-  //     })
-  //   }
-
-  //   this.setState({
-  //     imgList: i,
-  //     videoList: v
-  //   })
-  // }
-
   public setMine = () => {
     const { dispatch, record: { mid } } = this.props;
     dispatch({
@@ -267,9 +211,10 @@ export default class EditTemplate extends PureComponent<any, any> {
     //   const FormEditor = React.forwardRef((props, ref) => {
     //     return <Input />
     // })  
+    // tslint:disable-next-line:variable-name
     const book_cover = get(book_info, 'book_cover');
-    const file_list = isArray(book_cover) ? book_cover : !!book_cover? [book_cover]:[];
-
+    // tslint:disable-next-line:variable-name
+    const file_list: any = isArray(book_cover) ? book_cover : !!book_cover ? [book_cover] : [];
     return <>
       <style>
         {`
@@ -288,38 +233,36 @@ export default class EditTemplate extends PureComponent<any, any> {
             { required: true, message: 'Book Cover' },
             // { validator: this.handleCheckImg },
           ],
-          validateTrigger: 'onSubmit', // 设置进行表单验证的时机为onSubmit
+          // validateTrigger: 'onSubmit', // 设置进行表单验证的时机为onSubmit
           initialValue: file_list,
+          trigger: 'onChange'
         })(
-          <FormUploader 
-          handleOnRemove = {
-            ()=>{
-              this.handleOnRemove();
-            }
-          }
-          handleChange={(opt, type) => {
-            if (opt.file) {
-              dispatch({
-                type: 'book_info/uploadMultiMediaHandle',
-                payload: {
-                  multiMedia: opt.file
-                }
-              })
-                .then((res) => {
-                  const { code, data } = res;
-                  if (code == 0) {
-                    dispatch({
-                      type: 'book_info/updateState',
-                      payload: {
-                        book_info: { book_info: { ...book_info, book_cover: data.url } }
-                      }
-                    })
+          <FormUploader
+            handleChange={(opt, cb) => {
+              if (opt.file) {
+                dispatch({
+                  type: 'book_info/uploadMultiMediaHandle',
+                  payload: {
+                    multiMedia: opt.file
                   }
                 })
-            }
+                  .then((res) => {
+                    const { code, data } = res;
+                    if (code == 0) {
+                      cb(data.url)
+                      // dispatch({
+                      //   type: 'book_info/updateState',
+                      //   payload: {
+                      //     book_info: { book_info: { ...book_info, book_cover: data.url } }
+                      //   }
+                      // })
+                      return
+                    }
+                    cb()
+                  })
+              }
 
-          }} />
-
+            }} />
         )
         }
       </FormItem>
@@ -329,11 +272,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Title Name'}
           >
-            {getFieldDecorator('Title Name', {
+            {getFieldDecorator('title_name', {
               rules: [
                 { required: true, message: 'Title Name' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'title_name'),
             })(
               <Input type="text" placeholder={'Title Name'} />
             )}
@@ -344,8 +287,8 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'External ID'}
           >
-            {getFieldDecorator('External ID', {
-              initialValue: '',
+            {getFieldDecorator('title_id', {
+              initialValue: get(book_info, 'title_id'),
             })(
               <Input type="text" placeholder={'External ID'} />
             )}
@@ -354,12 +297,12 @@ export default class EditTemplate extends PureComponent<any, any> {
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Title Genre:'}
+            label={'Book Status'}
           >
-            {getFieldDecorator('Title Genre', {
-              initialValue: '',
+            {getFieldDecorator('title_status', {
+              initialValue: get(book_info, 'title_status'),
             })(
-              <Input type="text" placeholder={'Title Genre'} />
+              <Input type="text" placeholder={'Book Status'} />
             )}
           </FormItem>
         </Col>
@@ -368,11 +311,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Author Name'}
           >
-            {getFieldDecorator('Author Name', {
+            {getFieldDecorator('author_name', {
               rules: [
                 { required: true, message: 'Title Name' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'author_name'),
             })(
               <Input type="text" placeholder={'Author Name'} />
             )}
@@ -383,8 +326,8 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Author Pen Name'}
           >
-            {getFieldDecorator('Author Pen Name', {
-              initialValue: '',
+            {getFieldDecorator('author_pen_name', {
+              initialValue: get(book_info, 'author_pen_name'),
             })(
               <Input type="text" placeholder={'Author Pen Name'} />
             )}
@@ -395,8 +338,8 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Multiple languages'}
           >
-            {getFieldDecorator('Multiple languages', {
-              initialValue: '',
+            {getFieldDecorator('multiple_languages', {
+              initialValue: get(book_info, 'multiple_languages'),
             })(
               <Input type="text" placeholder={'Multiple languages'} />
             )}
@@ -407,11 +350,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Tags'}
           >
-            {getFieldDecorator('Tags', {
+            {getFieldDecorator('tags', {
               rules: [
                 { required: true, message: 'Tags' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'tags'),
             })(
               <Input type="text" placeholder={'Tags'} />
             )}
@@ -422,11 +365,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Series Name'}
           >
-            {getFieldDecorator('Series Name', {
+            {getFieldDecorator('series', {
               rules: [
                 { required: true, message: 'Series Name' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'series'),
             })(
               <Input type="text" placeholder={'Series Name'} />
             )}
@@ -437,11 +380,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Catchwords'}
           >
-            {getFieldDecorator('Catchwords', {
+            {getFieldDecorator('catchword', {
               rules: [
                 { required: true, message: 'Catchwords' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'catchword'),
             })(
               <Input type="text" placeholder={'Catchwords'} />
             )}
@@ -452,11 +395,11 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Total Chapter Count'}
           >
-            {getFieldDecorator('Total Chapter Count', {
+            {getFieldDecorator('total_chapter_count', {
               rules: [
                 { required: true, message: 'Total Chapter Count' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'total_chapter_count'),
             })(
               <Input type="text" placeholder={'Total Chapter Count'} />
             )}
@@ -467,14 +410,46 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Total Word Count'}
           >
-            {getFieldDecorator('Total Word Count', {
+            {getFieldDecorator('total_word_count', {
               rules: [
                 { required: true, message: 'Total Word Count' },
               ],
-              initialValue: '',
+              initialValue: get(book_info, 'total_word_count'),
 
             })(
               <Input type="text" placeholder={'Total Word Count'} />
+            )}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem
+            {...smallformItemLayout}
+            label={'Full price'}
+          >
+            {getFieldDecorator('full_price', {
+              rules: [
+                { required: true, message: 'Total Word Count' },
+              ],
+              initialValue: get(book_info, 'full_price'),
+
+            })(
+              <Input type="text" placeholder={'Full price'} />
+            )}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem
+            {...smallformItemLayout}
+            label={'Price'}
+          >
+            {getFieldDecorator('price', {
+              rules: [
+                { required: true, message: 'Total Word Count' },
+              ],
+              initialValue: get(book_info, 'price'),
+
+            })(
+              <Input type="text" placeholder={'Price'} />
             )}
           </FormItem>
         </Col>
@@ -488,7 +463,7 @@ export default class EditTemplate extends PureComponent<any, any> {
             { required: true, message: 'Synopsis' },
             // { validator: this.handleCheckImg },
           ],
-          initialValue: '',
+          initialValue: get(book_info, 'synopsis'),
           trigger: 'onChange'
         })(
           <FormEditor
@@ -547,10 +522,6 @@ export default class EditTemplate extends PureComponent<any, any> {
           className={'___warp'}
           title={Object.keys(book_info).length ? 'Add new book' : 'Edit book'}
           visible={true}
-          onOk={handleOk}
-          okText={formatMessage({ id: "app.material.publish" })}
-          cancelText={formatMessage({ id: "app.material.saveasdraft" })}
-          onCancel={handleCancel}
           width={1100}
           footer={null}
         >

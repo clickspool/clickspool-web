@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-import { uploadMultiMedia, bookList, bookInfo, chapterInfo, modifyBookInfo, modifyChapterInfo, modifyCopyrightInfo } from '../services';
+import { bookInfo, bookList, chapterInfo, modifyBookInfo, modifyChapterInfo, modifyCopyrightInfo, uploadMultiMedia } from '../services';
 export default {
   namespace: "book_info",
   state: {
@@ -12,7 +12,8 @@ export default {
     loading: false,
     book_info: {},
     copyright_info: {},
-    chapter_info: [],
+    chapter_info: {},
+    chapter_list: [],
   },
   reducers: {
     updateState: (state, { payload }) => {
@@ -23,39 +24,40 @@ export default {
     },
   },
   effects: {
-    // * create({ payload: values }, { call, put }) {
-    //   const result = yield call(create, values);
-    //   if (result && result.code === 0) {
-    //     yield put({ type: 'reload' })
-    //   }
-    //   return result;
-    // },
-    // * delete({ payload: { id } }, { call, put }) {
-    //   const result = yield call(deleteItem, { id, status: 1 });
-    //   if (result && result.code === 0) {
-    //     yield put({
-    //       type: 'deleteUpdate',
-    //       payload: { deletedId: id }
-    //     });
-
-    //   }
-    //   return result;
-    // },
-    // * patch({ payload: values }, { call, put }) {
-    //   const result = yield call(patch, values);
-    //   if (result && result.code === 0) {
-    //     yield put({ type: 'reload' });
-    //   }
-    //   return result;
-    // },
     * patchBookInfo({ payload: values }, { call, put, select }) {
-      const { code, data } = yield call(bookInfo, values)
+      const { code, data } = yield call(modifyBookInfo, values)
+      return { code, data }
+    },
+    * patchChapterInfo({ payload: values }, { call, put, select }) {
+      const { code, data } = yield call(modifyChapterInfo, values)
+      return { code, data }
+    },
+    * patchCopyrightInfo({ payload: values }, { call, put, select }) {
+      const { code, data } = yield call(modifyCopyrightInfo, values)
+      return { code, data }
+    },
+    * fetchBookInfo({ payload: values }, { call, put, select }) {
+      // tslint:disable-next-line:variable-name
+      const { code, data: chapter_info } = yield call(chapterInfo, values)
       if (code == 0) {
-        const { data: { chapter_info, copyright_info, book_info } } = data;
         yield put({
           type: 'updateState',
           payload: {
-            chapter_info,
+            chapter_info
+          }
+        })
+      }
+      return { code, data: chapter_info }
+    },
+
+    * fetchBookInfo({ payload: values }, { call, put, select }) {
+      const { code, data } = yield call(bookInfo, values)
+      if (code == 0) {
+        const { data: { chapter_info: chapter_list, copyright_info, book_info } } = data;
+        yield put({
+          type: 'updateState',
+          payload: {
+            chapter_list,
             copyright_info,
             book_info
           }

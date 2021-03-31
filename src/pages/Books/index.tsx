@@ -4,7 +4,9 @@ import React, { PureComponent, Fragment } from 'react';
 import { formatMessage } from 'umi/locale';
 import CommonBreadCrumb from '@/components/CommonBreadCrumb';
 import OperationBar from './components/OperationBar';
-import EditTemplate from './BookEdit';
+import BookEdit from './BookEdit';
+import ChapterList from './ChapterList';
+
 import classnames from 'classnames/bind';
 // import OperationBar from './components/OperationBar';
 import styles from './style.less';
@@ -27,7 +29,7 @@ class TemplateList extends PureComponent<any, any> {
     super(props);
     this.state = {
       showBookInfo: false,
-      showChapterInfo: false,
+      showChapterList: false,
       showCopyRight: false
     };
   }
@@ -62,40 +64,56 @@ class TemplateList extends PureComponent<any, any> {
     });
   }
 
-  showAdd=()=>{
-    const {dispatch} = this.props;
+  showAdd = () => {
+    const { dispatch } = this.props;
     dispatch({
-      type:'book_info/updateState',
-      payload:{
-        book_info:{}
+      type: 'book_info/updateState',
+      payload: {
+        book_info: {}
       }
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setState({
-        showBookInfo:true
+        showBookInfo: true
       })
     })
   }
 
-  hideAdd=(refresh)=>{
-    if(!!refresh){
+  hideAdd = (refresh) => {
+    if (!!refresh) {
       this.fetchPage();
     }
     this.setState({
-      showBookInfo:false
+      showBookInfo: false
     })
+  }
+
+  // tslint:disable-next-line:variable-name
+  public showModalHandle = (record: { id: any; }, type_model: any) => {
+    // tslint:disable-next-line:variable-name
+    const { id: book_id } = record;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'book_info/fetchBookInfo',
+      payload: { book_id }
+    })
+      .then(() => {
+        this.setState({
+          [type_model]: true
+        })
+      })
   }
 
   render() {
     const crumbs = [
       {
         icon: 'monitor',
-        title: formatMessage({ id: 'menu.afiliate' }),
+        title: 'Book management',
       },
 
     ];
     const { list, total, page, page_size, statuses, dispatch } = this.props;
-    const { showBookInfo } = this.state;
+    const { showBookInfo, showChapterList, showCopyRight } = this.state;
     const { showEdit, hideEdit, deleteRecord, hideAdd, showAdd, search, putOnline, putOffline } = this;
     const _this = this;
 
@@ -214,22 +232,26 @@ class TemplateList extends PureComponent<any, any> {
               </style>
               <p className='blue'
                 onClick={() => {
-                  console.log(111)
+                  this.showModalHandle(record,'showBookInfo')
                   // tslint:disable-next-line:variable-name
-                  const { id: book_id } = record;
-                  dispatch({
-                    type: 'book_info/patchBookInfo',
-                    payload: { book_id }
-                  })
-                  .then(()=>{
-                    _this.setState({
-                      showBookInfo:true
-                    })
-                  })
+                  // const { id: book_id } = record;
+                  // dispatch({
+                  //   type: 'book_info/fetchBookInfo',
+                  //   payload: { book_id }
+                  // })
+                  //   .then(() => {
+                  //     _this.setState({
+                  //       showBookInfo: true
+                  //     })
+                  //   })
                 }}
               >Manage Book</p>
               <Divider style={{ margin: '5px auto' }} />
-              <p className='blue'>Manage Chapter</p>
+              <p className='blue'
+                onClick={()=>{
+                  this.showModalHandle(record,'showChapterList')
+                }}
+              >Manage Chapter</p>
               <Divider style={{ margin: '5px auto' }} />
               <p className='blue'>Manage Copyright</p>
             </div>
@@ -266,7 +288,8 @@ class TemplateList extends PureComponent<any, any> {
               onChange: this.fetchPage
             }
           }></Table>
-        {showBookInfo && <EditTemplate close={hideAdd} />}
+        {showBookInfo && <BookEdit close={hideAdd} />}
+        {showChapterList && <ChapterList close={hideAdd} />}
       </Fragment>
     );
   }
