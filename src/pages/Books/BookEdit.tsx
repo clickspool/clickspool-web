@@ -158,24 +158,24 @@ export default class EditTemplate extends PureComponent<any, any> {
     this.props.close();
   }
 
-  handleOnRemove = (e, type) => {
-    const { dispatch, book_info } = this.props;
-    dispatch({
-      type: 'book_info/updateState',
-      payload: {
-        book_info: { book_info: { ...book_info, book_cover: '' } }
-      }
-    })
-  }
-  public setMine = () => {
-    const { dispatch, record: { mid } } = this.props;
-    dispatch({
-      type: "market/receive",
-      payload: {
-        material_id: mid
-      }
-    })
-  }
+  // handleOnRemove = (e, type) => {
+  //   const { dispatch, book_info } = this.props;
+  //   dispatch({
+  //     type: 'book_info/updateState',
+  //     payload: {
+  //       book_info: { book_info: { ...book_info, book_cover: '' } }
+  //     }
+  //   })
+  // }
+  // public setMine = () => {
+  //   const { dispatch, record: { mid } } = this.props;
+  //   dispatch({
+  //     type: "market/receive",
+  //     payload: {
+  //       material_id: mid
+  //     }
+  //   })
+  // }
 
 
 

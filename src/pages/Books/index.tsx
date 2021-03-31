@@ -6,6 +6,8 @@ import CommonBreadCrumb from '@/components/CommonBreadCrumb';
 import OperationBar from './components/OperationBar';
 import BookEdit from './BookEdit';
 import ChapterList from './ChapterList';
+import CopyRightEdit from './CopyRightEdit';
+
 
 import classnames from 'classnames/bind';
 // import OperationBar from './components/OperationBar';
@@ -232,7 +234,7 @@ class TemplateList extends PureComponent<any, any> {
               </style>
               <p className='blue'
                 onClick={() => {
-                  this.showModalHandle(record,'showBookInfo')
+                  this.showModalHandle(record, 'showBookInfo')
                   // tslint:disable-next-line:variable-name
                   // const { id: book_id } = record;
                   // dispatch({
@@ -248,12 +250,16 @@ class TemplateList extends PureComponent<any, any> {
               >Manage Book</p>
               <Divider style={{ margin: '5px auto' }} />
               <p className='blue'
-                onClick={()=>{
-                  this.showModalHandle(record,'showChapterList')
+                onClick={() => {
+                  this.showModalHandle(record, 'showChapterList')
                 }}
               >Manage Chapter</p>
               <Divider style={{ margin: '5px auto' }} />
-              <p className='blue'>Manage Copyright</p>
+              <p className='blue'
+               onClick={() => {
+                this.showModalHandle(record, 'showCopyRight')
+              }}
+              >Manage Copyright</p>
             </div>
           );
         }
@@ -289,7 +295,18 @@ class TemplateList extends PureComponent<any, any> {
             }
           }></Table>
         {showBookInfo && <BookEdit close={hideAdd} />}
-        {showChapterList && <ChapterList close={hideAdd} />}
+        {showChapterList && <ChapterList close={() => {
+          this.setState({
+            showChapterList: false
+          })
+        }} />}
+        {showCopyRight &&
+          <CopyRightEdit close={() => {
+            this.setState({
+              showCopyRight: false
+            })
+          }} />
+        }
       </Fragment>
     );
   }

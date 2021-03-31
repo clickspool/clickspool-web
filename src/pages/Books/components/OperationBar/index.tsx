@@ -34,24 +34,12 @@ class OperationBar extends PureComponent<any, any> {
               <Form.Item
                   style={{ display: 'inline-block', marginBottom: 0}}
                 >
-                  {getFieldDecorator('title')(
-                    <Input  placeholder={formatMessage({ id: 'app.material.name' })}/>
+                  {getFieldDecorator('book_title')(
+                    <Input  placeholder={'Book Title'}/>
                   )}
                 </Form.Item>
           </Col>
-          <Col span={6}>
-              <Form.Item
-                  style={{ marginBottom: 0}}
-                >
-                  {getFieldDecorator('status')(
-                    <Select
-                      placeholder ={formatMessage({ id: 'app.material.status' })}
-                    >
-                      {statusesEl}
-                    </Select>
-                  )}
-                </Form.Item>
-          </Col>
+        
           <Col span={6}>
             <div className={styles['operation-btn']}>
               <Button type="primary" icon="search" onClick={this.handleValues}>{formatMessage({ id: 'app.material.search' })}</Button>

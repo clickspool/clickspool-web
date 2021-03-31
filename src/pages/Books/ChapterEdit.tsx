@@ -23,11 +23,11 @@ const FormUploader = React.forwardRef((props, ref) => {
   // const { value = [] } = props;
   // tslint:disable-next-line:variable-name
   // const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/;
-  
+
   const val = get(props['data-__meta'], 'initialValue') || [];
   // tslint:disable-next-line:variable-name
   let file_list: any = isArray(val) ? val : [];
- 
+
   file_list = !!file_list.length && file_list.map((item, index) => {
     return {
       uid: item,
@@ -57,7 +57,7 @@ const FormUploader = React.forwardRef((props, ref) => {
     }}
     customRequest={(options) => {
       // console.log(options, 'options')
-      props.handleChange(options, (url)=>{
+      props.handleChange(options, (url) => {
         const urlObj = {
           uid: url,
           name: url,
@@ -114,7 +114,7 @@ const FormEditor = React.forwardRef((props, ref) => {
   />
 })
 
-@connect(({ book_info: { list, book_info } }) => ({ list, book_info }))
+@connect(({ book_info: { list, book_info, chapter_info, chapter_list } }) => ({ list, book_info, chapter_info, chapter_list }))
 //@ts-ignore
 @Form.create()
 export default class EditTemplate extends PureComponent<any, any> {
@@ -128,122 +128,27 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public handleOk = (e, status) => {
-    const { form: { validateFields, getFieldsValue }, dispatch, record = {} } = this.props;
-    const { imgList, videoList } = this.state;
-    const { mid } = record;
+    const { form: { validateFields }, dispatch, chapter_info = {}, chapter_list } = this.props;
     e.preventDefault();
-    console.log(imgList)
     validateFields({ force: true }, (err, values) => { // 设置force为true
       if (!err) {
-        console.log('Received values of form: ', values);
-        const { type, title1: title, description, destination_link, merchant_id } = values;
-        const llist = { img_url: "", video_url: "" };
-        if (!!imgList.length) {
-          llist.img_url = imgList.map(item => {
-            return item.name
-          }).join(',')
-        }
-        if (!!videoList.length) {
-          llist.video_url = videoList.map(item => {
-            return item.name
-          }).join(',')
-        }
         dispatch({
-          type: mid ? 'material/patch' : 'material/create',
+          type: 'book_info/patchChapterInfo',
           payload: {
-            mid, title, type, description, merchant_id, destination_link, status, ...llist
+            ...chapter_info, ...values, book_id: chapter_list[0].book_id
           }
         })
           .then((res) => {
             if (!res.code) {
-              this.handleCancel();
+              this.handleCancel(1);
             }
           })
       }
     });
   }
 
-  public handleCancel = () => {
-    this.props.close();
-  }
-
-
-  // handleChange = (e, type) => {
-  //   // tslint:disable-next-line:no-this-assignment
-  //   const _this = this;
-  //   const { imgList, videoList, img_url, video_url } = this.state;
-  //   const multiMedia = new FormData();
-  //   multiMedia.append("multiMedia", e.file)
-  //   uploadMultiMedia(multiMedia)
-  //     .then(res => {
-  //       if (!res.code) {
-  //         const len = (type === 'image' ? imgList : videoList).length;
-  //         const list = [...(type === 'image' ? imgList : videoList), {
-  //           uid: `${len}`,
-  //           name: res.data.url,
-  //           status: 'done',
-  //           url: type === 'image' ? `${res.data.url}?x-oss-process=image/resize,w_80,h_80` : `${res.data.url}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
-  //         }]
-
-  //         _this.setState({
-  //           [type === 'image' ? "imgList" : "videoList"]: list,
-  //         })
-  //       }
-  //     })
-  // }
-
-  handleOnRemove = (e, type) => {
-    const {dispatch,book_info} = this.props;
-    dispatch({
-      type: 'book_info/updateState',
-      payload: {
-        book_info: { book_info: { ...book_info, book_cover: '' } }
-      }
-    })
-  }
-  // public componentDidMount() {
-  //   if (!this.props.record) {
-  //     return
-  //   }
-  //   const { images = [], videos = [] } = this.props.record;
-  //   // tslint:disable-next-line:one-variable-per-declaration
-  //   const i = [], v = [];
-  //   if (!!images.length) {
-  //     images.map((item, index) => {
-  //       i.push({
-  //         uid: index,
-  //         name: item,
-  //         status: 'done',
-  //         url: `${item}?x-oss-process=image/resize,w_80,h_80`
-  //       })
-  //     })
-  //   }
-
-  //   if (!!videos.length) {
-  //     videos.map((item, index) => {
-  //       v.push({
-  //         uid: index,
-  //         name: item,
-  //         status: 'done',
-  //         url: `${item}?x-oss-process=video/snapshot,t_1,f_jpg,w_80,h_80,m_fast,ar_auto`
-  //       })
-  //     })
-  //   }
-
-  //   this.setState({
-  //     imgList: i,
-  //     videoList: v
-  //   })
-  // }
-
-  public setMine = () => {
-    const { dispatch, record: { mid } } = this.props;
-    dispatch({
-      type: "market/receive",
-      payload: {
-        material_id: mid
-      }
-    })
+  public handleCancel = (ref) => {
+    this.props.close(ref);
   }
 
 
@@ -253,7 +158,7 @@ export default class EditTemplate extends PureComponent<any, any> {
     // const { handleChange, handleOnRemove } = this;
     // const { handleOk, handleCancel, setMine } = this;
     const { imgList, videoList } = this.state;
-    const { form: { getFieldDecorator }, book_info, dispatch, } = this.props;
+    const { form: { getFieldDecorator }, book_info, dispatch, chapter_info } = this.props;
     // const { type, title, description, destination_link, merchant_id, mid, aid } = record || {};
     const formItemLayout = {
       labelCol: {
@@ -276,14 +181,6 @@ export default class EditTemplate extends PureComponent<any, any> {
       },
     };
 
-
-    //   const FormEditor = React.forwardRef((props, ref) => {
-    //     return <Input />
-    // })  
-    // tslint:disable-next-line:variable-name
-    const book_cover = get(book_info, 'book_cover');
-    // tslint:disable-next-line:variable-name
-    const file_list:any = isArray(book_cover) ? book_cover : !!book_cover? [book_cover]:[];
     return <>
       <style>
         {`
@@ -293,59 +190,17 @@ export default class EditTemplate extends PureComponent<any, any> {
         }
       `}
       </style>
-      <FormItem
-        {...formItemLayout}
-        label={'Book Cover'}
-      >
-        {getFieldDecorator('book_cover', {
-          rules: [
-            { required: true, message: 'Book Cover' },
-            // { validator: this.handleCheckImg },
-          ],
-          // validateTrigger: 'onSubmit', // 设置进行表单验证的时机为onSubmit
-          initialValue: file_list,
-          trigger: 'onChange'
-        })(
-          <FormUploader 
-          handleChange={(opt, cb) => {
-            if (opt.file) {
-              dispatch({
-                type: 'book_info/uploadMultiMediaHandle',
-                payload: {
-                  multiMedia: opt.file
-                }
-              })
-                .then((res) => {
-                  const { code, data } = res;
-                  if (code == 0) {
-                    cb(data.url) 
-                    // dispatch({
-                    //   type: 'book_info/updateState',
-                    //   payload: {
-                    //     book_info: { book_info: { ...book_info, book_cover: data.url } }
-                    //   }
-                    // })
-                    return
-                  }
-                  cb() 
-                })
-            }
-
-          }} />
-        )
-        }
-      </FormItem>
       <Row>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Title Name'}
+            label={'Chapter name'}
           >
-            {getFieldDecorator('title_name', {
+            {getFieldDecorator('chapter_name', {
               rules: [
                 { required: true, message: 'Title Name' },
               ],
-              initialValue: get(book_info,'title_name'),
+              initialValue: get(chapter_info, 'chapter_name'),
             })(
               <Input type="text" placeholder={'Title Name'} />
             )}
@@ -356,8 +211,8 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'External ID'}
           >
-            {getFieldDecorator('title_id', {
-              initialValue: get(book_info,'title_id'),
+            {getFieldDecorator('external_id', {
+              initialValue: get(chapter_info, 'external_id'),
             })(
               <Input type="text" placeholder={'External ID'} />
             )}
@@ -366,111 +221,27 @@ export default class EditTemplate extends PureComponent<any, any> {
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Book Status'}
+            label={'Inner chapter id'}
           >
-            {getFieldDecorator('title_status', {
-              initialValue: get(book_info,'title_status'),
+            {getFieldDecorator('inner_chapter_id', {
+              initialValue: get(chapter_info, 'inner_chapter_id'),
             })(
-              <Input type="text" placeholder={'Book Status'} />
+              <Input type="text" placeholder={'Inner chapter id'} />
             )}
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Author Name'}
+            label={'Price'}
           >
-            {getFieldDecorator('author_name', {
+            {getFieldDecorator('price', {
               rules: [
-                { required: true, message: 'Title Name' },
+                { required: true, message: 'Price' },
               ],
-              initialValue: get(book_info,'author_name'),
+              initialValue: get(chapter_info, 'price'),
             })(
-              <Input type="text" placeholder={'Author Name'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Author Pen Name'}
-          >
-            {getFieldDecorator('author_pen_name', {
-              initialValue: get(book_info,'author_pen_name'),
-            })(
-              <Input type="text" placeholder={'Author Pen Name'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Multiple languages'}
-          >
-            {getFieldDecorator('multiple_languages', {
-              initialValue: get(book_info,'multiple_languages'),
-            })(
-              <Input type="text" placeholder={'Multiple languages'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Tags'}
-          >
-            {getFieldDecorator('tags', {
-              rules: [
-                { required: true, message: 'Tags' },
-              ],
-              initialValue:  get(book_info,'tags'),
-            })(
-              <Input type="text" placeholder={'Tags'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Series Name'}
-          >
-            {getFieldDecorator('series', {
-              rules: [
-                { required: true, message: 'Series Name' },
-              ],
-              initialValue: get(book_info,'series'),
-            })(
-              <Input type="text" placeholder={'Series Name'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Catchwords'}
-          >
-            {getFieldDecorator('catchword', {
-              rules: [
-                { required: true, message: 'Catchwords' },
-              ],
-              initialValue: get(book_info,'catchword'),
-            })(
-              <Input type="text" placeholder={'Catchwords'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Total Chapter Count'}
-          >
-            {getFieldDecorator('total_chapter_count', {
-              rules: [
-                { required: true, message: 'Total Chapter Count' },
-              ],
-              initialValue: get(book_info,'total_chapter_count'),
-            })(
-              <Input type="text" placeholder={'Total Chapter Count'} />
+              <Input type="text" placeholder={'Price'} />
             )}
           </FormItem>
         </Col>
@@ -483,42 +254,10 @@ export default class EditTemplate extends PureComponent<any, any> {
               rules: [
                 { required: true, message: 'Total Word Count' },
               ],
-              initialValue:  get(book_info,'total_word_count'),
+              initialValue: get(chapter_info, 'total_word_count'),
 
             })(
               <Input type="text" placeholder={'Total Word Count'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Full price'}
-          >
-            {getFieldDecorator('full_price', {
-              rules: [
-                { required: true, message: 'Total Word Count' },
-              ],
-              initialValue:  get(book_info,'full_price'),
-
-            })(
-              <Input type="text" placeholder={'Full price'} />
-            )}
-          </FormItem>
-        </Col>
-        <Col span={12}>
-          <FormItem
-            {...smallformItemLayout}
-            label={'Price'}
-          >
-            {getFieldDecorator('price', {
-              rules: [
-                { required: true, message: 'Total Word Count' },
-              ],
-              initialValue:  get(book_info,'price'),
-
-            })(
-              <Input type="text" placeholder={'Price'} />
             )}
           </FormItem>
         </Col>
@@ -527,12 +266,12 @@ export default class EditTemplate extends PureComponent<any, any> {
         {...formItemLayout}
         label={'Synopsis'}
       >
-        {getFieldDecorator('synopsis', {
+        {getFieldDecorator('chapter_content_text', {
           rules: [
-            { required: true, message: 'Synopsis' },
+            { required: true, message: 'chapter_content_text' },
             // { validator: this.handleCheckImg },
           ],
-          initialValue:  get(book_info,'synopsis'),
+          initialValue: get(chapter_info, 'chapter_content_text'),
           trigger: 'onChange'
         })(
           <FormEditor
@@ -572,7 +311,7 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public render() {
-    const { book_info = {} } = this.props;
+    const { book_info = {}, chapter_info } = this.props;
     // tslint:disable-next-line:no-this-assignment
     const { handleOk, handleCancel, FromRender } = this;
     return (
@@ -589,7 +328,7 @@ export default class EditTemplate extends PureComponent<any, any> {
         </style>
         <Modal
           className={'___warp'}
-          title={Object.keys(book_info).length ? 'Add new book' : 'Edit book'}
+          title={Object.keys(chapter_info).length ? 'Add new book' : 'Edit book'}
           visible={true}
           onOk={handleOk}
           okText={formatMessage({ id: "app.material.publish" })}
@@ -597,6 +336,7 @@ export default class EditTemplate extends PureComponent<any, any> {
           onCancel={handleCancel}
           width={1100}
           footer={null}
+          zIndex={1001}
         >
           <Form autoComplete='off'>
             <FromRender />

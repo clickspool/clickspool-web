@@ -36,7 +36,7 @@ export default {
       const { code, data } = yield call(modifyCopyrightInfo, values)
       return { code, data }
     },
-    * fetchBookInfo({ payload: values }, { call, put, select }) {
+    * fetchChapterInfo({ payload: values }, { call, put, select }) {
       // tslint:disable-next-line:variable-name
       const { code, data: chapter_info } = yield call(chapterInfo, values)
       if (code == 0) {

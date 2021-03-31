@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import React, { PureComponent, useState } from 'react';
 //@ts-ignore
 import { formatMessage } from 'umi/locale';
-import { Editor } from '@tinymce/tinymce-react';
+import ChapterEdit from './ChapterEdit';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 const FormItem = Form.Item;
@@ -36,71 +36,33 @@ export default class EditTemplate extends PureComponent<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      imgList: [],
-      videoList: [],
+      showChapter: false
     }
   }
 
-  public handleOk = (e, status) => {
-    const { form: { validateFields, getFieldsValue }, dispatch, record = {} } = this.props;
-    const { imgList, videoList } = this.state;
-    const { mid } = record;
-    e.preventDefault();
-    console.log(imgList)
-    validateFields({ force: true }, (err, values) => { // 设置force为true
-      if (!err) {
-        console.log('Received values of form: ', values);
-        const { type, title1: title, description, destination_link, merchant_id } = values;
-        const llist = { img_url: "", video_url: "" };
-        if (!!imgList.length) {
-          llist.img_url = imgList.map(item => {
-            return item.name
-          }).join(',')
-        }
-        if (!!videoList.length) {
-          llist.video_url = videoList.map(item => {
-            return item.name
-          }).join(',')
-        }
-        dispatch({
-          type: mid ? 'material/patch' : 'material/create',
-          payload: {
-            mid, title, type, description, merchant_id, destination_link, status, ...llist
-          }
-        })
-          .then((res) => {
-            if (!res.code) {
-              this.handleCancel();
-            }
-          })
-      }
-    });
-  }
+
 
   public handleCancel = () => {
     this.props.close();
   }
 
 
-  handleOnRemove = (e, type) => {
-    const {dispatch,book_info} = this.props;
+  public showAdd = () => {
+    const { dispatch } = this.props;
     dispatch({
       type: 'book_info/updateState',
-      payload: {
-        book_info: { book_info: { ...book_info, book_cover: '' } }
-      }
+      payload: { chapter_info: {} }
+    })
+    this.setState({
+      showChapter: true
     })
   }
 
-  public showAdd=()=>{
-    
-  }
-  
 
   public render() {
-    const { chapter_list } = this.props;
+    const { chapter_list, dispatch } = this.props;
     // tslint:disable-next-line:no-this-assignment
-    const { handleOk, handleCancel, showAdd } = this;
+    const {handleCancel, showAdd } = this;
     const crumbs = [
       {
         icon: 'monitor',
@@ -135,6 +97,23 @@ export default class EditTemplate extends PureComponent<any, any> {
         dataIndex: 'price',
         align: 'center',
       },
+      {
+        title: 'Operation',
+        dataIndex: '——',
+        align: 'center',
+        render: (text, recod) => {
+          return <Button type="link" onClick={() => {
+            dispatch({
+              type: 'book_info/fetchChapterInfo',
+              payload: { chapter_id: recod.id }
+            }).then(() => {
+              this.setState({
+                showChapter: true
+              })
+            })
+          }}>Edit</Button>
+        }
+      },
     ]
     return (
       <>
@@ -152,26 +131,39 @@ export default class EditTemplate extends PureComponent<any, any> {
           className={'___warp'}
           title={'Chapter List'}
           visible={true}
-          onOk={handleOk}
-          okText={formatMessage({ id: "app.material.publish" })}
-          cancelText={formatMessage({ id: "app.material.saveasdraft" })}
+          onOk={handleCancel}
+          okText={'Ok'}
+          cancelText={'Cancel'}
           onCancel={handleCancel}
           width={800}
           zIndex={1000}
         >
-          <CommonBreadCrumb items={crumbs} />
-            <div className={cx('operate')}>
-              <OperationBar addTitle={'New Chapter'} add={showAdd} />
-            </div>
-            <Table
-              className={cx('list')}
-              bordered
-              rowKey='id'
-              // @ts-ignore
-              columns={columns}
-              dataSource={chapter_list || []}
-            ></Table>
+          <Button type="primary" onClick={this.showAdd}>{'New Chapter'}</Button>
+          <Table
+            className={cx('list')}
+            style={{ marginBottom: '14px' }}
+            bordered
+            rowKey='id'
+            // @ts-ignore
+            columns={columns}
+            scroll={{ x: 600, y: 300 }}
+            dataSource={chapter_list || []}
+            pagination={
+              { position: 'none' }
+            }
+          ></Table>
         </Modal>
+        {this.state.showChapter && <ChapterEdit close={(refresh) => {
+          if (!!refresh) {
+            dispatch({
+              type: 'book_info/fetchBookInfo',
+              payload: { book_id: chapter_list[0].book_id }
+            })
+          }
+          this.setState({
+            showChapter: false
+          })
+        }} />}
       </>
     );
   }
