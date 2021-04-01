@@ -223,8 +223,8 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Inner chapter id'}
           >
-            {getFieldDecorator('inner_chapter_id', {
-              initialValue: get(chapter_info, 'inner_chapter_id'),
+            {getFieldDecorator('chapter_id', {
+              initialValue: get(chapter_info, 'chapter_id'),
             })(
               <Input type="text" placeholder={'Inner chapter id'} />
             )}
@@ -250,14 +250,14 @@ export default class EditTemplate extends PureComponent<any, any> {
             {...smallformItemLayout}
             label={'Total Word Count'}
           >
-            {getFieldDecorator('total_word_count', {
+            {getFieldDecorator('word_count', {
               rules: [
-                { required: true, message: 'Total Word Count' },
+                { required: true, message: 'Word Count' },
               ],
-              initialValue: get(chapter_info, 'total_word_count'),
+              initialValue: get(chapter_info, 'word_count'),
 
             })(
-              <Input type="text" placeholder={'Total Word Count'} />
+              <Input type="text" placeholder={'Word Count'} />
             )}
           </FormItem>
         </Col>
