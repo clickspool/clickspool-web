@@ -182,7 +182,7 @@ export default class EditTemplate extends PureComponent<any, any> {
   public FromRender = () => {
     // tslint:disable-next-line:no-this-assignment
     // const { handleChange, handleOnRemove } = this;
-    // const { handleOk, handleCancel, setMine } = this;
+    const {  handleCancel } = this;
     const { imgList, videoList } = this.state;
     const { form: { getFieldDecorator }, book_info, dispatch, } = this.props;
     // const { type, title, description, destination_link, merchant_id, mid, aid } = record || {};
@@ -300,9 +300,14 @@ export default class EditTemplate extends PureComponent<any, any> {
             label={'Book Status'}
           >
             {getFieldDecorator('title_status', {
-              initialValue: get(book_info, 'title_status'),
+              initialValue: `${get(book_info, 'title_status')}`,
             })(
-              <Input type="text" placeholder={'Book Status'} />
+              // tslint:disable-next-line:ban-comma-operator
+              <Select  placeholder={'Book Status'}>
+                <Option value={'1'}>Complete</Option>
+                <Option value={'2'}>Processing</Option>
+              </Select>
+              // <Input type="text" placeholder={'Book Status'} />
             )}
           </FormItem>
         </Col>
@@ -339,9 +344,13 @@ export default class EditTemplate extends PureComponent<any, any> {
             label={'Multiple languages'}
           >
             {getFieldDecorator('multiple_languages', {
-              initialValue: get(book_info, 'multiple_languages'),
+              initialValue: `${get(book_info, 'multiple_languages')}`,
             })(
-              <Input type="text" placeholder={'Multiple languages'} />
+              <Select  placeholder={'Multiple languages'}>
+              <Option value={'0'}>No</Option>
+              <Option value={'1'}>Yes</Option>
+            </Select>
+              // <Input type="text" placeholder={'Multiple languages'} />
             )}
           </FormItem>
         </Col>
@@ -523,6 +532,7 @@ export default class EditTemplate extends PureComponent<any, any> {
           title={Object.keys(book_info).length ? 'Add new book' : 'Edit book'}
           visible={true}
           width={1100}
+          onCancel={handleCancel}
           footer={null}
         >
           <Form autoComplete='off'>

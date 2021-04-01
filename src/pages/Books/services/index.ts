@@ -19,7 +19,7 @@ export async function uploadMultiMedia(params) {
  */
 export async function bookList(params) {
   return request('/novel/index/bookList', {
-    method: 'POST',
+    method: 'get',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params
   });
@@ -31,7 +31,7 @@ export async function bookList(params) {
  */
  export async function bookInfo(params) {
   return request('/novel/index/bookInfo', {
-    method: 'POST',
+    method: 'get',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params
   });
@@ -43,7 +43,7 @@ export async function bookList(params) {
  */
  export async function chapterInfo(params) {
   return request('/novel/index/chapterInfo', {
-    method: 'POST',
+    method: 'get',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params
   });

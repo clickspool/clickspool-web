@@ -15,7 +15,7 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker, MonthPicker } = DatePicker;
 
-@connect(({ book_info: { list, copyright_info } }) => ({ list, copyright_info }))
+@connect(({ book_info: { list, copyright_info, book_info } }) => ({ list, copyright_info, book_info }))
 //@ts-ignore
 @Form.create()
 export default class EditTemplate extends PureComponent<any, any> {
@@ -28,7 +28,7 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public handleOk = (e, status) => {
-    const { form: { validateFields, getFieldsValue }, dispatch, copyright_info = {} } = this.props;
+    const { form: { validateFields, getFieldsValue }, dispatch, copyright_info = {}, book_info } = this.props;
     const { imgList, videoList } = this.state;
     e.preventDefault();
     console.log(imgList)
@@ -42,7 +42,7 @@ export default class EditTemplate extends PureComponent<any, any> {
         dispatch({
           type: 'book_info/patchCopyrightInfo',
           payload: {
-            ...copyright_info, ...values,contract_validity_period_start,contract_validity_period_end
+            ...copyright_info, ...values,contract_validity_period_start,contract_validity_period_end, book_id:book_info.id
           }
         })
           .then((res) => {
@@ -219,6 +219,7 @@ export default class EditTemplate extends PureComponent<any, any> {
           className={'___warp'}
           title={'Edit Copyright'}
           visible={true}
+          onCancel={handleCancel}
           width={1100}
           footer={null}
         >

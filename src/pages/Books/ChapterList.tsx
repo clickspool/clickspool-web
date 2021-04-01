@@ -60,7 +60,7 @@ export default class EditTemplate extends PureComponent<any, any> {
 
 
   public render() {
-    const { chapter_list, dispatch } = this.props;
+    const { chapter_list, dispatch, book_info } = this.props;
     // tslint:disable-next-line:no-this-assignment
     const {handleCancel, showAdd } = this;
     const crumbs = [
@@ -157,7 +157,7 @@ export default class EditTemplate extends PureComponent<any, any> {
           if (!!refresh) {
             dispatch({
               type: 'book_info/fetchBookInfo',
-              payload: { book_id: chapter_list[0].book_id }
+              payload: { book_id: book_info.id }
             })
           }
           this.setState({

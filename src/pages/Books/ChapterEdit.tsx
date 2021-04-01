@@ -128,14 +128,14 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public handleOk = (e, status) => {
-    const { form: { validateFields }, dispatch, chapter_info = {}, chapter_list } = this.props;
+    const { form: { validateFields }, dispatch, chapter_info = {}, book_info } = this.props;
     e.preventDefault();
     validateFields({ force: true }, (err, values) => { // 设置force为true
       if (!err) {
         dispatch({
           type: 'book_info/patchChapterInfo',
           payload: {
-            ...chapter_info, ...values, book_id: chapter_list[0].book_id
+            ...chapter_info, ...values, book_id: book_info.id
           }
         })
           .then((res) => {
