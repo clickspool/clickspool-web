@@ -88,6 +88,7 @@ export default {
   "menu.welcome":"Dashboard",
   "menu.knowledge": "Knowledge Base",
   "menu.userManagement": "User Management",
+  // 'menu.history': 'Recharge History',
   "menu.bookManagement": "Book Management",
   "menu.couponManagement": "Coupon Management",
   "menu.orderManagement": "Order Management",

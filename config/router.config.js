@@ -123,7 +123,7 @@ export default [
         path: '/user_management',
         name: 'userManagement',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Client',
         key: '16',
       },
       {
@@ -137,24 +137,29 @@ export default [
         path: '/coupon_management',
         name: 'couponManagement',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Coupon',
         key: '18',
       },
       {
         path: '/order_management',
         name: 'orderManagement',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Order',
         key: '19',
       },
       {
         path: '/purchase_management',
         name: 'purchaseManagement',
         icon: 'message',
-        component: './Exception/404',
+        component: './System/Purchase',
         key: '20',
       },
-
+      // {
+      //   path: '/recharge',
+      //   "key": "21",
+      //   name: 'history',
+      //   component: './Exception/404',
+      // },
       {
         path: '/feedback',
         name: 'feedback',

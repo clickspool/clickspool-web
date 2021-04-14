@@ -10,6 +10,8 @@ import { formatMessage } from 'umi/locale';
 import { Editor } from '@tinymce/tinymce-react';
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
+import moment from 'moment';
+
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -114,7 +116,8 @@ const FormEditor = React.forwardRef((props, ref) => {
   />
 })
 
-@connect(({ book_info: { list, book_info, chapter_info, chapter_list } }) => ({ list, book_info, chapter_info, chapter_list }))
+// tslint:disable-next-line:variable-name
+@connect(({ permission: { coupon: book_info } }) => ({ book_info }))
 //@ts-ignore
 @Form.create()
 export default class EditTemplate extends PureComponent<any, any> {
@@ -128,14 +131,15 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public handleOk = (e, status) => {
-    const { form: { validateFields }, dispatch, chapter_info = {}, book_info } = this.props;
+    const { form: { validateFields, getFieldsValue }, dispatch, book_info = {} } = this.props;
     e.preventDefault();
     validateFields({ force: true }, (err, values) => { // 设置force为true
       if (!err) {
+        values.coins_expire_time = typeof (values.coins_expire_time) === 'string' ? values.coins_expire_time : values.coins_expire_time.format('YYYY-MM-DD HH:mm:ss')
         dispatch({
-          type: 'book_info/patchChapterInfo',
+          type: 'permission/patchCoupon',
           payload: {
-            ...chapter_info, ...values, book_id: book_info.id
+            ...book_info, ...values
           }
         })
           .then((res) => {
@@ -147,18 +151,41 @@ export default class EditTemplate extends PureComponent<any, any> {
     });
   }
 
-  public handleCancel = (ref) => {
-    this.props.close(ref);
+  public handleCancel = (refresh) => {
+    if (refresh === 1) {
+      this.props.close(1);
+      return
+    }
+    this.props.close();
   }
+
+  // handleOnRemove = (e, type) => {
+  //   const { dispatch, book_info } = this.props;
+  //   dispatch({
+  //     type: 'book_info/updateState',
+  //     payload: {
+  //       book_info: { book_info: { ...book_info, book_cover: '' } }
+  //     }
+  //   })
+  // }
+  // public setMine = () => {
+  //   const { dispatch, record: { mid } } = this.props;
+  //   dispatch({
+  //     type: "market/receive",
+  //     payload: {
+  //       material_id: mid
+  //     }
+  //   })
+  // }
 
 
 
   public FromRender = () => {
     // tslint:disable-next-line:no-this-assignment
     // const { handleChange, handleOnRemove } = this;
-    // const { handleOk, handleCancel, setMine } = this;
+    const { handleCancel } = this;
     const { imgList, videoList } = this.state;
-    const { form: { getFieldDecorator }, book_info, dispatch, chapter_info } = this.props;
+    const { form: { getFieldDecorator }, book_info, dispatch, } = this.props;
     // const { type, title, description, destination_link, merchant_id, mid, aid } = record || {};
     const formItemLayout = {
       labelCol: {
@@ -181,6 +208,14 @@ export default class EditTemplate extends PureComponent<any, any> {
       },
     };
 
+
+    //   const FormEditor = React.forwardRef((props, ref) => {
+    //     return <Input />
+    // })  
+    // tslint:disable-next-line:variable-name
+    const book_cover = get(book_info, 'book_cover');
+    // tslint:disable-next-line:variable-name
+    const file_list: any = isArray(book_cover) ? book_cover : !!book_cover ? [book_cover] : [];
     return <>
       <style>
         {`
@@ -194,105 +229,86 @@ export default class EditTemplate extends PureComponent<any, any> {
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Chapter name'}
+            label={'Coupon state'}
           >
-            {getFieldDecorator('chapter_name', {
+            {getFieldDecorator('coupon_title', {
               rules: [
-                { required: true, message: 'Title Name' },
+                { required: true, message: 'Coupon title' },
               ],
-              initialValue: get(chapter_info, 'chapter_name'),
+              initialValue: get(book_info, 'coupon_title'),
             })(
-              <Input type="text" placeholder={'Title Name'} />
+              <Input type="text" placeholder={'Coupon title'} />
             )}
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'External ID'}
+            label={'Coupon state'}
           >
-            {getFieldDecorator('external_id', {
-              initialValue: get(chapter_info, 'external_id'),
+            {getFieldDecorator('coupon_state', {
+              initialValue: get(book_info, 'coupon_state'),
             })(
-              <Input type="text" placeholder={'External ID'} />
+              <Input type="text" placeholder={'Coupon state'} />
             )}
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Inner chapter id'}
+            label={'Coupon code'}
           >
-            {getFieldDecorator('chapter_id', {
-              initialValue: get(chapter_info, 'chapter_id'),
+            {getFieldDecorator('coupon_code', {
+              initialValue: get(book_info, 'coupon_code'),
             })(
-              <Input type="text" placeholder={'Inner chapter id'} />
+              <Input type="text" placeholder={'Coupon code'} />
             )}
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Price'}
+            label={'Coupon amount'}
           >
-            {getFieldDecorator('price', {
+            {getFieldDecorator('coupon_amount', {
+              initialValue: get(book_info, 'coupon_amount'),
+            })(
+              <Input type="text" placeholder={'Coupon amount'} />
+            )}
+          </FormItem>
+        </Col>
+        <Col span={12}>
+          <FormItem
+            {...smallformItemLayout}
+            label={'Coupon coins'}
+          >
+            {getFieldDecorator('coupon_coins', {
               rules: [
-                { required: true, message: 'Price' },
+                { required: true, message: 'Coupon coins' },
               ],
-              initialValue: get(chapter_info, 'price'),
+              initialValue: get(book_info, 'coupon_coins'),
             })(
-              <Input type="text" placeholder={'Price'} />
+              <Input type="text" placeholder={'Coupon coins'} />
             )}
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem
             {...smallformItemLayout}
-            label={'Total Word Count'}
+            label={'Coupon amount'}
           >
-            {getFieldDecorator('word_count', {
+            {getFieldDecorator('coins_expire_time', {
               rules: [
-                { required: true, message: 'Word Count' },
+                { required: true, message: 'Coins expire time' },
               ],
-              initialValue: get(chapter_info, 'word_count'),
-
+              initialValue: get(book_info, 'coins_expire_time') ?  moment(get(book_info, 'coins_expire_time')):'' ,
             })(
-              <Input type="text" placeholder={'Word Count'} />
+              <DatePicker showTime={true} format="YYYY-MM-DD HH:mm:ss" />,
             )}
           </FormItem>
         </Col>
       </Row>
-      <FormItem
-        {...formItemLayout}
-        label={'Synopsis'}
-      >
-        {getFieldDecorator('chapter_content_text', {
-          rules: [
-            { required: true, message: 'chapter_content_text' },
-            // { validator: this.handleCheckImg },
-          ],
-          initialValue: get(chapter_info, 'chapter_content_text'),
-          trigger: 'onChange'
-        })(
-          <FormEditor
-            uploadHandle={(blobInfo, success, failure, progress) => {
-              dispatch({
-                type: 'book_info/uploadMultiMediaHandle',
-                payload: {
-                  multiMedia: blobInfo.blob()
-                }
-              })
-                .then((res) => {
-                  console.log(res, 'res==')
-                  const { code, data } = res;
-                  if (code == 0) {
-                    success(data.url)
-                  }
-                })
-            }} />
-        )
-        }
-      </FormItem>
+
       <div className="ant-modal-footer">
         <div>
           <button type="button" className="ant-btn ant-btn-danger"
@@ -311,7 +327,7 @@ export default class EditTemplate extends PureComponent<any, any> {
   }
 
   public render() {
-    const { book_info = {}, chapter_info } = this.props;
+    const { book_info = {} } = this.props;
     // tslint:disable-next-line:no-this-assignment
     const { handleOk, handleCancel, FromRender } = this;
     return (
@@ -328,15 +344,11 @@ export default class EditTemplate extends PureComponent<any, any> {
         </style>
         <Modal
           className={'___warp'}
-          title={!Object.keys(chapter_info).length ? 'Add new book' : 'Edit book'}
+          title={!Object.keys(book_info).length ? 'Add Coupon' : 'Edit Coupon'}
           visible={true}
-          onOk={handleOk}
-          okText={formatMessage({ id: "app.material.publish" })}
-          cancelText={formatMessage({ id: "app.material.saveasdraft" })}
-          onCancel={handleCancel}
           width={1100}
+          onCancel={handleCancel}
           footer={null}
-          zIndex={1001}
         >
           <Form autoComplete='off'>
             <FromRender />

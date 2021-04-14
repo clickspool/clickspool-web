@@ -162,3 +162,40 @@ export async function feedbackAdd(params) {
   });
 }
 
+export async function userMemberList(params) {
+  return request('/user/member/memberList', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+export async function orderList(params) {
+  return request('/user/member/orderList', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+
+export async function getPurchaseList(params) {
+  return request('/user/member/purchaseList', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+export async function getCouponList(params) {
+  return request('/user/coupon/couponList', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+export async function modifyCoupon(params) {
+  return request('/user/coupon/modifyCoupon', {
+    method: 'POST',
+    body: params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+  });
+}
+

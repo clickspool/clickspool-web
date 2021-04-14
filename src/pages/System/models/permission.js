@@ -1,4 +1,4 @@
-import { getList, getRoleList, getMemberStatusList, getPublisherList, getPublisherInfo } from '@/services/permission';
+import { getList, getRoleList, getMemberStatusList, getPublisherList, getPublisherInfo, userMemberList, orderList, getPurchaseList, getCouponList, modifyCoupon } from '@/services/permission';
 import { type } from '@/utils/utils';
 
 export default {
@@ -9,10 +9,48 @@ export default {
     pData: { data: [] },
     roleList: [],
     statusList: [],
-    publisherInfo: {}
+    publisherInfo: {},
+    memberList:{data:[]},
+    orderList:{data:[]},
+    purchaseList:{data:[]},
+    couponList:{data:[]},
+    coupon:{},
   },
 
   effects: {
+    * patchCoupon({ payload }, { call, put }) {
+      const res= yield call(modifyCoupon, { ...payload });
+      return res
+    },
+    *fetchCouponList({ payload }, { call, put }) {
+      const {data:couponList, code} = yield call(getCouponList, { ...payload, page_size: 20 });
+      yield put({
+        type: 'update',
+        payload: {couponList},
+      });
+    },
+    *fetchPurchaseList({ payload }, { call, put }) {
+      const {data:purchaseList, code} = yield call(getPurchaseList, { ...payload, page_size: 20 });
+      yield put({
+        type: 'update',
+        payload: {purchaseList},
+      });
+    },
+    *fetchOrderList({ payload }, { call, put }) {
+      const {data, code} = yield call(orderList, { ...payload, page_size: 20 });
+      yield put({
+        type: 'update',
+        payload: {orderList:data},
+      });
+    },
+    *fetchUserMemberList({ payload }, { call, put }) {
+      const {data:memberList, code} = yield call(userMemberList, { ...payload, page_size: 20 });
+      yield put({
+        type: 'update',
+        payload: {memberList},
+      });
+    },
+    
     *getPublisherInfo({ payload }, { call, put }) {
       const response = yield call(getPublisherInfo, payload);
       if (!response.code) {
@@ -60,6 +98,9 @@ export default {
   },
 
   reducers: {
+    update(state, { payload }){
+      return {...state,...payload}
+    },
     pubFetch(state, { payload }) {
       if (!payload) {
         return {
